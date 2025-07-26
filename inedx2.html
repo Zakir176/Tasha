@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Beautiful Natasha ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .heart {
+            position: absolute;
+            color: rgba(255, 192, 203, 0.7);
+            font-size: 20px;
+            animation: float 6s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 100px 0;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.3); }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.5); }
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .love-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideIn 1s ease-out;
+        }
+        
+        .love-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .love-card h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #FFB6C1;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .love-card p {
+            color: white;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .reason-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .reason-item:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .reason-item .emoji {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+        
+        .reason-item h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #FFB6C1;
+        }
+        
+        .interactive-heart {
+            text-align: center;
+            margin: 60px 0;
+        }
+        
+        .big-heart {
+            font-size: 8rem;
+            color: #FF69B4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+        
+        .big-heart:hover {
+            transform: scale(1.2);
+            color: #FF1493;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.1); }
+            70% { transform: scale(1); }
+        }
+        
+        .message {
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), rgba(255, 105, 180, 0.3));
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .message h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #FFB6C1;
+            margin-bottom: 20px;
+        }
+        
+        .message p {
+            color: white;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            font-style: italic;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+            }
+            .big-heart {
+                font-size: 5rem;
+            }
+            .love-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="floating-hearts"></div>
+    
+    <div class="container">
+        <section class="hero">
+            <h1>For My Beautiful Natasha</h1>
+            <p>Every moment with you feels like a fairytale ✨</p>
+        </section>
+        
+        <div class="love-card">
+            <h2>My Dearest Natasha</h2>
+            <p>From the moment you walked into my life, everything changed. Your smile lights up my darkest days, your laugh is my favorite melody, and your love is my greatest treasure. This little corner of the internet is dedicated entirely to you, my darling.</p>
+        </div>
+        
+        <section class="reasons-grid">
+            <div class="reason-item">
+                <span class="emoji">😍</span>
+                <h3>Your Beautiful Eyes</h3>
+                <p>They hold entire galaxies and make me lose myself every time I look into them</p>
+            </div>
+            <div class="reason-item">
+                <span class="emoji">💫</span>
+                <h3>Your Amazing Soul</h3>
+                <p>Kind, gentle, and pure - you make the world a better place just by being in it</p>
+            </div>
+            <div class="reason-item">
+                <span class="emoji">🌹</span>
+                <h3>Your Sweet Nature</h3>
+                <p>Every word you speak, every gesture you make is filled with love and tenderness</p>
+            </div>
+            <div class="reason-item">
+                <span class="emoji">✨</span>
+                <h3>The Way You Love</h3>
+                <p>Unconditionally, passionately, and with your whole heart - it's magical</p>
+            </div>
+            <div class="reason-item">
+                <span class="emoji">🦋</span>
+                <h3>Your Free Spirit</h3>
+                <p>You dance through life with grace and bring joy wherever you go</p>
+            </div>
+            <div class="reason-item">
+                <span class="emoji">🌙</span>
+                <h3>Our Perfect Moments</h3>
+                <p>Every second spent with you becomes a treasured memory in my heart</p>
+            </div>
+        </section>
+        
+        <div class="interactive-heart">
+            <div class="big-heart" onclick="showLove()">💖</div>
+            <p style="color: white; margin-top: 20px; font-style: italic;">Click the heart to see how much I love you!</p>
+        </div>
+        
+        <div class="message">
+            <h2>Forever & Always</h2>
+            <p>Natasha, you are my sunshine on cloudy days, my anchor in stormy seas, and my home wherever we may be. I promise to love you more each day, to cherish every moment we share, and to build a beautiful future together. You are not just my girlfriend - you are my best friend, my soulmate, and my everything.</p>
+        </div>
+        
+        <div class="footer">
+            <p>Made with endless love for Natasha 💕</p>
+            <p>You mean the world to me ❤️</p>
+        </div>
+    </div>
+    
+    <script>
+        // Create floating stars
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.querySelector('.floating-hearts');
+            
+            function addHeart() {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '💖';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                heartsContainer.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 6000);
+            }
+            
+            // Add a heart every 2 seconds
+            setInterval(addHeart, 2000);
+        }
+        
+        // Interactive heart click
+        function showLove() {
+            const messages = [
+                "I love you to the moon and back! 🌙",
+                "You make my heart skip a beat! 💓",
+                "Forever and always, my darling! 💕",
+                "You are my everything, Natasha! ✨",
+                "My love for you is infinite! ♾️",
+                "You complete me, beautiful! 🥰",
+                "Every day with you is a blessing! 🙏"
+            ];
+            
+            const message = messages[Math.floor(Math.random() * messages.length)];
+            
+            // Create temporary message
+            const msgDiv = document.createElement('div');
+            msgDiv.innerHTML = message;
+            msgDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(255, 105, 180, 0.9);
+                color: white;
+                padding: 20px 40px;
+                border-radius: 50px;
+                font-size: 1.5rem;
+                font-family: 'Dancing Script', cursive;
+                z-index: 1000;
+                animation: popup 2s ease-out forwards;
+                text-align: center;
+                backdrop-filter: blur(10px);
+                border: 2px solid rgba(255, 255, 255, 0.3);
+            `;
+            
+            document.body.appendChild(msgDiv);
+            
+            setTimeout(() => {
+                msgDiv.remove();
+            }, 2000);
+            
+            // Add popup animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes popup {
+                    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+                    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+                    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // Initialize animations
+        createStars();
+        createHearts();
+        
+        // Add some sparkle effects on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = scrolled * 0.5;
+            document.querySelector('.stars').style.transform = `translateY(${parallax}px)`;
+        });
+    </script>
+</body>
+</html>
