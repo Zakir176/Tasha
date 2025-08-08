@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Shared Universe ✨</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 40%, #0f0f23 100%);
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            color: white;
+            cursor: none;
+            height: 100vh;
+        }
+
+        .universe-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            transform-origin: center center;
+            transition: transform 0.8s ease;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .constellation-star {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .constellation-star.memory { 
+            background: #ff6b9d; 
+            box-shadow: 0 0 10px #ff6b9d, 0 0 20px #ff6b9d; 
+        }
+        
+        .constellation-star.shared { 
+            background: #64ffda; 
+            box-shadow: 0 0 10px #64ffda, 0 0 20px #64ffda; 
+        }
+
+        .constellation-star.addable { 
+            background: #ffd700; 
+            box-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700; 
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .constellation-star:hover {
+            transform: scale(1.5);
+            filter: brightness(1.5);
+        }
+
+        .constellation-line {
+            position: absolute;
+            height: 2px;
+            opacity: 0.6;
+            transform-origin: left center;
+            animation: lineGlow 4s ease-in-out infinite alternate;
+        }
+
+        .constellation-line.memory { 
+            background: linear-gradient(90deg, transparent, #ff6b9d, transparent); 
+        }
+
+        .constellation-line.shared { 
+            background: linear-gradient(90deg, transparent, #64ffda, transparent); 
+        }
+
+        @keyframes lineGlow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #ff6b9d 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: screen;
+            transition: transform 0.1s ease;
+        }
+
+        .intro-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s ease;
+        }
+
+        .intro-title {
+            font-size: clamp(2rem, 6vw, 4rem);
+            background: linear-gradient(45deg, #ff6b9d, #64ffda, #a8e6cf);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientMove 3s ease infinite;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .intro-subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: #64ffda;
+            text-align: center;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        .enter-button {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ff6b9d, #64ffda);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .enter-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 107, 157, 0.6);
+        }
+
+        .message-panel {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .message-panel.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .message-panel.memory { border-color: #ff6b9d; }
+        .message-panel.shared { border-color: #64ffda; }
+        .message-panel.addable { border-color: #ffd700; }
+
+        .message-panel h3 {
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .message-panel.memory h3 { color: #ff6b9d; }
+        .message-panel.shared h3 { color: #64ffda; }
+        .message-panel.addable h3 { color: #ffd700; }
+
+        .message-panel p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #a8e6cf;
+        }
+
+        .message-meta {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-close { background: #ff6b9d; color: white; }
+        .btn-add { background: #ffd700; color: #1a1a2e; }
+        .btn-navigate { background: #64ffda; color: #1a1a2e; }
+
+        .btn:hover { transform: scale(1.05); }
+
+        .navigation-bar {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 50;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn.memory { border-color: #ff6b9d; }
+        .nav-btn.shared { border-color: #64ffda; }
+        .nav-btn.overview { border-color: #a8e6cf; }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        .add-message-form {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .add-message-form.active { display: flex; }
+
+        .form-input, .form-textarea {
+            padding: 12px;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-family: 'Courier New', monospace;
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .memory-palace-info {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .memory-palace-info.memory { color: #ff6b9d; }
+        .memory-palace-info.shared { color: #64ffda; }
+        .memory-palace-info.overview { color: #a8e6cf; }
+
+        .interaction-hint {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: #64ffda;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            text-align: right;
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, #fff, #64ffda);
+            border-radius: 50%;
+            animation: shoot 3s linear infinite;
+        }
+
+        @keyframes shoot {
+            0% { opacity: 0; transform: translateX(0) translateY(0); }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translateX(300px) translateY(300px); }
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            animation: orbit 20s linear infinite;
+        }
+
+        .planet-1 {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #ff6b9d, #ff8a80);
+            top: 20%;
+            left: 10%;
+        }
+
+        .planet-2 {
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(45deg, #64ffda, #4fc3f7);
+            top: 60%;
+            right: 15%;
+            animation-duration: 15s;
+        }
+
+        .cosmic-dust {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: #64ffda;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            33% { transform: translateY(-10px) translateX(5px); }
+            66% { transform: translateY(5px) translateX(-3px); }
+        }
+
+        @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(50px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .memory-palace-info, .interaction-hint {
+                font-size: 0.8rem;
+                position: static;
+                text-align: center;
+                margin: 10px;
+            }
+            
+            .navigation-bar {
+                top: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-btn {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+            }
+            
+            .message-panel {
+                padding: 20px;
+                max-width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="custom-cursor" id="cursor"></div>
+    
+    <div class="intro-screen" id="introScreen">
+        <h1 class="intro-title">Welcome to Our Shared Universe</h1>
+        <p class="intro-subtitle">A living memory palace where our love grows among the stars ✨</p>
+        <button class="enter-button" onclick="enterUniverse()">Enter Our Cosmic Realm</button>
+    </div>
+
+    <div class="universe-container" id="universe">
+        <div class="navigation-bar">
+            <div class="nav-btn memory active" onclick="navigateToSection('memory')">📖 Memory Palace</div>
+            <div class="nav-btn shared" onclick="navigateToSection('shared')">💫 Shared Messages</div>
+            <div class="nav-btn overview" onclick="navigateToSection('overview')">🌌 Overview</div>
+        </div>
+        
+        <div class="interaction-hint">
+            🌟 Pink stars = Life chapters & memories<br>
+            💎 Cyan stars = Messages between us<br>
+            ✨ Gold stars = Add new messages
+        </div>
+        
+        <div class="memory-palace-info memory" id="sectionInfo">
+            📚 Memory Palace - Journey Through Our Life Chapters<br>
+            Each constellation represents a different phase of our story
+        </div>
+
+        <div class="message-panel" id="messagePanel">
+            <h3 id="messageTitle">Star Message</h3>
+            <div class="message-meta" id="messageMeta"></div>
+            <p id="messageContent">Loading cosmic wisdom...</p>
+            <div class="message-actions">
+                <button class="btn btn-close" onclick="closeMessage()">Close</button>
+            </div>
+            
+            <form class="add-message-form" id="addMessageForm">
+                <input type="text" class="form-input" id="messageAuthor" placeholder="Your name..." maxlength="20">
+                <input type="text" class="form-input" id="messageSubject" placeholder="Message title..." maxlength="50">
+                <textarea class="form-textarea" id="messageText" placeholder="Your message to the stars..." rows="4" maxlength="300"></textarea>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn btn-add" onclick="saveMessage()">Send to Stars</button>
+                    <button type="button" class="btn btn-close" onclick="cancelAddMessage()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const universe = document.getElementById('universe');
+        const cursor = document.getElementById('cursor');
+        const messagePanel = document.getElementById('messagePanel');
+        let isUniverseActive = false;
+        let currentSection = 'memory';
+        let userMessages = JSON.parse(localStorage.getItem('userMessages') || '[]');
+
+        // Memory Palace - Life chapters and phases
+        const memoryPalaceStars = [
+            {
+                title: "The Beginning",
+                content: "Every love story has a magical beginning. This is where our universe started expanding, where two hearts began their cosmic dance across time and space.",
+                meta: "Chapter 1 • The First Spark",
+                section: "memory"
+            },
+            {
+                title: "Discovery Phase",
+                content: "Like astronomers discovering new galaxies, we began exploring each other's worlds. Every conversation was a new constellation forming in our shared sky.",
+                meta: "Chapter 2 • Exploring New Worlds",
+                section: "memory"
+            },
+            {
+                title: "Growing Together",
+                content: "As binary stars orbit each other and grow brighter, our love strengthened. We learned to move in harmony, creating beautiful cosmic patterns.",
+                meta: "Chapter 3 • Finding Our Rhythm",
+                section: "memory"
+            },
+            {
+                title: "Challenges & Growth",
+                content: "Even the strongest stars face cosmic storms. Our challenges became the pressure that forged us into something more brilliant and resilient.",
+                meta: "Chapter 4 • Forged by Starlight",
+                section: "memory"
+            },
+            {
+                title: "Present Moment",
+                content: "Right now, in this cosmic moment, our love shines at its brightest. We are creating new memories, new constellations, new chapters in our infinite story.",
+                meta: "Chapter 5 • The Ever-Expanding Now",
+                section: "memory"
+            },
+            {
+                title: "Future Dreams",
+                content: "Beyond the visible horizon lie infinite possibilities. Our future is like an undiscovered galaxy, full of wonders waiting to be explored together.",
+                meta: "Chapter ∞ • Infinite Possibilities",
+                section: "memory"
+            }
+        ];
+
+        // Shared messages between partners
+        const sharedMessages = [
+            {
+                title: "Daily Affirmations",
+                content: "This space holds all our daily 'I love you's, our good morning texts, our random thoughts shared across the cosmos of our relationship.",
+                meta: "Shared • Always Growing",
+                section: "shared"
+            },
+            {
+                title: "Milestone Celebrations",
+                content: "Every anniversary, every achievement, every moment worth celebrating gets its own star here. Our victories shine brighter when shared.",
+                meta: "Shared • Special Moments",
+                section: "shared"
+            },
+            {
+                title: "Dreams & Plans",
+                content: "This constellation holds our shared dreams - the places we want to visit, the experiences we want to have, the future we're building together.",
+                meta: "Shared • Future Visions",
+                section: "shared"
+            },
+            {
+                title: "Inside Jokes & Memories",
+                content: "Our private language of laughter, the silly moments that only we understand, the memories that make us smile when we're apart.",
+                meta: "Shared • Our Secret Language",
+                section: "shared"
+            }
+        ];
+
+        // Custom cursor
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+            
+            if (isUniverseActive) {
+                createCosmicDust(e.clientX, e.clientY);
+            }
+        });
+
+        function enterUniverse() {
+            document.getElementById('introScreen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('introScreen').style.display = 'none';
+                isUniverseActive = true;
+                initializeUniverse();
+            }, 1000);
+        }
+
+        function initializeUniverse() {
+            createStarfield();
+            navigateToSection('memory');
+            createPlanets();
+            createShootingStars();
+        }
+
+        function createStarfield() {
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                universe.appendChild(star);
+            }
+        }
+
+        function navigateToSection(section) {
+            currentSection = section;
+            
+            // Update navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.nav-btn.${section}`).classList.add('active');
+            
+            // Clear existing constellation
+            document.querySelectorAll('.constellation-star, .constellation-line').forEach(el => el.remove());
+            
+            // Update section info
+            const sectionInfo = document.getElementById('sectionInfo');
+            sectionInfo.className = `memory-palace-info ${section}`;
+            
+            if (section === 'memory') {
+                sectionInfo.innerHTML = '📚 Memory Palace - Journey Through Our Life Chapters<br>Each constellation represents a different phase of our story';
+                createMemoryConstellation();
+            } else if (section === 'shared') {
+                sectionInfo.innerHTML = '💫 Shared Messages - Our Living Conversation<br>Messages we\'ve written to each other among the stars';
+                createSharedConstellation();
+            } else {
+                sectionInfo.innerHTML = '🌌 Overview - Our Complete Universe<br>See all chapters and messages in one cosmic view';
+                createOverviewConstellation();
+            }
+        }
+
+        function createMemoryConstellation() {
+            createConstellationFromData(memoryPalaceStars, 'memory');
+        }
+
+        function createSharedConstellation() {
+            const allShared = [...sharedMessages, ...userMessages.filter(msg => msg.section === 'shared')];
+            createConstellationFromData(allShared, 'shared');
+            
+            // Add addable star for new messages
+            createAddableStar('shared');
+        }
+
+        function createOverviewConstellation() {
+            const allMessages = [...memoryPalaceStars, ...sharedMessages, ...userMessages];
+            
+            // Create multiple smaller constellations
+            const memoryStars = allMessages.filter(msg => msg.section === 'memory');
+            const sharedStars = allMessages.filter(msg => msg.section === 'shared');
+            
+            createConstellationFromData(memoryStars, 'memory', 0.3, { x: -200, y: -100 });
+            createConstellationFromData(sharedStars, 'shared', 0.3, { x: 200, y: 100 });
+            
+            createAddableStar('shared', { x: 300, y: 0 });
+        }
+
+        function createConstellationFromData(messages, type, scale = 1, offset = { x: 0, y: 0 }) {
+            const centerX = window.innerWidth / 2 + offset.x;
+            const centerY = window.innerHeight / 2 + offset.y;
+            const radius = Math.min(window.innerWidth, window.innerHeight) * 0.25 * scale;
+
+            const positions = [];
+            messages.forEach((message, index) => {
+                const angle = (index / messages.length) * 2 * Math.PI;
+                const x = centerX + Math.cos(angle) * radius + (Math.random() - 0.5) * 50;
+                const y = centerY + Math.sin(angle) * radius + (Math.random() - 0.5) * 50;
+                
+                const star = document.createElement('div');
+                star.className = `constellation-star ${type}`;
+                star.style.left = x + 'px';
+                star.style.top = y + 'px';
+                star.setAttribute('data-message', JSON.stringify(message));
+                star.addEventListener('click', () => showMessage(message, type));
+                universe.appendChild(star);
+                
+                positions.push({ x, y });
+            });
+
+            // Connect stars with lines
+            for (let i = 0; i < positions.length - 1; i++) {
+                const start = positions[i];
+                const end = positions[i + 1];
+                createConstellationLine(start.x, start.y, end.x, end.y, type);
+            }
+        }
+
+        function createAddableStar(section, offset = { x: 0, y: 0 }) {
+            const star = document.createElement('div');
+            star.className = 'constellation-star addable';
+            star.style.left = (window.innerWidth / 2 + offset.x) + 'px';
+            star.style.top = (window.innerHeight / 2 + 150 + offset.y) + 'px';
+            star.addEventListener('click', () => showAddMessageForm(section));
+            universe.appendChild(star);
+        }
+
+        function createConstellationLine(x1, y1, x2, y2, type) {
+            const line = document.createElement('div');
+            line.className = `constellation-line ${type}`;
+            
+            const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+            const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+            
+            line.style.left = x1 + 'px';
+            line.style.top = y1 + 'px';
+            line.style.width = length + 'px';
+            line.style.transform = `rotate(${angle}deg)`;
+            line.style.animationDelay = Math.random() * 4 + 's';
+            
+            universe.appendChild(line);
+        }
+
+        function showMessage(message, type) {
+            messagePanel.className = `message-panel ${type} active`;
+            document.getElementById('messageTitle').textContent = message.title;
+            document.getElementById('messageMeta').textContent = message.meta;
+            document.getElementById('messageContent').textContent = message.content;
+            document.getElementById('addMessageForm').classList.remove('active');
+        }
+
+        function showAddMessageForm(section) {
+            messagePanel.className = `message-panel addable active`;
+            document.getElementById('messageTitle').textContent = 'Add Your Message to the Stars';
+            document.getElementById('messageMeta').textContent = `Section: ${section.charAt(0).toUpperCase() + section.slice(1)}`;
+            document.getElementById('messageContent').textContent = 'Share your thoughts, memories, or feelings with the universe. This message will become a new star in our shared constellation.';
+            document.getElementById('addMessageForm').classList.add('active');
+            document.getElementById('addMessageForm').setAttribute('data-section', section);
+        }
+
+        function saveMessage() {
+            const author = document.getElementById('messageAuthor').value.trim();
+            const subject = document.getElementById('messageSubject').value.trim();
+            const text = document.getElementById('messageText').value.trim();
+            const section = document.getElementById('addMessageForm').getAttribute('data-section');
+
+            if (!author || !subject || !text) {
+                alert('Please fill in all fields to create your star message.');
+                return;
+            }
+
+            const newMessage = {
+                title: subject,
+                content: text,
+                meta: `Shared • Added by ${author} • ${new Date().toLocaleDateString()}`,
+                section: section,
+                id: Date.now()
+            };
+
+            userMessages.push(newMessage);
+            localStorage.setItem('userMessages', JSON.stringify(userMessages));
+
+            // Refresh the current section
+            closeMessage();
+            setTimeout(() => {
+                navigateToSection(currentSection);
+            }, 500);
+
+            // Clear form
+            document.getElementById('messageAuthor').value = '';
+            document.getElementById('messageSubject').value = '';
+            document.getElementById('messageText').value = '';
+        }
+
+        function cancelAddMessage() {
+            document.getElementById('addMessageForm').classList.remove('active');
+            closeMessage();
+        }
+
+        function closeMessage() {
+            messagePanel.classList.remove('active');
+        }
+
+        function createPlanets() {
+            const planetElements = [
+                { class: 'planet planet-1' },
+                { class: 'planet planet-2' }
+            ];
+
+            planetElements.forEach(planet => {
+                const el = document.createElement('div');
+                el.className = planet.class;
+                universe.appendChild(el);
+            });
+        }
+
+        function createShootingStars() {
+            setInterval(() => {
+                if (isUniverseActive && Math.random() < 0.3) {
+                    const star = document.createElement('div');
+                    star.className = 'shooting-star';
+                    star.style.left = Math.random() * window.innerWidth + 'px';
+                    star.style.top = Math.random() * window.innerHeight + 'px';
+                    universe.appendChild(star);
+                    
+                    setTimeout(() => {
+                        star.remove();
+                    }, 3000);
+                }
+            }, 2000);
+        }
+
+        function createCosmicDust(x, y) {
+            if (Math.random() < 0.3) {
+                const dust = document.createElement('div');
+                dust.className = 'cosmic-dust';
+                dust.style.left = x + (Math.random() - 0.5) * 20 + 'px';
+                dust.style.top = y + (Math.random() - 0.5) * 20 + 'px';
+                dust.style.animationDelay = Math.random() * 6 + 's';
+                universe.appendChild(dust);
+                
+                setTimeout(() => {
+                    dust.remove();
+                }, 6000);
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeMessage();
+            } else if (e.key === '1') {
+                navigateToSection('memory');
+            } else if (e.key === '2') {
+                navigateToSection('shared');
+            } else if (e.key === '3') {
+                navigateToSection('overview');
+            }
+        });
+
+        // Mobile touch interactions
+        universe.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            createCosmicDust(touch.clientX, touch.clientY);
+        });
+    </script>
+</body>
+</html>
