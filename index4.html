@@ -295,6 +295,186 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
+        .media-upload-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px;
+            border: 1px dashed #ffd700;
+            border-radius: 10px;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .media-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .media-btn {
+            padding: 8px 15px;
+            background: rgba(100, 255, 218, 0.2);
+            border: 1px solid #64ffda;
+            border-radius: 15px;
+            color: #64ffda;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .media-btn:hover {
+            background: rgba(100, 255, 218, 0.3);
+            transform: scale(1.05);
+        }
+
+        .media-btn.recording {
+            background: rgba(255, 107, 157, 0.3);
+            border-color: #ff6b9d;
+            color: #ff6b9d;
+            animation: recordPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes recordPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .hidden-input {
+            display: none;
+        }
+
+        .media-preview {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .media-preview.active { display: block; }
+
+        .photo-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .voice-preview {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #64ffda;
+        }
+
+        .voice-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .voice-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            background: #64ffda;
+            color: #1a1a2e;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .voice-duration {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .constellation-star.has-photo {
+            background: linear-gradient(45deg, #ff6b9d, #ffd700);
+            box-shadow: 0 0 15px #ff6b9d, 0 0 30px #ffd700;
+        }
+
+        .constellation-star.has-voice {
+            background: linear-gradient(45deg, #64ffda, #a8e6cf);
+            box-shadow: 0 0 15px #64ffda, 0 0 30px #a8e6cf;
+            animation: voicePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes voicePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .constellation-star.has-both {
+            background: linear-gradient(45deg, #ff6b9d, #64ffda, #ffd700);
+            background-size: 300% 300%;
+            animation: rainbowPulse 3s ease infinite;
+            box-shadow: 0 0 20px #ff6b9d, 0 0 40px #64ffda;
+        }
+
+        @keyframes rainbowPulse {
+            0%, 100% { background-position: 0% 50%; transform: scale(1); }
+            50% { background-position: 100% 50%; transform: scale(1.2); }
+        }
+
+        .media-display {
+            margin-top: 15px;
+        }
+
+        .message-photo {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid #64ffda;
+        }
+
+        .message-voice {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 10px;
+            border: 1px solid #64ffda;
+        }
+
+        .voice-wave {
+            flex: 1;
+            height: 40px;
+            background: linear-gradient(90deg, #64ffda, #a8e6cf);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .voice-wave::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 100%;
+            height: 2px;
+            background: white;
+            transform: translateY(-50%);
+            transition: right 0.1s ease;
+        }
+
+        .voice-wave.playing::before {
+            animation: voiceProgress 1s linear infinite;
+        }
+
+        @keyframes voiceProgress {
+            0% { right: 100%; }
+            100% { right: 0%; }
+        }
+
         .memory-palace-info {
             position: absolute;
             bottom: 30px;
@@ -441,6 +621,38 @@
                 <input type="text" class="form-input" id="messageAuthor" placeholder="Your name..." maxlength="20">
                 <input type="text" class="form-input" id="messageSubject" placeholder="Message title..." maxlength="50">
                 <textarea class="form-textarea" id="messageText" placeholder="Your message to the stars..." rows="4" maxlength="300"></textarea>
+                
+                <div class="media-upload-section">
+                    <div style="color: #ffd700; font-size: 0.9rem; margin-bottom: 10px;">✨ Add Magic to Your Star</div>
+                    
+                    <div class="media-buttons">
+                        <label class="media-btn" for="photoUpload">
+                            📸 Add Photo
+                        </label>
+                        <button type="button" class="media-btn" id="voiceRecordBtn" onclick="toggleVoiceRecording()">
+                            🎤 Record Voice
+                        </button>
+                    </div>
+                    
+                    <input type="file" id="photoUpload" class="hidden-input" accept="image/*" onchange="handlePhotoUpload(event)">
+                    
+                    <div class="media-preview" id="photoPreview">
+                        <img class="photo-preview" id="photoPreviewImg" alt="Photo preview">
+                        <button type="button" class="btn btn-close" style="margin-top: 10px;" onclick="removePhoto()">Remove Photo</button>
+                    </div>
+                    
+                    <div class="media-preview" id="voicePreview">
+                        <div class="voice-preview">
+                            <div class="voice-controls">
+                                <button type="button" class="voice-btn" onclick="playVoicePreview()">▶</button>
+                                <button type="button" class="voice-btn" onclick="removeVoice()">🗑</button>
+                            </div>
+                            <div class="voice-wave" id="voiceWave"></div>
+                            <div class="voice-duration" id="voiceDuration">0:00</div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div style="display: flex; gap: 10px;">
                     <button type="button" class="btn btn-add" onclick="saveMessage()">Send to Stars</button>
                     <button type="button" class="btn btn-close" onclick="cancelAddMessage()">Cancel</button>
@@ -456,6 +668,12 @@
         let isUniverseActive = false;
         let currentSection = 'memory';
         let userMessages = JSON.parse(localStorage.getItem('userMessages') || '[]');
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let isRecording = false;
+        let recordingStartTime = 0;
+        let currentPhotoData = null;
+        let currentVoiceData = null;
 
         // Memory Palace - Life chapters and phases
         const memoryPalaceStars = [
@@ -628,7 +846,18 @@
                 const y = centerY + Math.sin(angle) * radius + (Math.random() - 0.5) * 50;
                 
                 const star = document.createElement('div');
-                star.className = `constellation-star ${type}`;
+                let starClass = `constellation-star ${type}`;
+                
+                // Add special classes for media content
+                if (message.photo && message.voice) {
+                    starClass += ' has-both';
+                } else if (message.photo) {
+                    starClass += ' has-photo';
+                } else if (message.voice) {
+                    starClass += ' has-voice';
+                }
+                
+                star.className = starClass;
                 star.style.left = x + 'px';
                 star.style.top = y + 'px';
                 star.setAttribute('data-message', JSON.stringify(message));
@@ -677,15 +906,210 @@
             document.getElementById('messageMeta').textContent = message.meta;
             document.getElementById('messageContent').textContent = message.content;
             document.getElementById('addMessageForm').classList.remove('active');
+            
+            // Display media content
+            displayMessageMedia(message);
+        }
+
+        function displayMessageMedia(message) {
+            // Remove existing media display
+            const existingMedia = messagePanel.querySelector('.media-display');
+            if (existingMedia) {
+                existingMedia.remove();
+            }
+            
+            if (message.photo || message.voice) {
+                const mediaDisplay = document.createElement('div');
+                mediaDisplay.className = 'media-display';
+                
+                if (message.photo) {
+                    const img = document.createElement('img');
+                    img.className = 'message-photo';
+                    img.src = message.photo;
+                    img.alt = 'Message photo';
+                    mediaDisplay.appendChild(img);
+                }
+                
+                if (message.voice) {
+                    const voiceContainer = document.createElement('div');
+                    voiceContainer.className = 'message-voice';
+                    
+                    const playBtn = document.createElement('button');
+                    playBtn.className = 'voice-btn';
+                    playBtn.innerHTML = '▶';
+                    playBtn.onclick = () => playMessageVoice(message.voice, playBtn);
+                    
+                    const waveform = document.createElement('div');
+                    waveform.className = 'voice-wave';
+                    
+                    const duration = document.createElement('div');
+                    duration.className = 'voice-duration';
+                    duration.textContent = formatDuration(message.voiceDuration || 0);
+                    
+                    voiceContainer.appendChild(playBtn);
+                    voiceContainer.appendChild(waveform);
+                    voiceContainer.appendChild(duration);
+                    mediaDisplay.appendChild(voiceContainer);
+                }
+                
+                // Insert media display after message content
+                const messageContent = document.getElementById('messageContent');
+                messageContent.parentNode.insertBefore(mediaDisplay, messageContent.nextSibling);
+            }
+        }
+
+        function playMessageVoice(voiceData, playBtn) {
+            const audio = new Audio(voiceData);
+            const waveform = playBtn.parentNode.querySelector('.voice-wave');
+            
+            playBtn.innerHTML = '⏸';
+            waveform.classList.add('playing');
+            
+            audio.play();
+            
+            audio.onended = () => {
+                playBtn.innerHTML = '▶';
+                waveform.classList.remove('playing');
+            };
+            
+            playBtn.onclick = () => {
+                audio.pause();
+                audio.currentTime = 0;
+                playBtn.innerHTML = '▶';
+                waveform.classList.remove('playing');
+                playBtn.onclick = () => playMessageVoice(voiceData, playBtn);
+            };
         }
 
         function showAddMessageForm(section) {
             messagePanel.className = `message-panel addable active`;
             document.getElementById('messageTitle').textContent = 'Add Your Message to the Stars';
             document.getElementById('messageMeta').textContent = `Section: ${section.charAt(0).toUpperCase() + section.slice(1)}`;
-            document.getElementById('messageContent').textContent = 'Share your thoughts, memories, or feelings with the universe. This message will become a new star in our shared constellation.';
+            document.getElementById('messageContent').textContent = 'Share your thoughts, memories, or feelings with the universe. Add photos or voice messages to make your star truly special.';
             document.getElementById('addMessageForm').classList.add('active');
             document.getElementById('addMessageForm').setAttribute('data-section', section);
+            
+            // Reset media previews
+            resetMediaPreviews();
+        }
+
+        function resetMediaPreviews() {
+            document.getElementById('photoPreview').classList.remove('active');
+            document.getElementById('voicePreview').classList.remove('active');
+            currentPhotoData = null;
+            currentVoiceData = null;
+            
+            // Reset recording button
+            const recordBtn = document.getElementById('voiceRecordBtn');
+            recordBtn.textContent = '🎤 Record Voice';
+            recordBtn.classList.remove('recording');
+        }
+
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentPhotoData = e.target.result;
+                    document.getElementById('photoPreviewImg').src = currentPhotoData;
+                    document.getElementById('photoPreview').classList.add('active');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removePhoto() {
+            currentPhotoData = null;
+            document.getElementById('photoPreview').classList.remove('active');
+            document.getElementById('photoUpload').value = '';
+        }
+
+        function toggleVoiceRecording() {
+            if (!isRecording) {
+                startVoiceRecording();
+            } else {
+                stopVoiceRecording();
+            }
+        }
+
+        function startVoiceRecording() {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+                    recordingStartTime = Date.now();
+                    
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+                    
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        currentVoiceData = audioUrl;
+                        
+                        // Convert blob to data URL for storage
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            currentVoiceData = e.target.result;
+                        };
+                        reader.readAsDataURL(audioBlob);
+                        
+                        document.getElementById('voicePreview').classList.add('active');
+                        const duration = (Date.now() - recordingStartTime) / 1000;
+                        document.getElementById('voiceDuration').textContent = formatDuration(duration);
+                        
+                        // Stop all tracks
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+                    
+                    mediaRecorder.start();
+                    isRecording = true;
+                    
+                    const recordBtn = document.getElementById('voiceRecordBtn');
+                    recordBtn.innerHTML = '⏹ Stop Recording';
+                    recordBtn.classList.add('recording');
+                })
+                .catch(err => {
+                    console.error('Error accessing microphone:', err);
+                    alert('Could not access microphone. Please check your browser permissions.');
+                });
+        }
+
+        function stopVoiceRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                
+                const recordBtn = document.getElementById('voiceRecordBtn');
+                recordBtn.innerHTML = '🎤 Record Voice';
+                recordBtn.classList.remove('recording');
+            }
+        }
+
+        function playVoicePreview() {
+            if (currentVoiceData) {
+                const audio = new Audio(currentVoiceData);
+                const waveform = document.getElementById('voiceWave');
+                waveform.classList.add('playing');
+                
+                audio.play();
+                audio.onended = () => {
+                    waveform.classList.remove('playing');
+                };
+            }
+        }
+
+        function removeVoice() {
+            currentVoiceData = null;
+            document.getElementById('voicePreview').classList.remove('active');
+            document.getElementById('voiceDuration').textContent = '0:00';
+        }
+
+        function formatDuration(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
         function saveMessage() {
@@ -704,11 +1128,24 @@
                 content: text,
                 meta: `Shared • Added by ${author} • ${new Date().toLocaleDateString()}`,
                 section: section,
-                id: Date.now()
+                id: Date.now(),
+                photo: currentPhotoData,
+                voice: currentVoiceData,
+                voiceDuration: currentVoiceData ? (Date.now() - recordingStartTime) / 1000 : null
             };
 
             userMessages.push(newMessage);
-            localStorage.setItem('userMessages', JSON.stringify(userMessages));
+            
+            // Note: In a real application, you'd want to use a proper backend storage
+            // For demo purposes, we'll simulate storage but with size limits
+            try {
+                localStorage.setItem('userMessages', JSON.stringify(userMessages));
+            } catch (e) {
+                // Handle storage quota exceeded
+                alert('Storage limit reached. Consider using a backend service for larger files.');
+                userMessages.pop(); // Remove the message we just added
+                return;
+            }
 
             // Refresh the current section
             closeMessage();
@@ -720,10 +1157,12 @@
             document.getElementById('messageAuthor').value = '';
             document.getElementById('messageSubject').value = '';
             document.getElementById('messageText').value = '';
+            resetMediaPreviews();
         }
 
         function cancelAddMessage() {
             document.getElementById('addMessageForm').classList.remove('active');
+            resetMediaPreviews();
             closeMessage();
         }
 
@@ -745,37 +1184,19 @@
         }
 
         function createShootingStars() {
-            if (!universe) return; // Guard clause for safety
-            
-            const createStar = () => {
-                try {
-                    if (isUniverseActive && Math.random() < 0.3) {
-                        const star = document.createElement('div');
-                        star.className = 'shooting-star';
-                        
-                        // Ensure stars start from outside the viewport
-                        star.style.left = '-10px';
-                        star.style.top = Math.random() * (window.innerHeight / 2) + 'px';
-                        
-                        universe.appendChild(star);
-                        
-                        // Remove the star after animation
-                        setTimeout(() => {
-                            if (star && star.parentNode) {
-                                star.remove();
-                            }
-                        }, 3000);
-                    }
-                } catch (error) {
-                    console.error('Error creating shooting star:', error);
+            setInterval(() => {
+                if (isUniverseActive && Math.random() < 0.3) {
+                    const star = document.createElement('div');
+                    star.className = 'shooting-star';
+                    star.style.left = Math.random() * window.innerWidth + 'px';
+                    star.style.top = Math.random() * window.innerHeight + 'px';
+                    universe.appendChild(star);
+                    
+                    setTimeout(() => {
+                        star.remove();
+                    }, 3000);
                 }
-            };
-
-            // Create shooting stars periodically
-            setInterval(createStar, 2000);
-            
-            // Create initial stars
-            createStar();
+            }, 2000);
         }
 
         function createCosmicDust(x, y) {
