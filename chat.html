@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoveChat 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .chat-container {
+            display: flex;
+            height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+
+        .sidebar {
+            width: 300px;
+            background: linear-gradient(180deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .couple-avatars {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b9d, #c44569);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border: 3px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .heart-connector {
+            color: white;
+            font-size: 20px;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .chat-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .connection-status {
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .features-panel {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .feature-section {
+            margin-bottom: 25px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-title {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            margin: 5px 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+
+        .feature-item:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(5px);
+        }
+
+        .feature-icon {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .main-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fa;
+        }
+
+        .chat-top-bar {
+            background: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .partner-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .partner-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .partner-details h3 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        .partner-status {
+            color: #28a745;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 50%;
+            background: #f8f9fa;
+            color: #6c757d;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .action-btn:hover {
+            background: #e9ecef;
+            color: #495057;
+            transform: scale(1.1);
+        }
+
+        .messages-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="hearts" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><text x="10" y="15" text-anchor="middle" font-size="12" fill="%23f1f3f4" opacity="0.1">💕</text></pattern></defs><rect width="100" height="100" fill="url(%23hearts)"/></svg>') repeat;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 15px;
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.sent {
+            justify-content: flex-end;
+        }
+
+        .message.received {
+            justify-content: flex-start;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .message.sent .message-bubble {
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            color: #333;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.received .message-bubble {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: #6c757d;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .message.received .message-time {
+            text-align: left;
+        }
+
+        .message-status {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 12px;
+            color: #28a745;
+            margin-top: 3px;
+        }
+
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: white;
+            border-radius: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        .typing-indicator.active {
+            display: flex;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #6c757d;
+            border-radius: 50%;
+            animation: typingBounce 1.4s ease-in-out infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        .input-container {
+            padding: 15px 20px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .message-input {
+            flex: 1;
+            min-height: 20px;
+            max-height: 100px;
+            padding: 12px 16px;
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            resize: none;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .message-input:focus {
+            border-color: #ff9a9e;
+            box-shadow: 0 0 0 3px rgba(255, 154, 158, 0.1);
+        }
+
+        .input-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: #f8f9fa;
+            color: #6c757d;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .input-btn:hover {
+            background: #e9ecef;
+            transform: scale(1.1);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4) !important;
+            color: white !important;
+        }
+
+        .send-btn:hover {
+            background: linear-gradient(135deg, #ff8a9b, #f9c7bb) !important;
+        }
+
+        .special-message {
+            text-align: center;
+            margin: 20px 0;
+            color: #6c757d;
+            font-style: italic;
+            position: relative;
+        }
+
+        .special-message::before,
+        .special-message::after {
+            content: '✨';
+            margin: 0 10px;
+        }
+
+        .love-reaction {
+            position: absolute;
+            font-size: 20px;
+            pointer-events: none;
+            animation: loveFloat 2s ease-out forwards;
+            z-index: 100;
+        }
+
+        @keyframes loveFloat {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: 200px;
+                order: 2;
+            }
+            
+            .main-chat {
+                order: 1;
+                height: calc(100vh - 200px);
+            }
+            
+            .features-panel {
+                display: none;
+            }
+            
+            .chat-header {
+                padding: 15px;
+            }
+            
+            .couple-avatars {
+                margin-bottom: 10px;
+            }
+            
+            .avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .media-message {
+            margin: 5px 0;
+        }
+
+        .media-message img {
+            max-width: 200px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .voice-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(100, 255, 218, 0.1);
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin: 5px 0;
+        }
+
+        .voice-play-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            background: #64ffda;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .voice-duration {
+            font-size: 12px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="sidebar">
+            <div class="chat-header">
+                <div class="couple-avatars">
+                    <div class="avatar" id="myAvatar">You</div>
+                    <div class="heart-connector">💕</div>
+                    <div class="avatar" id="partnerAvatar">Love</div>
+                </div>
+                <div class="chat-title">Our Private Space</div>
+                <div class="connection-status">
+                    <span class="status-indicator"></span>
+                    Connected & Encrypted
+                </div>
+            </div>
+            
+            <div class="features-panel">
+                <div class="feature-section">
+                    <div class="feature-title">
+                        💝 Special Features
+                    </div>
+                    <div class="feature-item" onclick="sendLoveNote()">
+                        <span class="feature-icon">💌</span>
+                        Send Love Note
+                    </div>
+                    <div class="feature-item" onclick="sendMemory()">
+                        <span class="feature-icon">📸</span>
+                        Share Memory
+                    </div>
+                    <div class="feature-item" onclick="sendCompliment()">
+                        <span class="feature-icon">🌟</span>
+                        Random Compliment
+                    </div>
+                </div>
+                
+                <div class="feature-section">
+                    <div class="feature-title">
+                        🎮 Fun Stuff
+                    </div>
+                    <div class="feature-item" onclick="sendMood()">
+                        <span class="feature-icon">😊</span>
+                        Share Current Mood
+                    </div>
+                    <div class="feature-item" onclick="sendQuestion()">
+                        <span class="feature-icon">❓</span>
+                        Conversation Starter
+                    </div>
+                    <div class="feature-item" onclick="sendDateIdea()">
+                        <span class="feature-icon">💕</span>
+                        Date Night Idea
+                    </div>
+                </div>
+                
+                <div class="feature-section">
+                    <div class="feature-title">
+                        ⚙️ Settings
+                    </div>
+                    <div class="feature-item" onclick="customizeTheme()">
+                        <span class="feature-icon">🎨</span>
+                        Customize Theme
+                    </div>
+                    <div class="feature-item" onclick="setNicknames()">
+                        <span class="feature-icon">✏️</span>
+                        Set Nicknames
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-chat">
+            <div class="chat-top-bar">
+                <div class="partner-info">
+                    <div class="partner-avatar" id="topPartnerAvatar">L</div>
+                    <div class="partner-details">
+                        <h3 id="partnerName">My Love</h3>
+                        <div class="partner-status">
+                            <span class="status-indicator"></span>
+                            Online now
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="toggleVideoCall()" title="Video Call">📹</button>
+                    <button class="action-btn" onclick="toggleVoiceCall()" title="Voice Call">📞</button>
+                    <button class="action-btn" onclick="showChatInfo()" title="Chat Info">ℹ️</button>
+                </div>
+            </div>
+
+            <div class="messages-container" id="messagesContainer">
+                <div class="special-message">Your private conversation starts here</div>
+                
+                <div class="message received">
+                    <div class="message-bubble">
+                        Hey beautiful! How's your day going? 💕
+                        <div class="message-time">10:30 AM</div>
+                    </div>
+                </div>
+                
+                <div class="message sent">
+                    <div class="message-bubble">
+                        Much better now that I'm talking to you! 😊 Just thinking about you
+                        <div class="message-time">10:32 AM</div>
+                        <div class="message-status">
+                            <span>✓✓</span> Read
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="message received">
+                    <div class="message-bubble">
+                        Aww, you always know how to make me smile! Can't wait to see you later ❤️
+                        <div class="message-time">10:35 AM</div>
+                    </div>
+                </div>
+                
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                    <span>is typing...</span>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <textarea 
+                    class="message-input" 
+                    id="messageInput" 
+                    placeholder="Type your message..."
+                    rows="1"
+                    onkeydown="handleKeyPress(event)"
+                    oninput="handleInputChange()"
+                ></textarea>
+                
+                <div class="input-actions">
+                    <input type="file" id="photoInput" class="hidden" accept="image/*" onchange="handlePhotoSend(event)">
+                    <button class="input-btn" onclick="document.getElementById('photoInput').click()" title="Send Photo">📷</button>
+                    <button class="input-btn" onclick="toggleVoiceRecord()" id="voiceBtn" title="Voice Message">🎤</button>
+                    <button class="input-btn" onclick="sendLocation()" title="Share Location">📍</button>
+                    <button class="input-btn send-btn" onclick="sendMessage()" id="sendBtn" title="Send Message">💕</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="notificationSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuH1fPVgTYGGWEy" type="audio/wav">
+    </audio>
+
+    <script>
+        let messages = JSON.parse(localStorage.getItem('coupleMessages') || '[]');
+        let isRecording = false;
+        let mediaRecorder = null;
+        let audioChunks = [];
+
+        // Load messages on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMessages();
+            autoScroll();
+            
+            // Simulate partner typing occasionally
+            setInterval(simulatePartnerActivity, 30000);
+        });
+
+        function loadMessages() {
+            const container = document.getElementById('messagesContainer');
+            const existingMessages = container.querySelectorAll('.message:not(.special-message)');
+            existingMessages.forEach(msg => {
+                if (!msg.classList.contains('received') || !msg.querySelector('.message-bubble').textContent.includes('Hey beautiful')) {
+                    msg.remove();
+                }
+            });
+
+            messages.forEach(message => {
+                addMessageToDOM(message, false);
+            });
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function handleInputChange() {
+            const input = document.getElementById('messageInput');
+            
+            // Auto-resize textarea
+            input.style.height = 'auto';
+            input.style.height = Math.min(input.scrollHeight, 100) + 'px';
+            
+            // Show typing indicator
+            if (input.value.trim()) {
+                showTypingIndicator();
+            } else {
+                hideTypingIndicator();
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            
+            if (!text) return;
+
+            const message = {
+                id: Date.now(),
+                text: text,
+                timestamp: new Date(),
+                sender: 'user',
+                status: 'sent'
+            };
+
+            messages.push(message);
+            localStorage.setItem('coupleMessages', JSON.stringify(messages));
+            
+            addMessageToDOM(message, true);
+            input.value = '';
+            input.style.height = 'auto';
+            autoScroll();
+            
+            // Simulate partner response
+            setTimeout(simulatePartnerResponse, 1000 + Math.random() * 2000);
+        }
+
+        function addMessageToDOM(message, animate = true) {
+            const container = document.getElementById('messagesContainer');
+            const messageDiv = document.createElement('div');
+            
+            messageDiv.className = `message ${message.sender === 'user' ? 'sent' : 'received'}`;
+            if (animate) {
+                messageDiv.style.opacity = '0';
+                messageDiv.style.transform = 'translateY(10px)';
+            }
+
+            let mediaContent = '';
+            if (message.photo) {
+                mediaContent += `<div class="media-message"><img src="${message.photo}" onclick="openImageViewer('${message.photo}')" alt="Shared photo"></div>`;
+            }
+            if (message.voice) {
+                mediaContent += `
+                    <div class="voice-message">
+                        <button class="voice-play-btn" onclick="playVoiceMessage('${message.voice}', this)">▶</button>
+                        <div class="voice-duration">${formatDuration(message.voiceDuration || 0)}</div>
+                    </div>
+                `;
+            }
+
+            const statusHTML = message.sender === 'user' ? 
+                `<div class="message-status"><span>✓✓</span> ${message.status === 'read' ? 'Read' : 'Delivered'}</div>` : '';
+
+            messageDiv.innerHTML = `
+                <div class="message-bubble">
+                    ${message.text}
+                    ${mediaContent}
+                    <div class="message-time">${formatTime(message.timestamp)}</div>
+                    ${statusHTML}
+                </div>
+            `;
+
+            // Remove typing indicator before adding message
+            hideTypingIndicator();
+            container.appendChild(messageDiv);
+
+            if (animate) {
+                setTimeout(() => {
+                    messageDiv.style.transition = 'all 0.3s ease-out';
+                    messageDiv.style.opacity = '1';
+                    messageDiv.style.transform = 'translateY(0)';
+                }, 10);
+            }
+
+            // Play notification sound for received messages
+            if (message.sender === 'partner') {
+                playNotificationSound();
+                createLoveReaction();
+            }
+        }
+
+        function simulatePartnerResponse() {
+            const responses = [
+                "I love you so much! ❤️",
+                "You're absolutely amazing 😍",
+                "Can't wait to hold you again 🤗",
+                "You make me so happy! 😊",
+                "Thinking of you always 💭💕",
+                "You're my everything ✨",
+                "Missing you like crazy! 🥺",
+                "You light up my world 🌟",
+                "Forever and always, my love 💖",
+                "You're the best thing that happened to me 🌈"
+            ];
+
+            const response = {
+                id: Date.now(),
+                text: responses[Math.floor(Math.random() * responses.length)],
+                timestamp: new Date(),
+                sender: 'partner',
+                status: 'delivered'
+            };
+
+            messages.push(response);
+            localStorage.setItem('coupleMessages', JSON.stringify(messages));
+            
+            showTypingIndicator();
+            setTimeout(() => {
+                addMessageToDOM(response, true);
+                autoScroll();
+            }, 1000 + Math.random() * 2000);
+        }
+
+        function showTypingIndicator() {
+            document.getElementById('typingIndicator').classList.add('active');
+            autoScroll();
+        }
+
+        function hideTypingIndicator() {
+            document.getElementById('typingIndicator').classList.remove('active');
+        }
+
+        function autoScroll() {
+            const container = document.getElementById('messagesContainer');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit',
+                hour12: true 
+            });
+        }
+
+        function formatDuration(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function playNotificationSound() {
+            const audio = document.getElementById('notificationSound');
+            audio.currentTime = 0;
+            audio.volume = 0.3;
+            audio.play().catch(e => console.log('Audio play failed:', e));
+        }
+
+        function createLoveReaction() {
+            const reactions = ['💕', '❤️', '😍', '🥰', '😘', '💖', '✨'];
+            const reaction = reactions[Math.floor(Math.random() * reactions.length)];
+            
+            const reactionEl = document.createElement('div');
+            reactionEl.className = 'love-reaction';
+            reactionEl.textContent = reaction;
+            reactionEl.style.left = Math.random() * window.innerWidth + 'px';
+            reactionEl.style.top = Math.random() * 100 + 50 + 'px';
+            
+            document.body.appendChild(reactionEl);
+            
+            setTimeout(() => {
+                reactionEl.remove();
+            }, 2000);
+        }
+
+        // Special features
+        function sendLoveNote() {
+            const loveNotes = [
+                "Just wanted to remind you how much I love you 💕",
+                "You're the reason I smile every day 😊",
+                "Thank you for being my everything ❤️",
+                "I'm so grateful to have you in my life 🙏",
+                "You make ordinary moments extraordinary ✨"
+            ];
+            
+            const note = loveNotes[Math.floor(Math.random() * loveNotes.length)];
+            document.getElementById('messageInput').value = note;
+            sendMessage();
+        }
+
+        function sendCompliment() {
+            const compliments = [
+                "You look absolutely stunning today! 😍",
+                "Your smile could light up the entire world 🌟",
+                "You're incredibly talented and amazing 👑",
+                "Your kindness makes my heart melt 💖",
+                "You're more beautiful than any sunset 🌅"
+            ];
+            
+            const compliment = compliments[Math.floor(Math.random() * compliments.length)];
+            document.getElementById('messageInput').value = compliment;
+            sendMessage();
+        }
+
+        function sendMood() {
+            const moods = [
+            "Feeling loved and grateful 🥰",
+            "Missing you so much right now 🥺",
+            "Happy and excited! 😄",
+            "Peaceful and content 😌",
+            "Energetic and ready for anything! ⚡",
+            "Thinking of you with a smile 😊",
+            "Feeling blessed to have you 🙏",
+            "Can't stop thinking about you 💭",
+            "Dreaming of our next meeting 🌈",
+            "Overwhelmed with love for you 💝"
+            ];
+            
+            const mood = moods[Math.floor(Math.random() * moods.length)];
+            document.getElementById('messageInput').value = mood;
+            sendMessage();
+        }
+
+        function sendQuestion() {
+            const questions = [
+            "What's your favorite memory of us? 💭",
+            "Where should we go on our next date? 🌟",
+            "What made you smile today? 😊",
+            "Remember when we first met? 💕",
+            "What's your dream vacation with me? ✈️"
+            ];
+            
+            const question = questions[Math.floor(Math.random() * questions.length)];
+            document.getElementById('messageInput').value = question;
+            sendMessage();
+        }
+
+        function sendDateIdea() {
+            const ideas = [
+            "Let's have a romantic picnic in the park! 🧺",
+            "Movie night with popcorn and cuddles? 🎬",
+            "How about cooking dinner together? 👩‍🍳",
+            "Sunset walk on the beach? 🌅",
+            "Coffee date at our favorite café? ☕"
+            ];
+            
+            const idea = ideas[Math.floor(Math.random() * ideas.length)];
+            document.getElementById('messageInput').value = idea;
+            sendMessage();
+        }
+
+        function handlePhotoSend(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const message = {
+                id: Date.now(),
+                text: "Sent a photo 📸",
+                photo: e.target.result,
+                timestamp: new Date(),
+                sender: 'user',
+                status: 'sent'
+                };
+                messages.push(message);
+                localStorage.setItem('coupleMessages', JSON.stringify(messages));
+                addMessageToDOM(message, true);
+                autoScroll();
+            };
+            reader.readAsDataURL(file);
+            }
+        }
+
+        function simulatePartnerActivity() {
+            if (Math.random() > 0.7) {
+            showTypingIndicator();
+            setTimeout(hideTypingIndicator, 3000);
+            }
+        }
+
+        </script>
+    </body>
+    </html>
