@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Story Timeline</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.3rem;
+            font-style: italic;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .timeline {
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+            transform: translateX(-50%);
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+
+        .milestone {
+            position: relative;
+            margin: 60px 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease-out;
+        }
+
+        .milestone.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .milestone.edit-mode .milestone-content {
+            border: 3px solid #ff6b6b;
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .milestone:nth-child(even) .milestone-content {
+            left: auto;
+            right: 55%;
+            text-align: right;
+        }
+
+        .milestone:nth-child(odd) .milestone-content {
+            left: 55%;
+        }
+
+        .milestone-content {
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 400px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .milestone-content:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .milestone-dot {
+            position: absolute;
+            left: 50%;
+            top: 50px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            box-shadow: 0 0 0 4px #667eea, 0 0 20px rgba(102, 126, 234, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .milestone:hover .milestone-dot {
+            transform: translateX(-50%) scale(1.3);
+            box-shadow: 0 0 0 6px #667eea, 0 0 30px rgba(102, 126, 234, 0.8);
+        }
+
+        .milestone-date {
+            font-size: 0.9rem;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: text;
+        }
+
+        .milestone-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+            cursor: text;
+        }
+
+        .milestone-description {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            cursor: text;
+        }
+
+        .milestone-photo {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-style: italic;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .milestone-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .milestone-photo:hover {
+            transform: scale(1.05);
+        }
+
+        .photo-upload-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            border-radius: 10px;
+        }
+
+        .edit-mode .photo-upload-overlay {
+            display: flex;
+        }
+
+        .milestone-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: text;
+        }
+
+        .edit-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: none;
+            gap: 5px;
+        }
+
+        .edit-mode .edit-controls {
+            display: flex;
+        }
+
+        .edit-btn {
+            background: #4ecdc4;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background: #45b7d1;
+            transform: translateY(-1px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .editable {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            resize: vertical;
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            line-height: inherit;
+        }
+
+        .editable:focus {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 4px;
+            padding: 4px;
+        }
+
+        .photo-upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .photo-upload-area:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .photo-upload-area.dragover {
+            border-color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 107, 107, 0.6);
+            animation: float 6s infinite ease-in-out;
+            font-size: 1.5rem;
+        }
+
+        .add-milestone-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .add-milestone-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .milestone-content {
+                left: 60px !important;
+                right: auto !important;
+                text-align: left !important;
+                max-width: calc(100% - 100px);
+            }
+            
+            .milestone-dot {
+                left: 30px;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="hearts"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Our Love Story</h1>
+            <p>Every moment we've shared, every memory we've made</p>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" onclick="toggleEditMode()">
+                <span id="edit-mode-text">✏️ Edit Mode</span>
+            </button>
+            <button class="control-btn" onclick="exportData()">📁 Export Timeline</button>
+            <button class="control-btn" onclick="importData()">📂 Import Timeline</button>
+        </div>
+        
+        <div class="timeline" id="timeline">
+            <!-- Milestones will be dynamically generated -->
+        </div>
+    </div>
+
+    <button class="add-milestone-btn" onclick="addNewMilestone()" title="Add New Milestone">+</button>
+
+    <input type="file" id="file-input" class="hidden" accept=".json">
+    <input type="file" id="photo-input" class="hidden" accept="image/*">
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        let milestones = [
+            {
+                id: 1,
+                date: "March 15, 2022",
+                title: "First Meeting",
+                description: "That awkward but magical moment when we both reached for the last blueberry muffin...",
+                story: "It was a typical Tuesday morning when I walked into 'Bean There, Done That' coffee shop. I was running late for work, you were enjoying a quiet moment with your book. When we both reached for the last blueberry muffin, our hands touched for just a second, but somehow I knew my life had just changed forever. You smiled, I stuttered something about muffins, and you said the most beautiful thing: 'Want to share it?' That muffin became the foundation of everything we built together.",
+                details: "Location: Bean There, Done That Coffee Shop\nTime: 8:43 AM\nWeather: Sunny with a chance of love\nYour book: 'The Seven Husbands of Evelyn Hugo'\nMy excuse for being late: 'Traffic' (I was actually just nervous about a presentation)",
+                tags: ["First Meeting", "Coffee Shop", "Fate"],
+                photo: null,
+                photoPlaceholder: "The moment our eyes first met at the coffee shop"
+            },
+            {
+                id: 2,
+                date: "April 2, 2022",
+                title: "First Date",
+                description: "You wore that blue dress, I wore my lucky shirt, and we talked until the restaurant closed...",
+                story: "After three weeks of texting and one very awkward phone call where we both forgot how to speak, we finally went on our first official date. I picked you up at 7 PM sharp (I'd been circling the block for 20 minutes because I was early). You came to the door in that blue dress that made my heart skip, and I knew I was in trouble. At Nonna's Italian Kitchen, we ordered way too much food, shared stories about our childhoods, and discovered we both secretly loved pineapple on pizza (scandalous!). When they turned on the lights at closing time, we realized we'd been there for four hours.",
+                details: "Restaurant: Nonna's Italian Kitchen\nYour order: Chicken Parmigiana, extra cheese\nMy order: Spaghetti Carbonara (I was trying to impress)\nShared dessert: Tiramisu (you let me have the last bite)\nWe closed down the restaurant: 11:47 PM\nNumber of times I checked my appearance in car windows: 14",
+                tags: ["First Date", "Italian Food", "Endless Conversation"],
+                photo: null,
+                photoPlaceholder: "Dinner at that little Italian place"
+            },
+            {
+                id: 3,
+                date: "June 14, 2022",
+                title: "First 'I Love You'",
+                description: "During our midnight walk, you looked up at the stars and I realized I was already looking at mine...",
+                story: "We'd been dating for about two months, and I was bursting with feelings I didn't know how to express. You suggested a midnight walk through Riverside Park because you couldn't sleep. As we wandered down the tree-lined path, you stopped suddenly and looked up at the constellation Cassiopeia (you'd been teaching me about stars). In that moment, with moonlight caught in your hair and wonder in your eyes, the words just tumbled out: 'I love you.' You turned, smiled that smile that makes everything better, and whispered back, 'I was wondering when you'd finally say it. I love you too.' I think I floated home that night.",
+                details: "Location: Riverside Park, near the old oak tree\nTime: 12:23 AM\nConstellation you were pointing out: Cassiopeia\nTemperature: Perfect\nHow long I'd been wanting to say it: 3 weeks, 2 days, 6 hours\nHow you responded: With the most beautiful smile in the universe",
+                tags: ["I Love You", "Stargazing", "Midnight Walk"],
+                photo: null,
+                photoPlaceholder: "Under the stars at the park"
+            }
+        ];
+
+        let editMode = false;
+        let currentEditingMilestone = null;
+
+        function renderTimeline() {
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = '';
+
+            milestones.forEach((milestone, index) => {
+                const milestoneDiv = document.createElement('div');
+                milestoneDiv.className = 'milestone';
+                milestoneDiv.innerHTML = `
+                    <div class="milestone-dot"></div>
+                    <div class="milestone-content" onclick="openModal(${index})">
+                        <div class="edit-controls">
+                            <button class="edit-btn" onclick="event.stopPropagation(); deleteMilestone(${index})">🗑️</button>
+                        </div>
+                        <div class="milestone-date ${editMode ? 'editable' : ''}" 
+                             ${editMode ? `contenteditable="true" oninput="updateMilestone(${index}, 'date', this.textContent)"` : ''}>
+                            ${milestone.date}
+                        </div>
+                        <div class="milestone-title ${editMode ? 'editable' : ''}" 
+                             ${editMode ? `contenteditable="true" oninput="updateMilestone(${index}, 'title', this.textContent)"` : ''}>
+                            ${milestone.title}
+                        </div>
+                        <div class="milestone-photo" ${editMode ? `onclick="event.stopPropagation(); uploadPhoto(${index})"` : ''}>
+                            ${milestone.photo ? `<img src="${milestone.photo}" alt="Milestone photo">` : `"${milestone.photoPlaceholder}"`}
+                            <div class="photo-upload-overlay">Click to upload photo</div>
+                        </div>
+                        <div class="milestone-description ${editMode ? 'editable' : ''}" 
+                             ${editMode ? `contenteditable="true" oninput="updateMilestone(${index}, 'description', this.textContent)"` : ''}>
+                            ${milestone.description}
+                        </div>
+                        <div class="milestone-tags">
+                            ${milestone.tags.map((tag, tagIndex) => 
+                                `<span class="tag ${editMode ? 'editable' : ''}" 
+                                      ${editMode ? `contenteditable="true" oninput="updateTag(${index}, ${tagIndex}, this.textContent)"` : ''}>
+                                    ${tag}
+                                </span>`
+                            ).join('')}
+                            ${editMode ? `<span class="tag" onclick="event.stopPropagation(); addTag(${index})" style="background: #ccc; cursor: pointer;">+ Add Tag</span>` : ''}
+                        </div>
+                    </div>
+                `;
+                
+                if (editMode) {
+                    milestoneDiv.classList.add('edit-mode');
+                }
+                
+                timeline.appendChild(milestoneDiv);
+            });
+
+            // Re-observe for animations
+            setTimeout(() => {
+                document.querySelectorAll('.milestone').forEach(milestone => {
+                    observer.observe(milestone);
+                });
+            }, 100);
+        }
+
+        function toggleEditMode() {
+            editMode = !editMode;
+            const editModeText = document.getElementById('edit-mode-text');
+            editModeText.textContent = editMode ? '👁️ View Mode' : '✏️ Edit Mode';
+            renderTimeline();
+        }
+
+        function updateMilestone(index, field, value) {
+            milestones[index][field] = value.trim();
+            saveToLocalStorage();
+        }
+
+        function updateTag(milestoneIndex, tagIndex, value) {
+            milestones[milestoneIndex].tags[tagIndex] = value.trim();
+            saveToLocalStorage();
+        }
+
+        function addTag(milestoneIndex) {
+            const newTag = prompt('Enter new tag:');
+            if (newTag && newTag.trim()) {
+                milestones[milestoneIndex].tags.push(newTag.trim());
+                renderTimeline();
+                saveToLocalStorage();
+            }
+        }
+
+        function uploadPhoto(milestoneIndex) {
+            const input = document.getElementById('photo-input');
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        milestones[milestoneIndex].photo = e.target.result;
+                        renderTimeline();
+                        saveToLocalStorage();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        function deleteMilestone(index) {
+            if (confirm('Are you sure you want to delete this milestone?')) {
+                milestones.splice(index, 1);
+                renderTimeline();
+                saveToLocalStorage();
+            }
+        }
+
+        function addNewMilestone() {
+            const newMilestone = {
+                id: Date.now(),
+                date: "New Date",
+                title: "New Milestone",
+                description: "Click to edit this description...",
+                story: "Write your story here...",
+                details: "Add details here...",
+                tags: ["New"],
+                photo: null,
+                photoPlaceholder: "Add a photo to remember this moment"
+            };
+            
+            milestones.push(newMilestone);
+            renderTimeline();
+            saveToLocalStorage();
+            
+            // Auto-scroll to the new milestone
+            setTimeout(() => {
+                const milestoneElements = document.querySelectorAll('.milestone');
+                const lastMilestone = milestoneElements[milestoneElements.length - 1];
+                lastMilestone.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        function openModal(index) {
+            if (editMode) return; // Don't open modal in edit mode
+            
+            const milestone = milestones[index];
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modal-body');
+            
+            modalBody.innerHTML = `
+                <h2 style="color: #667eea; margin-bottom: 10px;">${milestone.title}</h2>
+                <p style="color: #999; margin-bottom: 20px; font-style: italic;">${milestone.date}</p>
+                <div style="background: ${milestone.photo ? 'transparent' : 'linear-gradient(45deg, #ff6b6b, #4ecdc4)'}; height: 250px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; color: white; font-style: italic; text-align: center; overflow: hidden;">
+                    ${milestone.photo ? 
+                        `<img src="${milestone.photo}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;" alt="Milestone photo">` : 
+                        `"${milestone.photoPlaceholder}"`
+                    }
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #333; margin-bottom: 10px;">Our Story</h3>
+                    <textarea class="editable" style="min-height: 120px; border: 1px solid #ddd; padding: 10px; border-radius: 8px;" 
+                              oninput="updateMilestone(${index}, 'story', this.value)">${milestone.story}</textarea>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #333; margin-bottom: 10px;">The Details</h3>
+                    <textarea class="editable" style="min-height: 100px; border: 1px solid #ddd; padding: 10px; border-radius: 8px; font-family: monospace;" 
+                              oninput="updateMilestone(${index}, 'details', this.value)">${milestone.details}</textarea>
+                </div>
+                <div style="margin-top: 20px;">
+                    <button class="control-btn" onclick="uploadPhoto(${index})" style="margin-right: 10px;">📷 Change Photo</button>
+                    <button class="control-btn" onclick="closeModal(); renderTimeline();">💾 Save Changes</button>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            saveToLocalStorage();
+        }
+
+        function exportData() {
+            const dataStr = JSON.stringify(milestones, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'love-timeline.json';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importData() {
+            const input = document.getElementById('file-input');
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const importedData = JSON.parse(e.target.result);
+                            if (confirm('This will replace your current timeline. Continue?')) {
+                                milestones = importedData;
+                                renderTimeline();
+                                saveToLocalStorage();
+                            }
+                        } catch (error) {
+                            alert('Invalid file format. Please select a valid timeline file.');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        function saveToLocalStorage() {
+            // Note: In the actual artifact, we store in memory instead of localStorage
+            // This is just a placeholder for the save functionality
+        }
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '50px'
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') {
+                closeModal();
+            }
+        });
+
+        // Floating hearts animation
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '♥';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 1 + 1) + 'rem';
+            
+            document.getElementById('hearts').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        // Create hearts periodically
+        setInterval(createHeart, 3000);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Drag and drop for photos
+        document.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        document.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (editMode && e.target.closest('.milestone-photo')) {
+                const files = e.dataTransfer.files;
+                if (files.length > 0 && files[0].type.startsWith('image/')) {
+                    const milestoneIndex = Array.from(document.querySelectorAll('.milestone')).indexOf(e.target.closest('.milestone'));
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        milestones[milestoneIndex].photo = e.target.result;
+                        renderTimeline();
+                        saveToLocalStorage();
+                    };
+                    reader.readAsDataURL(files[0]);
+                }
+            }
+        });
+
+        // Initialize the timeline
+        renderTimeline();
+    </script>
+</body>
+</html>
