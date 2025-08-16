@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Our Love Story Timeline</title>
     <style>
         * {
@@ -50,6 +53,7 @@
             gap: 15px;
             margin-bottom: 40px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .control-btn {
@@ -72,6 +76,7 @@
         .timeline {
             position: relative;
             padding: 0 20px;
+            min-height: 100vh;
         }
 
         .timeline::before {
@@ -115,6 +120,16 @@
             left: 55%;
         }
 
+        /* Responsive timeline layout */
+        @media (max-width: 768px) {
+            .milestone:nth-child(even) .milestone-content,
+            .milestone:nth-child(odd) .milestone-content {
+                left: 60px !important;
+                right: auto !important;
+                text-align: left !important;
+            }
+        }
+
         .milestone-content {
             position: relative;
             background: rgba(255, 255, 255, 0.95);
@@ -126,6 +141,8 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.3);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .milestone-content:hover {
@@ -367,6 +384,21 @@
             color: rgba(255, 107, 107, 0.6);
             animation: float 6s infinite ease-in-out;
             font-size: 1.5rem;
+            will-change: transform;
+        }
+
+        @media (max-width: 768px) {
+            .heart {
+                font-size: 1.2rem;
+                animation-duration: 4s;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .heart {
+                font-size: 1rem;
+                animation-duration: 3s;
+            }
         }
 
         .add-milestone-btn {
@@ -425,6 +457,253 @@
             .controls {
                 flex-direction: column;
                 align-items: center;
+            }
+
+            .modal-content {
+                position: relative !important;
+                top: 20px !important;
+                left: 20px !important;
+                transform: none !important;
+                max-width: calc(100% - 40px) !important;
+                max-height: calc(100vh - 40px) !important;
+                margin: 0;
+                padding: 25px;
+            }
+
+            .milestone:nth-child(even) .milestone-content,
+            .milestone:nth-child(odd) .milestone-content {
+                left: 60px !important;
+                right: auto !important;
+                text-align: left !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .header {
+                margin-bottom: 40px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1.1rem;
+            }
+            
+            .controls {
+                gap: 10px;
+                margin-bottom: 30px;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .control-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .timeline {
+                padding: 0 10px;
+            }
+            
+            .timeline::before {
+                left: 25px;
+            }
+            
+            .milestone {
+                margin: 40px 0;
+            }
+            
+            .milestone-content {
+                left: 50px !important;
+                right: auto !important;
+                text-align: left !important;
+                max-width: calc(100% - 80px);
+                padding: 20px;
+            }
+            
+            .milestone-dot {
+                left: 25px;
+                width: 16px;
+                height: 16px;
+            }
+            
+            .milestone-date {
+                font-size: 0.8rem;
+            }
+            
+            .milestone-title {
+                font-size: 1.3rem;
+            }
+            
+            .milestone-description {
+                font-size: 0.9rem;
+            }
+            
+            .milestone-photo {
+                height: 150px;
+            }
+            
+            .tag {
+                font-size: 0.7rem;
+                padding: 3px 8px;
+            }
+            
+            .add-milestone-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+            
+            .modal-content {
+                padding: 25px;
+                margin: 20px;
+                max-width: calc(100% - 40px);
+            }
+
+            .mobile-nav-controls {
+                bottom: 80px !important;
+                right: 15px !important;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .milestone-content {
+                padding: 15px;
+                left: 45px !important;
+                max-width: calc(100% - 70px);
+            }
+            
+            .milestone-dot {
+                left: 22px;
+                width: 14px;
+                height: 14px;
+            }
+            
+            .milestone-title {
+                font-size: 1.2rem;
+            }
+            
+            .milestone-photo {
+                height: 120px;
+            }
+        }
+
+        /* Landscape orientation adjustments */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .header {
+                margin-bottom: 30px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .controls {
+                margin-bottom: 25px;
+            }
+            
+            .milestone {
+                margin: 30px 0;
+            }
+            
+            .milestone-content {
+                padding: 20px;
+            }
+            
+            .milestone-photo {
+                height: 120px;
+            }
+        }
+
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .milestone-dot {
+                box-shadow: 0 0 0 3px #667eea, 0 0 15px rgba(102, 126, 234, 0.5);
+            }
+            
+            .milestone:hover .milestone-dot {
+                box-shadow: 0 0 0 4px #667eea, 0 0 20px rgba(102, 126, 234, 0.8);
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .milestone-content:hover {
+                transform: none;
+            }
+            
+            .milestone:hover .milestone-dot {
+                transform: translateX(-50%) scale(1.1);
+            }
+            
+            .control-btn:hover {
+                transform: none;
+            }
+            
+            .add-milestone-btn:hover {
+                transform: scale(1.05);
+            }
+            
+            .edit-btn:hover {
+                transform: none;
+            }
+        }
+
+        /* Responsive modal buttons */
+        @media (max-width: 768px) {
+            .modal-content .control-btn {
+                width: 100%;
+                margin: 5px 0;
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .floating-hearts,
+            .add-milestone-btn,
+            .controls,
+            .edit-controls {
+                display: none !important;
+            }
+            
+            .timeline::before {
+                background: #ccc;
+            }
+            
+            .milestone-content {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                break-inside: avoid;
+            }
+            
+            .milestone-photo {
+                background: #f0f0f0;
+                color: #666;
             }
         }
     </style>
@@ -524,7 +803,7 @@
                              ${editMode ? `contenteditable="true" oninput="updateMilestone(${index}, 'title', this.textContent)"` : ''}>
                             ${milestone.title}
                         </div>
-                        <div class="milestone-photo" ${editMode ? `onclick="event.stopPropagation(); uploadPhoto(${index})"` : ''}>
+                        <div class="milestone-photo" ${editMode ? `onclick="event.stopPropagation(); handleMobilePhotoUpload(${index})"` : ''}>
                             ${milestone.photo ? `<img src="${milestone.photo}" alt="Milestone photo">` : `"${milestone.photoPlaceholder}"`}
                             <div class="photo-upload-overlay">Click to upload photo</div>
                         </div>
@@ -661,9 +940,9 @@
                     <textarea class="editable" style="min-height: 100px; border: 1px solid #ddd; padding: 10px; border-radius: 8px; font-family: monospace;" 
                               oninput="updateMilestone(${index}, 'details', this.value)">${milestone.details}</textarea>
                 </div>
-                <div style="margin-top: 20px;">
-                    <button class="control-btn" onclick="uploadPhoto(${index})" style="margin-right: 10px;">📷 Change Photo</button>
-                    <button class="control-btn" onclick="closeModal(); renderTimeline();">💾 Save Changes</button>
+                <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                    <button class="control-btn" onclick="handleMobilePhotoUpload(${index})" style="margin: 0;">📷 Change Photo</button>
+                    <button class="control-btn" onclick="closeModal(); renderTimeline();" style="margin: 0;">💾 Save Changes</button>
                 </div>
             `;
             
@@ -786,6 +1065,152 @@
 
         // Initialize the timeline
         renderTimeline();
+
+        // Responsive touch handling
+        let touchStartY = 0;
+        let touchStartX = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartY = e.touches[0].clientY;
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', function(e) {
+            if (!editMode) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Handle mobile photo upload with better UX
+        function handleMobilePhotoUpload(milestoneIndex) {
+            if ('ontouchstart' in window) {
+                // Mobile device - show a more mobile-friendly upload interface
+                const input = document.getElementById('photo-input');
+                input.accept = 'image/*;capture=camera';
+                input.onchange = function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            milestones[milestoneIndex].photo = e.target.result;
+                            renderTimeline();
+                            saveToLocalStorage();
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+                input.click();
+            } else {
+                uploadPhoto(milestoneIndex);
+            }
+        }
+
+        // Responsive modal positioning
+        function positionModalResponsively() {
+            const modal = document.getElementById('modal');
+            const modalContent = modal.querySelector('.modal-content');
+            
+            if (window.innerWidth <= 768) {
+                modalContent.style.position = 'relative';
+                modalContent.style.top = '20px';
+                modalContent.style.left = '20px';
+                modalContent.style.transform = 'none';
+                modalContent.style.maxHeight = 'calc(100vh - 40px)';
+                modalContent.style.overflowY = 'auto';
+                modalContent.style.width = 'calc(100% - 40px)';
+            } else {
+                modalContent.style.position = 'absolute';
+                modalContent.style.top = '50%';
+                modalContent.style.left = '50%';
+                modalContent.style.transform = 'translate(-50%, -50%)';
+                modalContent.style.maxHeight = '80vh';
+                modalContent.style.width = 'auto';
+            }
+        }
+
+        // Update modal positioning on resize
+        window.addEventListener('resize', function() {
+            positionModalResponsively();
+            addMobileNavigation();
+        });
+
+        // Enhanced mobile navigation
+        let currentMilestoneIndex = 0;
+        
+        function navigateMilestones(direction) {
+            if (milestones.length === 0) return;
+            
+            currentMilestoneIndex = (currentMilestoneIndex + direction + milestones.length) % milestones.length;
+            const milestoneElements = document.querySelectorAll('.milestone');
+            
+            if (milestoneElements[currentMilestoneIndex]) {
+                milestoneElements[currentMilestoneIndex].scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+        }
+
+        // Add mobile navigation controls
+        function addMobileNavigation() {
+            if (window.innerWidth <= 768) {
+                // Remove existing controls if they exist
+                const existingControls = document.querySelector('.mobile-nav-controls');
+                if (existingControls) {
+                    existingControls.remove();
+                }
+
+                const navControls = document.createElement('div');
+                navControls.className = 'mobile-nav-controls';
+                navControls.style.cssText = `
+                    position: fixed;
+                    bottom: 100px;
+                    right: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    z-index: 99;
+                `;
+                
+                navControls.innerHTML = `
+                    <button onclick="navigateMilestones(-1)" style="
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        background: rgba(102, 126, 234, 0.8);
+                        border: none;
+                        color: white;
+                        font-size: 1.2rem;
+                        cursor: pointer;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                        transition: all 0.3s ease;
+                    ">↑</button>
+                    <button onclick="navigateMilestones(1)" style="
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        background: rgba(102, 126, 234, 0.8);
+                        border: none;
+                        color: white;
+                        font-size: 1.2rem;
+                        cursor: pointer;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                        transition: all 0.3s ease;
+                    ">↓</button>
+                `;
+                
+                document.body.appendChild(navControls);
+            } else {
+                // Remove mobile controls on larger screens
+                const existingControls = document.querySelector('.mobile-nav-controls');
+                if (existingControls) {
+                    existingControls.remove();
+                }
+            }
+        }
+
+        // Initialize mobile navigation
+        addMobileNavigation();
     </script>
 </body>
 </html>
