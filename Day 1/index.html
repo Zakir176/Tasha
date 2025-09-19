@@ -3,11 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 1</title>
+    <title>Virtual Bouquet</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to Day 1</h1>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Virtual Bouquet</h1>
+            <p class="subtitle">Click anywhere to bloom beautiful flowers ✨</p>
+        </header>
+        
+        <div class="garden" id="garden">
+            <div class="instructions">
+                <p>Tap or click to plant flowers</p>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-clear" id="clearBtn">Clear Garden</button>
+            <button class="btn btn-auto" id="autoBloomBtn">Auto Bloom</button>
+        </div>
+        
+        <div class="flower-counter">
+            <span id="flowerCount">0</span> flowers bloomed
+        </div>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
