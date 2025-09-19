@@ -1,0 +1,145 @@
+❤️ 14 Days of Love — Weekly Roadmap
+Week 1 – Easy to Intermediate (Build Momentum)
+Day 1: Virtual Bouquet (EASY)
+
+Click → flowers bloom. Simple animations, no data storage.
+
+Good warm-up project.
+
+Day 2: Yes/No Proposal Page (EASY + FUN)
+
+“Yes” button works, “No” button runs away.
+
+Mainly HTML/CSS/JS event handling.
+
+Day 3: Secret Message Encoder (EASY)
+
+Input → ROT13/Base64 message → output hidden text.
+
+JS string manipulation.
+
+Day 4: Love Notes Sticky Wall (INTERMEDIATE)
+
+Form → sticky notes appear on wall.
+
+Requires DOM manipulation, maybe localStorage.
+
+Day 5: Memory Jar (INTERMEDIATE)
+
+Add daily memories with date/photo/description.
+
+Uses arrays/localStorage.
+
+Day 6: Virtual "I Love You" Jar (INTERMEDIATE)
+
+Like Memory Jar but with randomized “open” effect.
+
+Adds interactive reveal animation.
+
+Day 7: Daily Love Challenge (INTERMEDIATE)
+
+Displays a new challenge daily with check-off option.
+
+Needs date-based logic & simple progress tracker.
+
+Week 2 – Advanced Builds (Story + Data-Heavy)
+Day 8: Relationship Milestone Tracker (INTERMEDIATE → ADVANCED)
+
+Input events (date, photo, location) → saved list.
+
+Includes reminders for upcoming milestones.
+
+Day 9: Memory Timeline (ADVANCED)
+
+Vertical timeline with events.
+
+Requires structured data + timeline styling.
+
+Day 10: Love Story Timeline (ADVANCED)
+
+A scrapbook-style visual story with photos/quotes.
+
+More design-focused, lots of media handling.
+
+Day 11: Virtual Scrapbook (ADVANCED)
+
+Upload photos/videos + design templates.
+
+Heavier UI than timeline projects.
+
+Day 12: Couple’s Bucket List (ADVANCED)
+
+Add, track, and complete bucket list goals.
+
+Fun animation for “completed” items.
+
+Day 13: 365 Days of Love Challenges (HARD)
+
+Like Daily Love Challenge but extended to 365 entries.
+
+Requires larger data handling and optimization.
+
+Day 14: Love Portal (FINAL PROJECT)
+
+A central hub website linking to all previous projects.
+
+Bonus: Daily unlock animation or calendar grid style.
+
+Acts as the capstone project.
+
+
+
+🎨 Universal Color Scheme for "14 Days of Love"
+Primary Colors (Core Love Theme)
+
+Deep Rose (#D63384) → main accent, represents love/passion.
+
+Warm Coral (#FF6B6B) → softer love tone, complements rose.
+
+Soft Blush (#FFE5E5) → background or highlight, light romantic feel.
+
+Secondary Colors (Balance + Contrast)
+
+Charcoal Grey (#343A40) → text or dark sections.
+
+Warm Grey (#6C757D) → secondary text, neutral balance.
+
+Light Pearl (#F8F9FA) → light background option.
+
+Accent Colors (Energy + Highlights)
+
+Golden Honey (#FFB84D) → for rewards, achievements, or “milestones.”
+
+Sage Green (#87CEEB) (soft blue-green) → calming, hope for growth.
+
+Lavender (#E6E6FA) → gentle, dreamy vibe for love notes & jars.
+
+🌗 Dark + Light Mode Example
+
+You can support two themes using the same palette:
+
+Light Mode
+
+Background → Soft Blush / Light Pearl
+
+Text → Charcoal Grey
+
+Accents → Deep Rose + Coral + Honey
+
+Dark Mode
+
+Background → Charcoal Grey / Deep Rose gradient
+
+Text → Light Pearl
+
+Accents → Coral + Lavender
+
+🎯 Usage Guide
+
+Buttons / CTAs → Deep Rose (#D63384) with hover Warm Coral (#FF6B6B)
+
+Backgrounds → Soft Blush (#FFE5E5) for sections, or Charcoal Grey for dark mode
+
+Progress / Rewards → Golden Honey (#FFB84D)
+
+Notes / Highlights → Lavender (#E6E6FA)
