@@ -3,11 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 2</title>
+    <title>Will You Be Mine?</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to Day 2</h1>
+    <div class="container">
+        <div class="proposal-card">
+            <div class="hearts-background">
+                <span class="heart">💖</span>
+                <span class="heart">💕</span>
+                <span class="heart">💗</span>
+                <span class="heart">💝</span>
+                <span class="heart">✨</span>
+                <span class="heart">🌹</span>
+            </div>
+            
+            <div class="proposal-content">
+                <h1 class="question">Will You Be Mine?</h1>
+                <p class="subtitle">This is a very important question... 💕</p>
+                
+                <div class="button-container" id="buttonContainer">
+                    <button class="btn btn-yes" id="yesBtn">
+                        Yes! 💖
+                    </button>
+                    <button class="btn btn-no" id="noBtn">
+                        No 😢
+                    </button>
+                </div>
+                
+                <div class="encouragement" id="encouragement"></div>
+            </div>
+        </div>
+        
+        <!-- Success Modal -->
+        <div class="modal" id="successModal">
+            <div class="modal-content">
+                <div class="celebration">🎉</div>
+                <h2>Yay! You said Yes!</h2>
+                <p>I knew you'd make the right choice! 💕</p>
+                <div class="fireworks">
+                    <span>🎆</span>
+                    <span>✨</span>
+                    <span>🎊</span>
+                    <span>💖</span>
+                    <span>🌟</span>
+                </div>
+                <button class="btn btn-close" id="closeModal">Close</button>
+            </div>
+        </div>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
