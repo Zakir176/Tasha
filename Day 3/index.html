@@ -3,11 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 3</title>
+    <title>Secret Message Encoder</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to Day 3</h1>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Secret Message Encoder</h1>
+            <p class="subtitle">Encode your love notes in secret code 💕</p>
+        </header>
+        
+        <div class="encoder-card">
+            <div class="input-section">
+                <h2 class="section-title">Your Secret Message</h2>
+                <textarea 
+                    id="messageInput" 
+                    class="message-input" 
+                    placeholder="Write your secret love note here... ❤️"
+                    rows="4"
+                ></textarea>
+            </div>
+            
+            <div class="encoding-options">
+                <h3 class="options-title">Choose Your Encoding Method</h3>
+                <div class="option-buttons">
+                    <button class="option-btn active" id="rot13Btn" data-method="rot13">
+                        <span class="option-icon">🔄</span>
+                        <span class="option-name">ROT13</span>
+                        <span class="option-desc">Caesar Cipher</span>
+                    </button>
+                    <button class="option-btn" id="base64Btn" data-method="base64">
+                        <span class="option-icon">🔐</span>
+                        <span class="option-name">Base64</span>
+                        <span class="option-desc">Binary Encoding</span>
+                    </button>
+                    <button class="option-btn" id="reverseBtn" data-method="reverse">
+                        <span class="option-icon">🔄</span>
+                        <span class="option-name">Reverse</span>
+                        <span class="option-desc">Backwards Text</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-encode" id="encodeBtn">
+                    <span class="btn-icon">🔒</span>
+                    Encode Message
+                </button>
+                <button class="btn btn-decode" id="decodeBtn">
+                    <span class="btn-icon">🔓</span>
+                    Decode Message
+                </button>
+                <button class="btn btn-clear" id="clearBtn">
+                    <span class="btn-icon">🧹</span>
+                    Clear All
+                </button>
+            </div>
+            
+            <div class="output-section">
+                <h2 class="section-title">Encoded/Decoded Result</h2>
+                <div class="output-container">
+                    <textarea 
+                        id="messageOutput" 
+                        class="message-output" 
+                        placeholder="Your encoded/decoded message will appear here..."
+                        rows="4"
+                        readonly
+                    ></textarea>
+                    <button class="copy-btn" id="copyBtn" title="Copy to clipboard">
+                        <span class="copy-icon">📋</span>
+                    </button>
+                </div>
+                <div class="copy-feedback" id="copyFeedback">Copied to clipboard! 💖</div>
+            </div>
+            
+            <div class="info-panel">
+                <div class="method-info" id="methodInfo">
+                    <h3>About ROT13</h3>
+                    <p>ROT13 is a simple letter substitution cipher that replaces each letter with the letter 13 positions after it in the alphabet. It's its own inverse - encoding and decoding use the same process!</p>
+                </div>
+            </div>
+            
+            <div class="sample-messages">
+                <h3 class="samples-title">Try These Sample Messages</h3>
+                <div class="samples-grid">
+                    <button class="sample-btn" data-message="I love you more than words can say">
+                        "I love you more than words can say" 💕
+                    </button>
+                    <button class="sample-btn" data-message="You are my sunshine">
+                        "You are my sunshine" ☀️
+                    </button>
+                    <button class="sample-btn" data-message="Will you marry me?">
+                        "Will you marry me?" 💍
+                    </button>
+                    <button class="sample-btn" data-message="You make my heart skip a beat">
+                        "You make my heart skip a beat" 💓
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
