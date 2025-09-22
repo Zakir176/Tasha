@@ -1,13 +1,127 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 4</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Love Notes Sticky Wall</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to Day 4</h1>
-    <script src="script.js"></script>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Love Notes Sticky Wall</h1>
+            <p class="subtitle">Create your wall of romantic memories 💕</p>
+        </header>
+
+```
+    <div class="controls">
+        <button class="btn btn-add" id="addNoteBtn">
+            <span class="btn-icon">📝</span>
+            Add Love Note
+        </button>
+        <button class="btn btn-clear" id="clearAllBtn">
+            <span class="btn-icon">🧹</span>
+            Clear All
+        </button>
+        <button class="btn btn-export" id="exportBtn">
+            <span class="btn-icon">📤</span>
+            Export Notes
+        </button>
+        <div class="note-counter">
+            <span id="noteCount">0</span> love notes
+        </div>
+    </div>
+    
+    <div class="sticky-wall" id="stickyWall">
+        <div class="wall-message" id="wallMessage">
+            <p>Your wall is empty... click "Add Love Note" to start! 💖</p>
+        </div>
+    </div>
+    
+    <!-- Note Creation Modal -->
+    <div class="modal" id="noteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Create New Love Note</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="noteText">Your Love Note</label>
+                    <textarea 
+                        id="noteText" 
+                        placeholder="Write your romantic message here... 💕"
+                        rows="4"
+                    ></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="noteAuthor">From (optional)</label>
+                    <input 
+                        type="text" 
+                        id="noteAuthor" 
+                        placeholder="Your name or nickname"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label>Choose Note Color</label>
+                    <div class="color-options">
+                        <button class="color-btn active" data-color="yellow" style="background: #FFE135;"></button>
+                        <button class="color-btn" data-color="pink" style="background: #FFB3BA;"></button>
+                        <button class="color-btn" data-color="blue" style="background: #AEC6CF;"></button>
+                        <button class="color-btn" data-color="green" style="background: #B5EAD7;"></button>
+                        <button class="color-btn" data-color="purple" style="background: #C7CEDB;"></button>
+                        <button class="color-btn" data-color="coral" style="background: #FF6B6B;"></button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Add Emoji (optional)</label>
+                    <div class="emoji-options">
+                        <button class="emoji-btn" data-emoji="">None</button>
+                        <button class="emoji-btn" data-emoji="💕">💕</button>
+                        <button class="emoji-btn" data-emoji="❤️">❤️</button>
+                        <button class="emoji-btn" data-emoji="💖">💖</button>
+                        <button class="emoji-btn" data-emoji="🌹">🌹</button>
+                        <button class="emoji-btn" data-emoji="💗">💗</button>
+                        <button class="emoji-btn" data-emoji="💝">💝</button>
+                        <button class="emoji-btn" data-emoji="🥰">🥰</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-cancel" id="cancelBtn">Cancel</button>
+                <button class="btn btn-save" id="saveNoteBtn">
+                    <span class="btn-icon">💾</span>
+                    Save Note
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Context Menu -->
+    <div class="context-menu" id="contextMenu">
+        <button class="context-item" id="editNote">
+            <span class="context-icon">✏️</span>
+            Edit Note
+        </button>
+        <button class="context-item" id="duplicateNote">
+            <span class="context-icon">📄</span>
+            Duplicate
+        </button>
+        <button class="context-item" id="deleteNote">
+            <span class="context-icon">🗑️</span>
+            Delete
+        </button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+```
+
 </body>
 </html>
