@@ -3,11 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 5</title>
+    <title>Memory Jar</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to Day 5</h1>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Memory Jar</h1>
+            <p class="subtitle">Collect beautiful moments, one memory at a time 💕</p>
+        </header>
+        
+        <div class="memory-jar-container">
+            <div class="jar-section">
+                <div class="memory-jar" id="memoryJar">
+                    <div class="jar-lid">
+                        <div class="lid-top"></div>
+                        <div class="lid-rim"></div>
+                    </div>
+                    <div class="jar-body">
+                        <div class="jar-glass"></div>
+                        <div class="memories-container" id="memoriesContainer">
+                            <!-- Memory papers will be added here -->
+                        </div>
+                        <div class="jar-bottom"></div>
+                    </div>
+                    <div class="jar-label">
+                        <span>Our Memories</span>
+                        <div class="memory-count" id="memoryCount">0 memories</div>
+                    </div>
+                </div>
+                
+                <div class="jar-controls">
+                    <button class="btn btn-add" id="addMemoryBtn">
+                        <span class="btn-icon">📝</span>
+                        Add Memory
+                    </button>
+                    <button class="btn btn-random" id="randomMemoryBtn">
+                        <span class="btn-icon">🎲</span>
+                        Random Memory
+                    </button>
+                    <button class="btn btn-view-all" id="viewAllBtn">
+                        <span class="btn-icon">👁️</span>
+                        View All
+                    </button>
+                </div>
+            </div>
+            
+            <div class="memory-display" id="memoryDisplay">
+                <div class="memory-paper" id="memoryPaper">
+                    <div class="paper-content">
+                        <div class="memory-date" id="memoryDate"></div>
+                        <div class="memory-text" id="memoryText">
+                            Click "Add Memory" to create your first beautiful moment...
+                        </div>
+                        <div class="memory-mood" id="memoryMood"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Add Memory Modal -->
+        <div class="modal" id="memoryModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Add New Memory</h2>
+                    <button class="close-btn" id="closeModal">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="memoryInput">What's your beautiful memory?</label>
+                        <textarea 
+                            id="memoryInput" 
+                            placeholder="Write about a special moment, something that made you smile, or anything worth remembering... 💖"
+                            rows="4"
+                        ></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memoryDateInput">Date (optional)</label>
+                        <input 
+                            type="date" 
+                            id="memoryDateInput"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>How did this memory make you feel?</label>
+                        <div class="mood-options">
+                            <button class="mood-btn active" data-mood="😊" title="Happy">😊</button>
+                            <button class="mood-btn" data-mood="🥰" title="Loved">🥰</button>
+                            <button class="mood-btn" data-mood="😍" title="Excited">😍</button>
+                            <button class="mood-btn" data-mood="🤗" title="Grateful">🤗</button>
+                            <button class="mood-btn" data-mood="😌" title="Peaceful">😌</button>
+                            <button class="mood-btn" data-mood="🎉" title="Celebratory">🎉</button>
+                            <button class="mood-btn" data-mood="💖" title="Romantic">💖</button>
+                            <button class="mood-btn" data-mood="✨" title="Magical">✨</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Memory Category (optional)</label>
+                        <div class="category-options">
+                            <button class="category-btn" data-category="love">💕 Love</button>
+                            <button class="category-btn" data-category="family">👨‍👩‍👧‍👦 Family</button>
+                            <button class="category-btn" data-category="friends">👫 Friends</button>
+                            <button class="category-btn" data-category="achievement">🏆 Achievement</button>
+                            <button class="category-btn" data-category="adventure">🌟 Adventure</button>
+                            <button class="category-btn" data-category="peaceful">🕊️ Peaceful</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn btn-cancel" id="cancelBtn">Cancel</button>
+                    <button class="btn btn-save" id="saveMemoryBtn">
+                        <span class="btn-icon">💾</span>
+                        Save Memory
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- View All Memories Modal -->
+        <div class="modal" id="viewAllModal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h2>All Your Beautiful Memories</h2>
+                    <button class="close-btn" id="closeViewAllModal">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="filter-controls">
+                        <select id="sortBy">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="category">By Category</option>
+                        </select>
+                        <select id="filterByMood">
+                            <option value="all">All Moods</option>
+                            <option value="😊">😊 Happy</option>
+                            <option value="🥰">🥰 Loved</option>
+                            <option value="😍">😍 Excited</option>
+                            <option value="🤗">🤗 Grateful</option>
+                            <option value="😌">😌 Peaceful</option>
+                            <option value="🎉">🎉 Celebratory</option>
+                            <option value="💖">💖 Romantic</option>
+                            <option value="✨">✨ Magical</option>
+                        </select>
+                    </div>
+                    
+                    <div class="memories-list" id="memoriesList">
+                        <!-- All memories will be displayed here -->
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn btn-export" id="exportMemoriesBtn">
+                        <span class="btn-icon">📤</span>
+                        Export Memories
+                    </button>
+                    <button class="btn btn-clear-all" id="clearAllMemoriesBtn">
+                        <span class="btn-icon">🗑️</span>
+                        Clear All
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
