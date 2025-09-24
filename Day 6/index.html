@@ -3,11 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 6</title>
+    <title>Virtual "I Love You" Jar</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to Day 6</h1>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Virtual "I Love You" Jar</h1>
+            <p class="subtitle">Open daily for a surprise love note 💕</p>
+            <div class="daily-streak">
+                <span class="streak-text">Daily Streak: </span>
+                <span class="streak-count" id="streakCount">0</span>
+                <span class="streak-icon">🔥</span>
+            </div>
+        </header>
+        
+        <div class="jar-container">
+            <div class="love-jar" id="loveJar">
+                <!-- Jar Lid -->
+                <div class="jar-lid" id="jarLid">
+                    <div class="lid-top">
+                        <div class="lid-handle"></div>
+                        <div class="lid-shine"></div>
+                    </div>
+                    <div class="lid-rim"></div>
+                </div>
+                
+                <!-- Jar Body -->
+                <div class="jar-body">
+                    <div class="jar-glass">
+                        <div class="jar-shine"></div>
+                    </div>
+                    
+                    <!-- Hearts floating inside -->
+                    <div class="hearts-container" id="heartsContainer">
+                        <div class="heart">💖</div>
+                        <div class="heart">💕</div>
+                        <div class="heart">💗</div>
+                        <div class="heart">💝</div>
+                        <div class="heart">💓</div>
+                        <div class="heart">🥰</div>
+                    </div>
+                    
+                    <!-- Love note inside jar -->
+                    <div class="love-note-container" id="loveNoteContainer">
+                        <div class="love-note" id="loveNote">
+                            <div class="note-content" id="noteContent">
+                                Click to open today's love note! 💕
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Jar Label -->
+                <div class="jar-label">
+                    <div class="label-text">Daily Love Notes</div>
+                    <div class="label-date" id="labelDate"></div>
+                </div>
+            </div>
+            
+            <!-- Status Messages -->
+            <div class="jar-status" id="jarStatus">
+                <div class="status-message" id="statusMessage">
+                    Ready to open today's love note! 💖
+                </div>
+                <div class="next-note-timer" id="nextNoteTimer"></div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="jar-controls">
+                <button class="btn btn-open" id="openJarBtn">
+                    <span class="btn-icon">💕</span>
+                    Open Jar
+                </button>
+                <button class="btn btn-history" id="historyBtn">
+                    <span class="btn-icon">📜</span>
+                    Love History
+                </button>
+                <button class="btn btn-customize" id="customizeBtn">
+                    <span class="btn-icon">⚙️</span>
+                    Add Custom Notes
+                </button>
+            </div>
+        </div>
+        
+        <!-- Expanded Love Note Display -->
+        <div class="love-note-display" id="loveNoteDisplay">
+            <div class="note-paper" id="notePaper">
+                <div class="paper-content">
+                    <div class="note-date" id="noteDisplayDate"></div>
+                    <div class="note-text" id="noteDisplayText">
+                        Your daily love note will appear here...
+                    </div>
+                    <div class="note-signature">With all my love 💖</div>
+                </div>
+                <button class="close-note-btn" id="closeNoteBtn">&times;</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- History Modal -->
+    <div class="modal" id="historyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Your Love Note History</h2>
+                <button class="close-btn" id="closeHistoryModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="history-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalNotesRead">0</div>
+                        <div class="stat-label">Notes Read</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="currentStreak">0</div>
+                        <div class="stat-label">Current Streak</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="longestStreak">0</div>
+                        <div class="stat-label">Longest Streak</div>
+                    </div>
+                </div>
+                <div class="history-list" id="historyList">
+                    <!-- History items will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Customize Notes Modal -->
+    <div class="modal" id="customizeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Custom Love Notes</h2>
+                <button class="close-btn" id="closeCustomizeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="customNoteInput">Write your own love note:</label>
+                    <textarea 
+                        id="customNoteInput" 
+                        placeholder="Write a beautiful love note that could appear in the jar..."
+                        rows="4"
+                    ></textarea>
+                </div>
+                <div class="custom-notes-list">
+                    <h3>Your Custom Notes:</h3>
+                    <div id="customNotesList">
+                        <!-- Custom notes will be listed here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" id="cancelCustomizeBtn">Cancel</button>
+                <button class="btn btn-save" id="saveCustomNoteBtn">
+                    <span class="btn-icon">💾</span>
+                    Add Note
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Celebration Effects Container -->
+    <div class="celebration-effects" id="celebrationEffects"></div>
+    
     <script src="script.js"></script>
 </body>
 </html>
