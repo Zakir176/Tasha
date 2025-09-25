@@ -3,11 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 7</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Daily Love Challenge</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to Day 7</h1>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Daily Love Challenge</h1>
+            <p class="subtitle">Strengthen your bond with daily romantic missions 💕</p>
+            <div class="streak-display">
+                <div class="streak-info">
+                    <span class="streak-number" id="streakNumber">0</span>
+                    <span class="streak-label">Day Streak</span>
+                    <span class="streak-fire">🔥</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="challenge-card" id="challengeCard">
+                <div class="challenge-header">
+                    <div class="challenge-date" id="challengeDate"></div>
+                    <div class="challenge-difficulty" id="challengeDifficulty">
+                        <span class="difficulty-label">Difficulty:</span>
+                        <div class="difficulty-hearts" id="difficultyHearts"></div>
+                    </div>
+                </div>
+                
+                <div class="challenge-content">
+                    <div class="challenge-icon" id="challengeIcon">💕</div>
+                    <h2 class="challenge-title" id="challengeTitle">Today's Love Challenge</h2>
+                    <p class="challenge-description" id="challengeDescription">Loading today's romantic mission...</p>
+                    
+                    <div class="challenge-tips" id="challengeTips">
+                        <h4>💡 Tips for success:</h4>
+                        <ul id="tipsList"></ul>
+                    </div>
+                </div>
+                
+                <div class="challenge-actions">
+                    <button class="btn btn-complete" id="completeBtn">
+                        <span class="btn-icon">✅</span>
+                        Mark as Complete
+                    </button>
+                    <button class="btn btn-skip" id="skipBtn">
+                        <span class="btn-icon">⏭️</span>
+                        Skip Challenge
+                    </button>
+                    <button class="btn btn-share" id="shareBtn">
+                        <span class="btn-icon">📤</span>
+                        Share Challenge
+                    </button>
+                </div>
+                
+                <div class="challenge-status completed" id="challengeStatus">
+                    <div class="status-icon">🎉</div>
+                    <div class="status-text">Challenge Complete!</div>
+                    <div class="status-message">Great job! Check back tomorrow for a new challenge.</div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="progress-panel">
+                    <h3>Your Progress</h3>
+                    <div class="progress-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="totalCompleted">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="currentStreak">0</div>
+                            <div class="stat-label">Current Streak</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="longestStreak">0</div>
+                            <div class="stat-label">Best Streak</div>
+                        </div>
+                    </div>
+                    
+                    <div class="achievements">
+                        <h4>🏆 Achievements</h4>
+                        <div class="achievement-grid" id="achievementGrid">
+                            <!-- Achievements will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <button class="action-btn" id="historyBtn">
+                        <span class="action-icon">📚</span>
+                        Challenge History
+                    </button>
+                    <button class="action-btn" id="customBtn">
+                        <span class="action-icon">✏️</span>
+                        Custom Challenges
+                    </button>
+                    <button class="action-btn" id="settingsBtn">
+                        <span class="action-icon">⚙️</span>
+                        Settings
+                    </button>
+                </div>
+
+                <div class="next-challenge-timer">
+                    <h4>⏰ Next Challenge In:</h4>
+                    <div class="timer" id="nextChallengeTimer">00:00:00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Challenge History Modal -->
+    <div class="modal" id="historyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Challenge History</h2>
+                <button class="close-btn" id="closeHistoryModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="filter-controls">
+                    <select id="historyFilter">
+                        <option value="all">All Challenges</option>
+                        <option value="completed">Completed Only</option>
+                        <option value="skipped">Skipped Only</option>
+                        <option value="easy">Easy Difficulty</option>
+                        <option value="medium">Medium Difficulty</option>
+                        <option value="hard">Hard Difficulty</option>
+                    </select>
+                    <select id="timePeriod">
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="all">All Time</option>
+                    </select>
+                </div>
+                <div class="history-list" id="historyList">
+                    <!-- History items will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Challenges Modal -->
+    <div class="modal" id="customModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Custom Challenges</h2>
+                <button class="close-btn" id="closeCustomModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="customTitle">Challenge Title:</label>
+                    <input type="text" id="customTitle" placeholder="Give your challenge a romantic title...">
+                </div>
+                <div class="form-group">
+                    <label for="customDescription">Challenge Description:</label>
+                    <textarea id="customDescription" rows="3" placeholder="Describe your romantic challenge..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="customTips">Tips (one per line):</label>
+                    <textarea id="customTips" rows="3" placeholder="Add helpful tips for completing this challenge..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Difficulty Level:</label>
+                    <div class="difficulty-selector">
+                        <button class="difficulty-btn active" data-difficulty="1">💕 Easy</button>
+                        <button class="difficulty-btn" data-difficulty="2">💖 Medium</button>
+                        <button class="difficulty-btn" data-difficulty="3">💗 Hard</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Challenge Icon:</label>
+                    <div class="icon-selector">
+                        <button class="icon-btn active" data-icon="💕">💕</button>
+                        <button class="icon-btn" data-icon="💖">💖</button>
+                        <button class="icon-btn" data-icon="🌹">🌹</button>
+                        <button class="icon-btn" data-icon="💝">💝</button>
+                        <button class="icon-btn" data-icon="🎁">🎁</button>
+                        <button class="icon-btn" data-icon="🌟">🌟</button>
+                        <button class="icon-btn" data-icon="💐">💐</button>
+                        <button class="icon-btn" data-icon="🥰">🥰</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" id="cancelCustomBtn">Cancel</button>
+                <button class="btn btn-save" id="saveCustomBtn">
+                    <span class="btn-icon">💾</span>
+                    Save Challenge
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Challenge Settings</h2>
+                <button class="close-btn" id="closeSettingsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <h4>🔔 Notifications</h4>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="dailyReminder">
+                        <span class="toggle-slider"></span>
+                        Daily challenge reminders
+                    </label>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="streakReminder">
+                        <span class="toggle-slider"></span>
+                        Streak milestone celebrations
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <h4>🎯 Difficulty Preference</h4>
+                    <select id="difficultyPreference">
+                        <option value="mixed">Mixed Difficulty</option>
+                        <option value="easy">Prefer Easy</option>
+                        <option value="medium">Prefer Medium</option>
+                        <option value="hard">Prefer Hard</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <h4>📊 Privacy</h4>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="shareProgress">
+                        <span class="toggle-slider"></span>
+                        Allow sharing progress
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <h4>🔄 Reset Options</h4>
+                    <button class="btn btn-warning" id="resetStreakBtn">Reset Streak</button>
+                    <button class="btn btn-danger" id="resetAllBtn">Reset All Progress</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration Modal -->
+    <div class="modal" id="celebrationModal">
+        <div class="modal-content celebration">
+            <div class="celebration-content">
+                <div class="celebration-icon">🎉</div>
+                <h2 id="celebrationTitle">Congratulations!</h2>
+                <p id="celebrationMessage">You've completed today's love challenge!</p>
+                <div class="fireworks">
+                    <span>🎆</span>
+                    <span>✨</span>
+                    <span>🎊</span>
+                    <span>💖</span>
+                    <span>🌟</span>
+                </div>
+                <button class="btn btn-primary" id="closeCelebrationBtn">Continue</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
