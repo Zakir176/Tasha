@@ -549,3 +549,344 @@ class DailyLoveChallenge {
                     const categories = new Set(this.userData.completedChallenges.map(c => c.category));
                     isUnlocked = categories.size >= 5;
                     break;
+                                    case 'hard':
+                    const hardChallenges = this.userData.completedChallenges.filter(c => c.difficulty === 3);
+                    isUnlocked = hardChallenges.length >= 5;
+                    break;
+            }
+            
+            if (isUnlocked && !unlockedBefore.includes(achievement.id)) {
+                newlyUnlocked.push(achievement);
+            }
+        });
+        
+        // Update unlocked achievements
+        this.userData.unlockedAchievements = [
+            ...new Set([...unlockedBefore, ...newlyUnlocked.map(a => a.id)])
+        ];
+        
+        // Show celebration for new achievements
+        if (newlyUnlocked.length > 0) {
+            this.showAchievementCelebration(newlyUnlocked);
+        }
+        
+        this.saveUserData();
+    }
+    
+    showAchievementCelebration(achievements) {
+        const achievement = achievements[0]; // Show first achievement
+        document.getElementById('achievementCelebrationIcon').textContent = achievement.icon;
+        document.getElementById('achievementCelebrationTitle').textContent = achievement.name;
+        document.getElementById('achievementCelebrationDesc').textContent = achievement.description;
+        
+        const modal = document.getElementById('achievementModal');
+        this.showModal(modal);
+        
+        // Auto-close after 3 seconds
+        setTimeout(() => {
+            this.closeModal(modal);
+        }, 3000);
+    }
+    
+    updateAchievementsDisplay() {
+        this.achievementGrid.innerHTML = '';
+        
+        this.achievements.forEach(achievement => {
+            const isUnlocked = this.userData.unlockedAchievements?.includes(achievement.id) || false;
+            const progress = this.calculateAchievementProgress(achievement);
+            
+            const achievementEl = document.createElement('div');
+            achievementEl.className = `achievement-item ${isUnlocked ? 'unlocked' : 'locked'}`;
+            achievementEl.innerHTML = `
+                <div class="achievement-icon">${achievement.icon}</div>
+                <div class="achievement-info">
+                    <div class="achievement-name">${achievement.name}</div>
+                    <div class="achievement-desc">${achievement.description}</div>
+                    ${!isUnlocked ? `<div class="achievement-progress">${progress}</div>` : ''}
+                </div>
+                ${isUnlocked ? '<div class="achievement-badge">✓</div>' : ''}
+            `;
+            
+            this.achievementGrid.appendChild(achievementEl);
+        });
+    }
+    
+    calculateAchievementProgress(achievement) {
+        switch (achievement.id) {
+            case 'first':
+            case 'week':
+            case 'month':
+                return `${this.userData.totalCompleted}/${achievement.requirement} completed`;
+            case 'streak3':
+            case 'streak7':
+            case 'streak30':
+                return `${this.userData.longestStreak}/${achievement.requirement} days`;
+            case 'custom':
+                return `${this.userData.customChallenges.length}/${achievement.requirement} created`;
+            case 'variety':
+                const categories = new Set(this.userData.completedChallenges.map(c => c.category));
+                return `${categories.size}/5 categories`;
+            case 'hard':
+                const hardChallenges = this.userData.completedChallenges.filter(c => c.difficulty === 3);
+                return `${hardChallenges.length}/5 hard challenges`;
+            default:
+                return '';
+        }
+    }
+    
+    showHistoryModal() {
+        const historyContent = document.getElementById('historyContent');
+        historyContent.innerHTML = '';
+        
+        if (this.userData.completedChallenges.length === 0) {
+            historyContent.innerHTML = '<p class="empty-history">No challenge history yet. Complete your first challenge to see it here!</p>';
+            this.showModal(this.historyModal);
+            return;
+        }
+        
+        // Group by date
+        const grouped = this.userData.completedChallenges.reduce((acc, challenge) => {
+            if (!acc[challenge.date]) {
+                acc[challenge.date] = [];
+            }
+            acc[challenge.date].push(challenge);
+            return acc;
+        }, {});
+        
+        Object.keys(grouped).sort().reverse().forEach(date => {
+            const dateHeader = document.createElement('div');
+            dateHeader.className = 'history-date';
+            dateHeader.textContent = new Date(date).toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            historyContent.appendChild(dateHeader);
+            
+            grouped[date].forEach(challenge => {
+                const challengeEl = document.createElement('div');
+                challengeEl.className = `history-item ${challenge.status}`;
+                challengeEl.innerHTML = `
+                    <div class="history-status">${challenge.status === 'completed' ? '✅' : '⏭️'}</div>
+                    <div class="history-details">
+                        <div class="history-title">${challenge.challenge}</div>
+                        <div class="history-meta">
+                            <span class="history-difficulty">${'💖'.repeat(challenge.difficulty)}</span>
+                            <span class="history-time">${new Date(challenge.timestamp).toLocaleTimeString()}</span>
+                        </div>
+                    </div>
+                `;
+                historyContent.appendChild(challengeEl);
+            });
+        });
+        
+        this.showModal(this.historyModal);
+    }
+    
+    showCustomModal() {
+        // Reset form
+        document.getElementById('customTitle').value = '';
+        document.getElementById('customDescription').value = '';
+        document.getElementById('customTips').value = '';
+        document.getElementById('customCategory').value = 'custom';
+        
+        this.selectCustomDifficulty(1);
+        this.selectCustomIcon('💕');
+        
+        this.showModal(this.customModal);
+    }
+    
+    selectCustomDifficulty(difficulty) {
+        this.selectedCustomDifficulty = parseInt(difficulty);
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.difficulty === difficulty);
+        });
+    }
+    
+    selectCustomIcon(icon) {
+        this.selectedCustomIcon = icon;
+        document.querySelectorAll('.icon-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.icon === icon);
+        });
+    }
+    
+    saveCustomChallenge() {
+        const title = document.getElementById('customTitle').value.trim();
+        const description = document.getElementById('customDescription').value.trim();
+        const tipsText = document.getElementById('customTips').value.trim();
+        const category = document.getElementById('customCategory').value;
+        
+        if (!title || !description) {
+            alert('Please fill in both title and description.');
+            return;
+        }
+        
+        const tips = tipsText ? tipsText.split('\n').filter(tip => tip.trim()) : ['Be creative and make it personal!'];
+        
+        const customChallenge = {
+            title: title,
+            description: description,
+            tips: tips,
+            difficulty: this.selectedCustomDifficulty,
+            icon: this.selectedCustomIcon,
+            category: category,
+            isCustom: true
+        };
+        
+        this.userData.customChallenges.push(customChallenge);
+        this.saveUserData();
+        
+        // Check for custom achievement
+        this.checkAchievements();
+        
+        this.closeModal(this.customModal);
+        alert('Custom challenge created successfully! It will appear in the daily rotation.');
+    }
+    
+    showSettingsModal() {
+        // Populate settings
+        document.getElementById('dailyReminder').checked = this.userData.settings.dailyReminder;
+        document.getElementById('streakReminder').checked = this.userData.settings.streakReminder;
+        document.getElementById('difficultyPreference').value = this.userData.settings.difficultyPreference;
+        document.getElementById('shareProgress').checked = this.userData.settings.shareProgress;
+        
+        this.showModal(this.settingsModal);
+    }
+    
+    saveSettings() {
+        this.userData.settings.dailyReminder = document.getElementById('dailyReminder').checked;
+        this.userData.settings.streakReminder = document.getElementById('streakReminder').checked;
+        this.userData.settings.difficultyPreference = document.getElementById('difficultyPreference').value;
+        this.userData.settings.shareProgress = document.getElementById('shareProgress').checked;
+        
+        this.saveUserData();
+        this.closeModal(this.settingsModal);
+        
+        // Show notification if reminders were enabled
+        if (this.userData.settings.dailyReminder) {
+            this.requestNotificationPermission();
+        }
+    }
+    
+    requestNotificationPermission() {
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+    }
+    
+    resetStreak() {
+        if (!confirm('Are you sure you want to reset your streak? This cannot be undone.')) return;
+        
+        this.userData.currentStreak = 0;
+        this.userData.lastCompletedDate = null;
+        this.saveUserData();
+        this.updateDisplay();
+        this.closeModal(this.settingsModal);
+    }
+    
+    resetAllProgress() {
+        if (!confirm('Are you sure you want to reset ALL progress? This will delete everything and cannot be undone.')) return;
+        
+        this.userData = {
+            currentStreak: 0,
+            longestStreak: 0,
+            totalCompleted: 0,
+            lastCompletedDate: null,
+            completedChallenges: [],
+            customChallenges: [],
+            unlockedAchievements: [],
+            settings: this.userData.settings // Keep settings
+        };
+        
+        this.saveUserData();
+        this.loadTodaysChallenge();
+        this.updateDisplay();
+        this.closeModal(this.settingsModal);
+    }
+    
+    showModal(modal) {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    closeModal(modal) {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+    
+    loadUserData() {
+        const saved = localStorage.getItem('dailyLoveChallenge');
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                this.userData = { ...this.userData, ...data };
+                
+                // Ensure arrays exist
+                this.userData.completedChallenges = this.userData.completedChallenges || [];
+                this.userData.customChallenges = this.userData.customChallenges || [];
+                this.userData.unlockedAchievements = this.userData.unlockedAchievements || [];
+                this.userData.settings = this.userData.settings || {};
+            } catch (e) {
+                console.error('Error loading user data:', e);
+            }
+        }
+    }
+    
+    saveUserData() {
+        localStorage.setItem('dailyLoveChallenge', JSON.stringify(this.userData));
+    }
+}
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', () => {
+    new DailyLoveChallenge();
+});
+
+// Add missing CSS variables
+const additionalCSS = `
+:root {
+    --primary-pink: #ff6b9d;
+    --soft-pink: #ff9ec0;
+    --light-pink: #ffeef3;
+    --warm-grey: #8a7f8d;
+    --light-grey: #f5f5f5;
+    --white: #ffffff;
+    --shadow: 0 4px 12px rgba(0,0,0,0.1);
+    --warning-orange: #ffa726;
+}
+
+.hidden { display: none !important; }
+.show { display: flex !important; }
+
+.heart.filled { opacity: 1; }
+.heart.empty { opacity: 0.3; }
+
+.achievement-item.unlocked { 
+    background: var(--light-pink); 
+    border-left: 4px solid var(--primary-pink);
+}
+
+.achievement-item.locked { 
+    opacity: 0.7; 
+    background: var(--light-grey);
+}
+
+.history-item.completed { border-left: 4px solid #4caf50; }
+.history-item.skipped { border-left: 4px solid var(--warning-orange); }
+
+.empty-history {
+    text-align: center;
+    color: var(--warm-grey);
+    font-style: italic;
+    padding: 40px;
+}
+`;
+
+// Inject CSS if needed
+if (!document.querySelector('#daily-love-css')) {
+    const style = document.createElement('style');
+    style.id = 'daily-love-css';
+    style.textContent = additionalCSS;
+    document.head.appendChild(style);
+}
