@@ -467,3 +467,4 @@ class MilestoneTracker {
             galleryItem.className = 'gallery-item';
             galleryItem.innerHTML = `
                 <img src="${milestone.photo}" alt="${milestone.title}" class="gallery-image">
+            `;
