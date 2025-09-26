@@ -467,4 +467,312 @@ class MilestoneTracker {
             galleryItem.className = 'gallery-item';
             galleryItem.innerHTML = `
                 <img src="${milestone.photo}" alt="${milestone.title}" class="gallery-image">
+            `;            galleryItem.addEventListener('click', () => {
+                this.showPhotoModal(milestone);
+            });
+            
+            this.galleryGrid.appendChild(galleryItem);
+        });
+    }
+    
+    showPhotoModal(milestone) {
+        document.getElementById('photoModalImage').src = milestone.photo;
+        document.getElementById('photoModalTitle').textContent = milestone.title;
+        document.getElementById('photoModalDate').textContent = this.formatDate(milestone.date);
+        document.getElementById('photoModalDescription').textContent = milestone.description || '';
+        
+        this.showModal(this.photoModal);
+    }
+    
+    showSettingsModal() {
+        // Populate settings form with current values
+        document.getElementById('relationshipStart').value = this.settings.relationshipStart || '';
+        document.getElementById('partner1Name').value = this.settings.partner1Name || '';
+        document.getElementById('partner2Name').value = this.settings.partner2Name || '';
+        document.getElementById('anniversaryReminders').checked = this.settings.anniversaryReminders;
+        document.getElementById('milestoneReminders').checked = this.settings.milestoneReminders;
+        document.getElementById('defaultView').value = this.settings.defaultView;
+        document.getElementById('allowExport').checked = this.settings.allowExport;
+        
+        this.showModal(this.settingsModal);
+    }
+    
+    saveSettings() {
+        this.settings.relationshipStart = document.getElementById('relationshipStart').value;
+        this.settings.partner1Name = document.getElementById('partner1Name').value.trim();
+        this.settings.partner2Name = document.getElementById('partner2Name').value.trim();
+        this.settings.anniversaryReminders = document.getElementById('anniversaryReminders').checked;
+        this.settings.milestoneReminders = document.getElementById('milestoneReminders').checked;
+        this.settings.defaultView = document.getElementById('defaultView').value;
+        this.settings.allowExport = document.getElementById('allowExport').checked;
+        
+        this.saveData();
+        this.updateStats();
+        this.closeModal(this.settingsModal);
+        
+        // Apply new default view if changed
+        if (this.settings.defaultView !== this.currentView) {
+            this.switchView(this.settings.defaultView);
+        }
+    }
+    
+    checkUpcomingAnniversaries() {
+        if (!this.settings.relationshipStart) return;
+        
+        const today = new Date();
+        const upcomingAnniversaries = [];
+        
+        // Check relationship anniversary
+        const startDate = new Date(this.settings.relationshipStart);
+        const nextAnniversary = new Date(today.getFullYear(), startDate.getMonth(), startDate.getDate());
+        
+        if (nextAnniversary < today) {
+            nextAnniversary.setFullYear(today.getFullYear() + 1);
+        }
+        
+        const daysUntilAnniversary = Math.floor((nextAnniversary - today) / (1000 * 60 * 60 * 24));
+        
+        if (daysUntilAnniversary <= 30) {
+            const yearsTogether = today.getFullYear() - startDate.getFullYear();
+            upcomingAnniversaries.push({
+                type: 'relationship',
+                date: nextAnniversary.toISOString().split('T')[0],
+                daysUntil: daysUntilAnniversary,
+                years: yearsTogether + 1,
+                title: `Relationship Anniversary - ${yearsTogether + 1} Year${yearsTogether + 1 > 1 ? 's' : ''}`
+            });
+        }
+        
+        // Check milestone anniversaries
+        this.milestones.forEach(milestone => {
+            const milestoneDate = new Date(milestone.date);
+            const nextMilestoneAnniversary = new Date(today.getFullYear(), milestoneDate.getMonth(), milestoneDate.getDate());
+            
+            if (nextMilestoneAnniversary < today) {
+                nextMilestoneAnniversary.setFullYear(today.getFullYear() + 1);
+            }
+            
+            const daysUntilMilestone = Math.floor((nextMilestoneAnniversary - today) / (1000 * 60 * 60 * 24));
+            
+            if (daysUntilMilestone <= 30) {
+                const yearsAgo = today.getFullYear() - milestoneDate.getFullYear();
+                upcomingAnniversaries.push({
+                    type: 'milestone',
+                    date: nextMilestoneAnniversary.toISOString().split('T')[0],
+                    daysUntil: daysUntilMilestone,
+                    years: yearsAgo + 1,
+                    title: `${milestone.title} - ${yearsAgo + 1} Year${yearsAgo + 1 > 1 ? 's' : ''} Ago`,
+                    milestone: milestone
+                });
+            }
+        });
+        
+        // Sort by days until
+        upcomingAnniversaries.sort((a, b) => a.daysUntil - b.daysUntil);
+        
+        this.displayUpcomingAnniversaries(upcomingAnniversaries);
+    }
+    
+    displayUpcomingAnniversaries(anniversaries) {
+        if (anniversaries.length === 0) {
+            this.upcomingWidget.classList.add('hidden');
+            return;
+        }
+        
+        this.upcomingWidget.classList.remove('hidden');
+        this.upcomingContent.innerHTML = '';
+        
+        anniversaries.forEach(anniversary => {
+            const item = document.createElement('div');
+            item.className = 'upcoming-item';
+            
+            const emoji = anniversary.type === 'relationship' ? '💖' : '⭐';
+            const dateClass = anniversary.daysUntil === 0 ? 'today' : 
+                            anniversary.daysUntil <= 7 ? 'soon' : 'upcoming';
+            
+            item.innerHTML = `
+                <div class="upcoming-emoji">${emoji}</div>
+                <div class="upcoming-details">
+                    <div class="upcoming-title">${anniversary.title}</div>
+                    <div class="upcoming-date ${dateClass}">
+                        ${anniversary.daysUntil === 0 ? 'Today!' : 
+                         anniversary.daysUntil === 1 ? 'Tomorrow' : 
+                         `In ${anniversary.daysUntil} days`}
+                    </div>
+                </div>
             `;
+            
+            this.upcomingContent.appendChild(item);
+        });
+    }
+    
+    updateStats() {
+        // Days together
+        if (this.settings.relationshipStart) {
+            const daysTogether = this.calculateDaysTogether(this.settings.relationshipStart);
+            this.daysTogetherCount.textContent = daysTogether;
+        } else {
+            this.daysTogetherCount.textContent = '0';
+        }
+        
+        // Total milestones
+        this.milestonesCount.textContent = this.milestones.length;
+        
+        // Memories with photos
+        const memoriesCount = this.milestones.filter(m => m.photo).length;
+        this.memoriesCount.textContent = memoriesCount;
+        
+        // Show/hide export button based on settings
+        this.exportBtn.style.display = this.settings.allowExport ? 'flex' : 'none';
+    }
+    
+    calculateDaysTogether(startDate) {
+        const start = new Date(startDate);
+        const today = new Date();
+        const diffTime = Math.abs(today - start);
+        return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    }
+    
+    calculateDaysAgo(date) {
+        const milestoneDate = new Date(date);
+        const today = new Date();
+        const diffTime = Math.abs(today - milestoneDate);
+        const daysAgo = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (daysAgo === 0) return 'Today';
+        if (daysAgo === 1) return 'Yesterday';
+        if (daysAgo < 7) return `${daysAgo} days ago`;
+        if (daysAgo < 30) return `${Math.floor(daysAgo / 7)} week${Math.floor(daysAgo / 7) > 1 ? 's' : ''} ago`;
+        if (daysAgo < 365) return `${Math.floor(daysAgo / 30)} month${Math.floor(daysAgo / 30) > 1 ? 's' : ''} ago`;
+        return `${Math.floor(daysAgo / 365)} year${Math.floor(daysAgo / 365) > 1 ? 's' : ''} ago`;
+    }
+    
+    generateStars(importance) {
+        return '★'.repeat(importance) + '☆'.repeat(4 - importance);
+    }
+    
+    formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+    
+    getCategoryLabel(category) {
+        const categories = {
+            'first': 'First Times',
+            'anniversary': 'Anniversaries',
+            'travel': 'Travel',
+            'achievement': 'Achievements',
+            'family': 'Family',
+            'home': 'Home',
+            'special': 'Special Moments',
+            'other': 'Other'
+        };
+        return categories[category] || category;
+    }
+    
+    showModal(modal) {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    closeModal(modal) {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+        
+        // Reset form if it's the milestone modal
+        if (modal === this.milestoneModal) {
+            this.resetForm();
+            this.currentEditingMilestone = null;
+        }
+    }
+    
+    exportData() {
+        if (!this.settings.allowExport) return;
+        
+        const exportData = {
+            exportDate: new Date().toISOString(),
+            version: '1.0',
+            settings: this.settings,
+            milestones: this.milestones.map(m => ({
+                ...m,
+                photo: m.photo ? '[PHOTO_DATA]' : null // Mark photos but don't include actual data
+            }))
+        };
+        
+        const dataStr = JSON.stringify(exportData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = `relationship-milestones-${new Date().toISOString().split('T')[0]}.json`;
+        link.click();
+        
+        URL.revokeObjectURL(link.href);
+    }
+    
+    saveData() {
+        const data = {
+            settings: this.settings,
+            milestones: this.milestones
+        };
+        localStorage.setItem('relationshipMilestoneTracker', JSON.stringify(data));
+    }
+    
+    loadData() {
+        const saved = localStorage.getItem('relationshipMilestoneTracker');
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                this.settings = { ...this.settings, ...data.settings };
+                this.milestones = data.milestones || [];
+                
+                // Set default view
+                if (this.settings.defaultView) {
+                    this.switchView(this.settings.defaultView);
+                }
+            } catch (e) {
+                console.error('Error loading saved data:', e);
+            }
+        }
+    }
+}
+
+// Initialize the application when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new MilestoneTracker();
+});
+
+// Add some CSS variables and basic styles that might be missing
+const additionalCSS = `
+:root {
+    --primary-pink: #ff6b9d;
+    --soft-pink: #ff9ec0;
+    --light-pink: #ffeef3;
+    --warm-grey: #8a7f8d;
+    --light-grey: #f5f5f5;
+    --white: #ffffff;
+    --shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.show {
+    display: flex !important;
+}
+
+/* Add any other missing CSS styles here */
+`;
+
+// Inject additional CSS if needed
+if (!document.querySelector('#additional-styles')) {
+    const style = document.createElement('style');
+    style.id = 'additional-styles';
+    style.textContent = additionalCSS;
+    document.head.appendChild(style);
+}
