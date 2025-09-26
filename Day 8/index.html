@@ -3,11 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 8</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Relationship Milestone Tracker</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to Day 8</h1>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Relationship Milestone Tracker</h1>
+            <p class="subtitle">Celebrate your beautiful journey together 💕</p>
+            <div class="relationship-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="daysTogetherCount">0</div>
+                    <div class="stat-label">Days Together</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="milestonesCount">0</div>
+                    <div class="stat-label">Milestones</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="memoriesCount">0</div>
+                    <div class="stat-label">Memories</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="toolbar">
+                <button class="btn btn-add" id="addMilestoneBtn">
+                    <span class="btn-icon">✨</span>
+                    Add Milestone
+                </button>
+                <button class="btn btn-timeline" id="timelineViewBtn">
+                    <span class="btn-icon">📅</span>
+                    Timeline View
+                </button>
+                <button class="btn btn-gallery" id="galleryViewBtn">
+                    <span class="btn-icon">🖼️</span>
+                    Photo Gallery
+                </button>
+                <button class="btn btn-export" id="exportBtn">
+                    <span class="btn-icon">📤</span>
+                    Export Data
+                </button>
+                <button class="btn btn-settings" id="settingsBtn">
+                    <span class="btn-icon">⚙️</span>
+                    Settings
+                </button>
+            </div>
+
+            <div class="content-area">
+                <!-- Milestone Cards View -->
+                <div class="milestones-grid" id="milestonesGrid">
+                    <div class="welcome-card">
+                        <div class="welcome-icon">💖</div>
+                        <h3>Start Your Journey</h3>
+                        <p>Add your first milestone to begin tracking your beautiful relationship story!</p>
+                        <button class="btn btn-primary" id="startJourneyBtn">Add First Milestone</button>
+                    </div>
+                </div>
+
+                <!-- Timeline View -->
+                <div class="timeline-view hidden" id="timelineView">
+                    <div class="timeline-container" id="timelineContainer">
+                        <!-- Timeline items will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Gallery View -->
+                <div class="gallery-view hidden" id="galleryView">
+                    <div class="gallery-grid" id="galleryGrid">
+                        <!-- Gallery items will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Milestone Modal -->
+    <div class="modal" id="milestoneModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Milestone</h2>
+                <button class="close-btn" id="closeMilestoneModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="milestoneTitle">Milestone Title *</label>
+                    <input type="text" id="milestoneTitle" placeholder="e.g., First Date, Anniversary, Moving In Together...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="milestoneDate">Date *</label>
+                    <input type="date" id="milestoneDate">
+                </div>
+                
+                <div class="form-group">
+                    <label for="milestoneCategory">Category</label>
+                    <select id="milestoneCategory">
+                        <option value="first">First Times</option>
+                        <option value="anniversary">Anniversaries</option>
+                        <option value="travel">Travel & Adventures</option>
+                        <option value="achievement">Achievements</option>
+                        <option value="family">Family & Friends</option>
+                        <option value="home">Home & Living</option>
+                        <option value="special">Special Moments</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="milestoneDescription">Description</label>
+                    <textarea id="milestoneDescription" rows="4" placeholder="Tell the story of this milestone..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="milestoneLocation">Location (optional)</label>
+                    <input type="text" id="milestoneLocation" placeholder="Where did this happen?">
+                </div>
+                
+                <div class="form-group">
+                    <label for="milestonePhoto">Photo Upload</label>
+                    <div class="photo-upload-area" id="photoUploadArea">
+                        <input type="file" id="milestonePhoto" accept="image/*" style="display: none;">
+                        <div class="upload-placeholder" id="uploadPlaceholder">
+                            <div class="upload-icon">📷</div>
+                            <div class="upload-text">Click to add photo</div>
+                        </div>
+                        <div class="photo-preview" id="photoPreview">
+                            <img id="previewImage" src="" alt="Preview">
+                            <button class="remove-photo" id="removePhotoBtn">&times;</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Milestone Icon</label>
+                    <div class="icon-selector">
+                        <button class="icon-option active" data-icon="💕">💕</button>
+                        <button class="icon-option" data-icon="❤️">❤️</button>
+                        <button class="icon-option" data-icon="💖">💖</button>
+                        <button class="icon-option" data-icon="🌹">🌹</button>
+                        <button class="icon-option" data-icon="💍">💍</button>
+                        <button class="icon-option" data-icon="🎉">🎉</button>
+                        <button class="icon-option" data-icon="✈️">✈️</button>
+                        <button class="icon-option" data-icon="🏠">🏠</button>
+                        <button class="icon-option" data-icon="🎓">🎓</button>
+                        <button class="icon-option" data-icon="🎂">🎂</button>
+                        <button class="icon-option" data-icon="🌟">🌟</button>
+                        <button class="icon-option" data-icon="💝">💝</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Importance Level</label>
+                    <div class="importance-selector">
+                        <button class="importance-btn" data-level="1">⭐ Special</button>
+                        <button class="importance-btn" data-level="2">⭐⭐ Important</button>
+                        <button class="importance-btn active" data-level="3">⭐⭐⭐ Major</button>
+                        <button class="importance-btn" data-level="4">⭐⭐⭐⭐ Life-Changing</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" id="cancelMilestoneBtn">Cancel</button>
+                <button class="btn btn-delete" id="deleteMilestoneBtn" style="display: none;">
+                    <span class="btn-icon">🗑️</span>
+                    Delete
+                </button>
+                <button class="btn btn-save" id="saveMilestoneBtn">
+                    <span class="btn-icon">💾</span>
+                    Save Milestone
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Relationship Settings</h2>
+                <button class="close-btn" id="closeSettingsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="relationshipStart">Relationship Start Date</label>
+                    <input type="date" id="relationshipStart">
+                    <small>This will be used to calculate "Days Together"</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="partnerNames">Partner Names</label>
+                    <div class="partners-input">
+                        <input type="text" id="partner1Name" placeholder="Your name">
+                        <span class="partners-separator">&</span>
+                        <input type="text" id="partner2Name" placeholder="Partner's name">
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <h4>📱 Notifications</h4>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="anniversaryReminders">
+                        <span class="toggle-slider"></span>
+                        Anniversary reminders
+                    </label>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="milestoneReminders">
+                        <span class="toggle-slider"></span>
+                        Milestone anniversary alerts
+                    </label>
+                </div>
+                
+                <div class="setting-group">
+                    <h4>🎨 Display Preferences</h4>
+                    <label for="defaultView">Default View</label>
+                    <select id="defaultView">
+                        <option value="grid">Card Grid</option>
+                        <option value="timeline">Timeline</option>
+                        <option value="gallery">Photo Gallery</option>
+                    </select>
+                </div>
+                
+                <div class="setting-group">
+                    <h4>📊 Privacy</h4>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="allowExport">
+                        <span class="toggle-slider"></span>
+                        Allow data export
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="saveSettingsBtn">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Viewer Modal -->
+    <div class="modal" id="photoModal">
+        <div class="modal-content photo-modal">
+            <button class="close-btn photo-close" id="closePhotoModal">&times;</button>
+            <div class="photo-viewer">
+                <img id="fullSizeImage" src="" alt="Milestone Photo">
+                <div class="photo-info">
+                    <h3 id="photoTitle"></h3>
+                    <p id="photoDate"></p>
+                    <p id="photoDescription"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upcoming Milestones Widget -->
+    <div class="upcoming-widget" id="upcomingWidget">
+        <div class="widget-header">
+            <h4>🎉 Upcoming</h4>
+            <button class="widget-close" id="closeUpcomingWidget">&times;</button>
+        </div>
+        <div class="widget-content" id="upcomingContent">
+            <!-- Upcoming anniversaries will be shown here -->
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
