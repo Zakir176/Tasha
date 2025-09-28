@@ -1,12 +1,4 @@
-################################################################################
-#  
-#   ███████╗ █████╗ ███████╗ ███████╗██╗  ██╗     ████████╗ ██████╗  █████╗ 
-#   ██╔════╝██╔══██╗██╔════╝ ██╔════╝██║ ██╔╝     ╚══██╔══╝██╔═══██╗██╔══██╗
-#   █████╗  ███████║███████╗ █████╗  █████╔╝         ██║   ██║   ██║███████║
-#   ██╔══╝  ██╔══██║╚════██║ ██╔══╝  ██╔═██╗         ██║   ██║   ██║██╔══██║
-#   ██║     ██║  ██║███████║ ███████╗██║  ██╗        ██║   ╚██████╔╝██║  ██║
-#   ╚═╝     ╚═╝  ╚═╝╚══════╝ ╚══════╝╚═╝  ╚═╝        ╚═╝    ╚═════╝ ╚═╝  ╚═╝
-#  
+################################################################################  
 #                               T A S H A
 #                14 Days of Love & Other Romantic Micro-Webapps
 #
@@ -64,8 +56,8 @@ All projects share one **romantic color theme** for consistency:
 This repo is **GitHub Pages friendly**.  
 Once published, projects can be accessed like so:
 
-- Main Portal → `username.github.io/Tasha/projects/love-portal/`  
-- Individual Day → `username.github.io/Tasha/projects/day1-virtual-bouquet/`
+- Main Portal → `username.github.io/Tasha/`  
+- Individual Day → `username.github.io/Tasha/DAY 1/`
 
 ---
 
