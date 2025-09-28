@@ -3,11 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 10</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Love Story Timeline</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to Day 10</h1>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Our Love Story</h1>
+            <p class="subtitle">A beautiful timeline of our journey together 💕</p>
+            
+            <div class="story-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">📖</div>
+                    <div class="stat-number" id="chaptersCount">0</div>
+                    <div class="stat-label">Chapters</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📸</div>
+                    <div class="stat-number" id="photosCount">0</div>
+                    <div class="stat-label">Photos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💕</div>
+                    <div class="stat-number" id="daysCount">0</div>
+                    <div class="stat-label">Days Together</div>
+                </div>
+            </div>
+        </header>
+
+        <nav class="story-nav">
+            <div class="nav-left">
+                <button class="btn btn-add-chapter" id="addChapterBtn">
+                    <span class="btn-icon">✨</span>
+                    Add Chapter
+                </button>
+                <button class="btn btn-rearrange" id="rearrangeBtn">
+                    <span class="btn-icon">🔀</span>
+                    Rearrange
+                </button>
+                <button class="btn btn-settings" id="settingsBtn">
+                    <span class="btn-icon">⚙️</span>
+                    Story Settings
+                </button>
+            </div>
+            
+            <div class="nav-center">
+                <div class="story-progress">
+                    <div class="progress-label">Story Progress</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0% Complete</div>
+                </div>
+            </div>
+            
+            <div class="nav-right">
+                <button class="btn btn-preview" id="previewBtn">
+                    <span class="btn-icon">👁️</span>
+                    Preview Story
+                </button>
+                <button class="btn btn-share" id="shareBtn">
+                    <span class="btn-icon">📤</span>
+                    Share Story
+                </button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <!-- Welcome Screen -->
+            <div class="welcome-screen" id="welcomeScreen">
+                <div class="welcome-card">
+                    <div class="welcome-icon">💝</div>
+                    <h2>Begin Your Love Story</h2>
+                    <p>Create a beautiful timeline that tells the story of your relationship. Add chapters, photos, and memories to build your unique love story.</p>
+                    <div class="welcome-actions">
+                        <button class="btn btn-primary" id="startStoryBtn">Start Our Story</button>
+                        <button class="btn btn-template" id="useTemplateBtn">Use Template</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Story Timeline -->
+            <div class="story-timeline" id="storyTimeline">
+                <div class="timeline-path">
+                    <svg class="timeline-svg" id="timelineSvg">
+                        <!-- SVG path will be drawn here -->
+                    </svg>
+                </div>
+                <div class="chapters-container" id="chaptersContainer">
+                    <!-- Chapters will be added here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Chapter Modal -->
+    <div class="modal" id="chapterModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="chapterModalTitle">Add New Chapter</h2>
+                <button class="close-btn" id="closeChapterModal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="chapterTitle">Chapter Title *</label>
+                        <input type="text" id="chapterTitle" placeholder="e.g., How We Met, First Date, Moving In...">
+                    </div>
+                    <div class="form-group">
+                        <label for="chapterDate">Date</label>
+                        <input type="date" id="chapterDate">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="chapterSummary">Chapter Summary</label>
+                    <textarea id="chapterSummary" rows="2" placeholder="Brief description of this chapter..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="chapterStory">Your Story</label>
+                    <textarea id="chapterStory" rows="6" placeholder="Tell the full story of this chapter... What happened? How did you feel? What made it special?"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="chapterLocation">Location (optional)</label>
+                        <input type="text" id="chapterLocation" placeholder="Where did this happen?">
+                    </div>
+                    <div class="form-group">
+                        <label for="chapterMood">Chapter Mood</label>
+                        <select id="chapterMood">
+                            <option value="romantic">💕 Romantic</option>
+                            <option value="exciting">🎉 Exciting</option>
+                            <option value="peaceful">😌 Peaceful</option>
+                            <option value="adventurous">🌟 Adventurous</option>
+                            <option value="emotional">🥺 Emotional</option>
+                            <option value="fun">😄 Fun</option>
+                            <option value="milestone">🎯 Milestone</option>
+                            <option value="nostalgic">✨ Nostalgic</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Chapter Photos</label>
+                    <div class="photo-upload-section">
+                        <div class="photo-upload-area" id="photoUploadArea">
+                            <input type="file" id="chapterPhotos" accept="image/*" multiple style="display: none;">
+                            <div class="upload-placeholder" id="uploadPlaceholder">
+                                <div class="upload-icon">📷</div>
+                                <div class="upload-text">Add Photos to Your Chapter</div>
+                                <div class="upload-subtext">Click to select multiple photos</div>
+                            </div>
+                        </div>
+                        <div class="photos-preview" id="photosPreview">
+                            <!-- Photo previews will appear here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="chapterQuote">Memorable Quote (optional)</label>
+                    <input type="text" id="chapterQuote" placeholder="A special quote or something one of you said...">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="chapterSong">Song of the Moment (optional)</label>
+                        <input type="text" id="chapterSong" placeholder="What song represents this chapter?">
+                    </div>
+                    <div class="form-group">
+                        <label for="chapterColor">Chapter Color</label>
+                        <div class="color-picker">
+                            <button class="color-option active" data-color="#FF6B9D" style="background: #FF6B9D;"></button>
+                            <button class="color-option" data-color="#4834D4" style="background: #4834D4;"></button>
+                            <button class="color-option" data-color="#FF3838" style="background: #FF3838;"></button>
+                            <button class="color-option" data-color="#FFA502" style="background: #FFA502;"></button>
+                            <button class="color-option" data-color="#3742FA" style="background: #3742FA;"></button>
+                            <button class="color-option" data-color="#2ED573" style="background: #2ED573;"></button>
+                            <button class="color-option" data-color="#A4B0BE" style="background: #A4B0BE;"></button>
+                            <button class="color-option" data-color="#26DE81" style="background: #26DE81;"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-cancel" id="cancelChapterBtn">Cancel</button>
+                <button class="btn btn-delete" id="deleteChapterBtn" style="display: none;">
+                    <span class="btn-icon">🗑️</span>
+                    Delete Chapter
+                </button>
+                <button class="btn btn-save" id="saveChapterBtn">
+                    <span class="btn-icon">💾</span>
+                    Save Chapter
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Story Settings</h2>
+                <button class="close-btn" id="closeSettingsModal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="storyTitle">Story Title</label>
+                    <input type="text" id="storyTitle" placeholder="Our Love Story">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="partner1Name">Partner 1 Name</label>
+                        <input type="text" id="partner1Name" placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="partner2Name">Partner 2 Name</label>
+                        <input type="text" id="partner2Name" placeholder="Partner's name">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="relationshipStart">When did your story begin?</label>
+                    <input type="date" id="relationshipStart">
+                    <small>This will be used to calculate days together</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="storyTheme">Story Theme</label>
+                    <select id="storyTheme">
+                        <option value="classic">💕 Classic Romance</option>
+                        <option value="modern">🌟 Modern Love</option>
+                        <option value="vintage">📷 Vintage Charm</option>
+                        <option value="adventure">🗺️ Adventure Story</option>
+                        <option value="fairytale">✨ Fairytale</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="storyDescription">Story Description</label>
+                    <textarea id="storyDescription" rows="3" placeholder="A brief description of your love story..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="autoTimeline">
+                        <span class="checkmark"></span>
+                        Automatically arrange chapters chronologically
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="showProgress">
+                        <span class="checkmark"></span>
+                        Show story progress indicator
+                    </label>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="saveSettingsBtn">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chapter Templates Modal -->
+    <div class="modal" id="templatesModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>Choose Your Story Template</h2>
+                <button class="close-btn" id="closeTemplatesModal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="templates-grid">
+                    <div class="template-card" data-template="classic">
+                        <div class="template-preview">
+                            <div class="preview-timeline classic"></div>
+                        </div>
+                        <h3>Classic Love Story</h3>
+                        <p>Traditional chapters: How We Met, First Date, Becoming Official, Moving In, Engagement</p>
+                        <button class="btn btn-select" data-template="classic">Use This Template</button>
+                    </div>
+                    
+                    <div class="template-card" data-template="modern">
+                        <div class="template-preview">
+                            <div class="preview-timeline modern"></div>
+                        </div>
+                        <h3>Modern Romance</h3>
+                        <p>Contemporary story: First Message, Video Call, Meeting IRL, Travel Together, Future Plans</p>
+                        <button class="btn btn-select" data-template="modern">Use This Template</button>
+                    </div>
+                    
+                    <div class="template-card" data-template="adventure">
+                        <div class="template-preview">
+                            <div class="preview-timeline adventure"></div>
+                        </div>
+                        <h3>Adventure Timeline</h3>
+                        <p>Journey-focused: First Adventure, Dream Trip, Challenges Overcome, Growth Together</p>
+                        <button class="btn btn-select" data-template="adventure">Use This Template</button>
+                    </div>
+                    
+                    <div class="template-card" data-template="milestone">
+                        <div class="template-preview">
+                            <div class="preview-timeline milestone"></div>
+                        </div>
+                        <h3>Milestone Moments</h3>
+                        <p>Key events: Meeting Families, First "I Love You", Keys Exchange, Proposal, Wedding</p>
+                        <button class="btn btn-select" data-template="milestone">Use This Template</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Preview Modal -->
+    <div class="modal fullscreen" id="previewModal">
+        <div class="preview-container">
+            <div class="preview-header">
+                <h2 id="previewTitle">Our Love Story</h2>
+                <button class="close-btn" id="closePreviewModal">&times;</button>
+            </div>
+            <div class="preview-content" id="previewContent">
+                <!-- Story preview will be generated here -->
+            </div>
+            <div class="preview-controls">
+                <button class="btn btn-navigate" id="prevChapterBtn">← Previous</button>
+                <div class="chapter-indicator" id="chapterIndicator">Chapter 1 of 5</div>
+                <button class="btn btn-navigate" id="nextChapterBtn">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Viewer Modal -->
+    <div class="modal" id="photoModal">
+        <div class="modal-content photo-viewer">
+            <button class="close-btn photo-close" id="closePhotoModal">&times;</button>
+            <div class="photo-display">
+                <img id="photoViewerImage" src="" alt="Chapter Photo">
+                <div class="photo-info" id="photoInfo">
+                    <!-- Photo information -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-heart">💖</div>
+            <div class="loading-text">Creating your love story...</div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
