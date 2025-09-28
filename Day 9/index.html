@@ -1,13 +1,335 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 9</title>
+    <title>Memory Timeline</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to Day 9</h1>
-    <script src="script.js"></script>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Memory Timeline</h1>
+            <p class="subtitle">Your relationship story, beautifully visualized 💕</p>
+
+```
+        <div class="timeline-stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalMemories">0</div>
+                <div class="stat-label">Total Memories</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="timeSpan">0</div>
+                <div class="stat-label">Days Covered</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="favoritesCount">0</div>
+                <div class="stat-label">Favorites</div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="timeline-nav">
+        <div class="nav-controls">
+            <button class="btn btn-add" id="addMemoryBtn">
+                <span class="btn-icon">✨</span>
+                Add Memory
+            </button>
+            <button class="btn btn-filter" id="filterBtn">
+                <span class="btn-icon">🔍</span>
+                Filter
+            </button>
+            <button class="btn btn-sort" id="sortBtn">
+                <span class="btn-icon">⚡</span>
+                Sort
+            </button>
+            <button class="btn btn-view" id="viewModeBtn">
+                <span class="btn-icon">👁️</span>
+                View
+            </button>
+            <button class="btn btn-export" id="exportBtn">
+                <span class="btn-icon">📤</span>
+                Export
+            </button>
+        </div>
+        
+        <div class="view-toggle">
+            <button class="toggle-btn active" data-view="timeline" id="timelineViewBtn">
+                <span class="toggle-icon">📅</span>
+                Timeline
+            </button>
+            <button class="toggle-btn" data-view="grid" id="gridViewBtn">
+                <span class="toggle-icon">🔲</span>
+                Grid
+            </button>
+            <button class="toggle-btn" data-view="map" id="mapViewBtn">
+                <span class="toggle-icon">🗺️</span>
+                Journey Map
+            </button>
+        </div>
+    </nav>
+
+    <div class="filter-bar hidden" id="filterBar">
+        <div class="filter-controls">
+            <select id="yearFilter">
+                <option value="">All Years</option>
+            </select>
+            <select id="monthFilter">
+                <option value="">All Months</option>
+                <option value="0">January</option>
+                <option value="1">February</option>
+                <option value="2">March</option>
+                <option value="3">April</option>
+                <option value="4">May</option>
+                <option value="5">June</option>
+                <option value="6">July</option>
+                <option value="7">August</option>
+                <option value="8">September</option>
+                <option value="9">October</option>
+                <option value="10">November</option>
+                <option value="11">December</option>
+            </select>
+            <select id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="milestone">🎯 Milestones</option>
+                <option value="adventure">🌟 Adventures</option>
+                <option value="romantic">💕 Romantic</option>
+                <option value="family">👨‍👩‍👧‍👦 Family</option>
+                <option value="travel">✈️ Travel</option>
+                <option value="celebration">🎉 Celebrations</option>
+                <option value="quiet">🕊️ Quiet Moments</option>
+                <option value="growth">🌱 Growth</option>
+            </select>
+            <select id="favoriteFilter">
+                <option value="">All Memories</option>
+                <option value="true">Favorites Only</option>
+            </select>
+            <button class="btn-clear-filters" id="clearFiltersBtn">Clear All</button>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <!-- Timeline View -->
+        <div class="timeline-view active" id="timelineView">
+            <div class="timeline-container" id="timelineContainer">
+                <div class="timeline-welcome" id="timelineWelcome">
+                    <div class="welcome-icon">💝</div>
+                    <h3>Begin Your Timeline</h3>
+                    <p>Start documenting your beautiful journey together by adding your first memory!</p>
+                    <button class="btn btn-primary" id="startTimelineBtn">Add First Memory</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid View -->
+        <div class="grid-view" id="gridView">
+            <div class="memories-grid" id="memoriesGrid">
+                <!-- Grid items will be populated here -->
+            </div>
+        </div>
+
+        <!-- Journey Map View -->
+        <div class="map-view" id="mapView">
+            <div class="journey-map" id="journeyMap">
+                <div class="map-placeholder">
+                    <div class="map-icon">🗺️</div>
+                    <h3>Journey Map Coming Soon</h3>
+                    <p>Your memories will be plotted on an interactive journey map!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Add/Edit Memory Modal -->
+<div class="modal" id="memoryModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Add New Memory</h2>
+            <button class="close-btn" id="closeMemoryModal">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="memoryTitle">Memory Title *</label>
+                <input type="text" id="memoryTitle" placeholder="What's this beautiful memory called?">
+            </div>
+            
+            <div class="form-group">
+                <label for="memoryDate">Date *</label>
+                <input type="date" id="memoryDate">
+            </div>
+            
+            <div class="form-group">
+                <label for="memoryCategory">Category</label>
+                <select id="memoryCategory">
+                    <option value="milestone">🎯 Milestone</option>
+                    <option value="adventure">🌟 Adventure</option>
+                    <option value="romantic">💕 Romantic</option>
+                    <option value="family">👨‍👩‍👧‍👦 Family</option>
+                    <option value="travel">✈️ Travel</option>
+                    <option value="celebration">🎉 Celebration</option>
+                    <option value="quiet">🕊️ Quiet Moment</option>
+                    <option value="growth">🌱 Personal Growth</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="memoryDescription">Description</label>
+                <textarea id="memoryDescription" rows="4" placeholder="Tell the story of this memory..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="memoryLocation">Location (optional)</label>
+                <input type="text" id="memoryLocation" placeholder="Where did this happen?">
+            </div>
+            
+            <div class="form-group">
+                <label for="memoryPeople">People Involved (optional)</label>
+                <input type="text" id="memoryPeople" placeholder="Who was there? (comma separated)">
+            </div>
+            
+            <div class="form-group">
+                <label for="memoryPhoto">Photo Upload</label>
+                <div class="photo-upload-area" id="photoUploadArea">
+                    <input type="file" id="memoryPhoto" accept="image/*" style="display: none;">
+                    <div class="upload-placeholder" id="uploadPlaceholder">
+                        <div class="upload-icon">📷</div>
+                        <div class="upload-text">Click to add a photo</div>
+                        <div class="upload-subtext">Make this memory visual</div>
+                    </div>
+                    <div class="photo-preview" id="photoPreview">
+                        <img id="previewImage" src="" alt="Preview">
+                        <button class="remove-photo" id="removePhotoBtn">&times;</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="memoryMood">Mood/Feeling</label>
+                <div class="mood-selector">
+                    <button class="mood-btn active" data-mood="😊" title="Happy">😊</button>
+                    <button class="mood-btn" data-mood="🥰" title="Loved">🥰</button>
+                    <button class="mood-btn" data-mood="😍" title="Excited">😍</button>
+                    <button class="mood-btn" data-mood="🤗" title="Grateful">🤗</button>
+                    <button class="mood-btn" data-mood="😌" title="Peaceful">😌</button>
+                    <button class="mood-btn" data-mood="🎉" title="Celebratory">🎉</button>
+                    <button class="mood-btn" data-mood="💖" title="Romantic">💖</button>
+                    <button class="mood-btn" data-mood="🌟" title="Magical">🌟</button>
+                    <button class="mood-btn" data-mood="😂" title="Fun">😂</button>
+                    <button class="mood-btn" data-mood="🥺" title="Emotional">🥺</button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="memoryFavorite">
+                    <span class="checkmark"></span>
+                    Mark as Favorite ⭐
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <label for="memoryTags">Tags (optional)</label>
+                <input type="text" id="memoryTags" placeholder="Add tags separated by commas (e.g., first time, special, surprise)">
+                <small>Tags help you find memories later</small>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="btn btn-cancel" id="cancelMemoryBtn">Cancel</button>
+            <button class="btn btn-delete" id="deleteMemoryBtn" style="display: none;">
+                <span class="btn-icon">🗑️</span>
+                Delete
+            </button>
+            <button class="btn btn-save" id="saveMemoryBtn">
+                <span class="btn-icon">💾</span>
+                Save Memory
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Memory Detail Modal -->
+<div class="modal" id="memoryDetailModal">
+    <div class="modal-content large">
+        <div class="modal-header">
+            <h2 id="detailTitle">Memory Details</h2>
+            <button class="close-btn" id="closeDetailModal">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="detail-content" id="detailContent">
+                <!-- Memory details will be populated here -->
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="btn btn-edit" id="editFromDetailBtn">
+                <span class="btn-icon">✏️</span>
+                Edit Memory
+            </button>
+            <button class="btn btn-favorite" id="toggleFavoriteBtn">
+                <span class="btn-icon">⭐</span>
+                Add to Favorites
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Sort Options Modal -->
+<div class="modal" id="sortModal">
+    <div class="modal-content small">
+        <div class="modal-header">
+            <h2>Sort Memories</h2>
+            <button class="close-btn" id="closeSortModal">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="sort-options">
+                <label class="sort-option">
+                    <input type="radio" name="sortBy" value="date-desc" checked>
+                    <span class="radio-custom"></span>
+                    Newest First
+                </label>
+                <label class="sort-option">
+                    <input type="radio" name="sortBy" value="date-asc">
+                    <span class="radio-custom"></span>
+                    Oldest First
+                </label>
+                <label class="sort-option">
+                    <input type="radio" name="sortBy" value="title">
+                    <span class="radio-custom"></span>
+                    By Title (A-Z)
+                </label>
+                <label class="sort-option">
+                    <input type="radio" name="sortBy" value="category">
+                    <span class="radio-custom"></span>
+                    By Category
+                </label>
+                <label class="sort-option">
+                    <input type="radio" name="sortBy" value="favorites">
+                    <span class="radio-custom"></span>
+                    Favorites First
+                </label>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="btn btn-primary" id="applySortBtn">Apply Sort</button>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Indicator -->
+<div class="loading" id="loading">
+    <div class="loading-heart">💖</div>
+    <div class="loading-text">Loading your beautiful memories...</div>
+</div>
+
+<script src="script.js"></script>
+```
+
 </body>
 </html>
