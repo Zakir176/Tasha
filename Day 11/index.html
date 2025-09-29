@@ -3,11 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 11</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Virtual Scrapbook | Our Memories</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to Day 11</h1>
+    <header class="header">
+        <h1>Our Virtual Scrapbook</h1>
+        <p>Cherish every moment together</p>
+    </header>
+
+    <main class="scrapbook-container">
+        <div class="scrapbook-controls">
+            <button id="newScrapbookBtn" class="btn-primary">Create New Page</button>
+            <div class="template-selector">
+                <label for="templateSelect">Choose Template:</label>
+                <select id="templateSelect">
+                    <option value="photo">Photo Focus</option>
+                    <option value="video">Video Memory</option>
+                    <option value="note">Love Note</option>
+                    <option value="mixed">Mixed Media</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="scrapbook-pages" id="scrapbookPages">
+            <!-- Pages will be dynamically added here -->
+        </div>
+    </main>
+
+    <!-- New Scrapbook Page Modal -->
+    <div id="scrapbookModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create New Scrapbook Page</h2>
+            <form id="scrapbookForm">
+                <div class="form-group">
+                    <label for="pageTitle">Page Title:</label>
+                    <input type="text" id="pageTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="pageDate">Date:</label>
+                    <input type="date" id="pageDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="pageTemplate">Template:</label>
+                    <select id="pageTemplate">
+                        <option value="photo">Photo Focus</option>
+                        <option value="video">Video Memory</option>
+                        <option value="note">Love Note</option>
+                        <option value="mixed">Mixed Media</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pageDescription">Description:</label>
+                    <textarea id="pageDescription" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="mediaUpload">Upload Media:</label>
+                    <input type="file" id="mediaUpload" accept="image/*,video/*">
+                </div>
+                <button type="submit" class="btn-primary">Create Page</button>
+            </form>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
