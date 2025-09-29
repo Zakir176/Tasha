@@ -1,10 +1,280 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f9f9f9;
-    padding: 20px;
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-h1 {
-    color: #e63946;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #F8F9FA; /* Light Pearl */
+    color: #343A40; /* Charcoal Grey */
+    line-height: 1.6;
 }
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #D63384, #FF6B6B); /* Deep Rose to Warm Coral */
+    color: #FFE5E5; /* Soft Blush */
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* Scrapbook Container */
+.scrapbook-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Controls */
+.scrapbook-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.template-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.template-selector label {
+    font-weight: 600;
+    color: #6C757D; /* Warm Grey */
+}
+
+.template-selector select {
+    padding: 0.5rem;
+    border: 1px solid #E6E6FA; /* Lavender */
+    border-radius: 4px;
+    background-color: white;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #D63384; /* Deep Rose */
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #c22575;
+}
+
+.btn-secondary {
+    background-color: #FFB84D; /* Golden Honey */
+    color: #343A40; /* Charcoal Grey */
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #ffa726;
+}
+
+.btn-danger {
+    background-color: #FF6B6B; /* Warm Coral */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #ff5252;
+}
+
+/* Scrapbook Pages Grid */
+.scrapbook-pages {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Scrapbook Page Cards */
+.scrapbook-page {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+}
+
+.scrapbook-page:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.page-header {
+    padding: 1rem;
+    background-color: #E6E6FA; /* Lavender */
+    border-bottom: 1px solid #d6d6f0;
+}
+
+.page-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #343A40; /* Charcoal Grey */
+    margin-bottom: 0.25rem;
+}
+
+.page-date {
+    font-size: 0.9rem;
+    color: #6C757D; /* Warm Grey */
+}
+
+.page-content {
+    padding: 1rem;
+}
+
+.media-container {
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.media-container img,
+.media-container video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.placeholder-media {
+    height: 200px;
+    background-color: #FFE5E5; /* Soft Blush */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6C757D; /* Warm Grey */
+    font-style: italic;
+}
+
+.page-description {
+    color: #343A40; /* Charcoal Grey */
+    line-height: 1.5;
+}
+
+.page-actions {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #f0f0f0;
+}
+
+/* Template-specific styles */
+.photo-template .page-header {
+    background-color: #FFE5E5; /* Soft Blush */
+}
+
+.video-template .page-header {
+    background-color: #87CEEB; /* Sage Green */
+}
+
+.note-template .page-header {
+    background-color: #FFB84D; /* Golden Honey */
+}
+
+.mixed-template .page-header {
+    background: linear-gradient(135deg, #FFE5E5, #E6E6FA); /* Soft Blush to Lavender */
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6C757D; /* Warm Grey */
+}
+
+.close:hover {
+    color: #343A40; /* Charcoal Grey */
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #343A40; /* Charcoal Grey */
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #E6E6FA; /* Lavender */
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6C757D; /* Warm Grey */
+}
+
+.empty-state h2 {
+    margin-bottom: 1rem;
+    color: #343A40; /* Charcoal Grey */
+}
+
+/
