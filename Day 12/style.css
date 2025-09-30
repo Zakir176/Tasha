@@ -1,10 +1,570 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f9f9f9;
-    padding: 20px;
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-h1 {
-    color: #e63946;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #F8F9FA; /* Light Pearl */
+    color: #343A40; /* Charcoal Grey */
+    line-height: 1.6;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #D63384, #FF6B6B); /* Deep Rose to Warm Coral */
+    color: #FFE5E5; /* Soft Blush */
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* Main Container */
+.bucketlist-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Progress Section */
+.progress-section {
+    margin-bottom: 2rem;
+}
+
+.progress-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.progress-card h2 {
+    margin-bottom: 1.5rem;
+    color: #343A40; /* Charcoal Grey */
+    text-align: center;
+}
+
+.progress-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #D63384; /* Deep Rose */
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #6C757D; /* Warm Grey */
+}
+
+.progress-bar {
+    height: 12px;
+    background-color: #FFE5E5; /* Soft Blush */
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #D63384, #FF6B6B); /* Deep Rose to Warm Coral */
+    border-radius: 6px;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+/* Controls Section */
+.controls-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.filters {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.filter-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #E6E6FA; /* Lavender */
+    background-color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background-color: #D63384; /* Deep Rose */
+    color: white;
+    border-color: #D63384;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #D63384; /* Deep Rose */
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary:hover {
+    background-color: #c22575;
+}
+
+.btn-secondary {
+    background-color: #FFB84D; /* Golden Honey */
+    color: #343A40; /* Charcoal Grey */
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background-color: #ffa726;
+}
+
+/* Items Section */
+.items-section {
+    margin-bottom: 3rem;
+}
+
+.items-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Bucket List Item Cards */
+.bucketlist-item {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    border-left: 4px solid #D63384; /* Deep Rose */
+}
+
+.bucketlist-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.bucketlist-item.completed {
+    opacity: 0.8;
+    border-left-color: #87CEEB; /* Sage Green */
+}
+
+.bucketlist-item.completed .item-title {
+    text-decoration: line-through;
+    color: #6C757D; /* Warm Grey */
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.item-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #343A40; /* Charcoal Grey */
+    margin-right: 1rem;
+}
+
+.item-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.item-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #6C757D; /* Warm Grey */
+    transition: color 0.3s;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-action-btn:hover {
+    background-color: #FFE5E5; /* Soft Blush */
+    color: #D63384; /* Deep Rose */
+}
+
+.item-details {
+    margin-bottom: 1rem;
+}
+
+.item-description {
+    color: #6C757D; /* Warm Grey */
+    margin-bottom: 0.5rem;
+}
+
+.item-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #6C757D; /* Warm Grey */
+}
+
+.item-category {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: #FFE5E5; /* Soft Blush */
+    border-radius: 12px;
+    font-size: 0.75rem;
+    color: #D63384; /* Deep Rose */
+}
+
+.item-priority {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.priority-high {
+    background-color: #FF6B6B; /* Warm Coral */
+    color: white;
+}
+
+.priority-medium {
+    background-color: #FFB84D; /* Golden Honey */
+    color: #343A40; /* Charcoal Grey */
+}
+
+.priority-low {
+    background-color: #87CEEB; /* Sage Green */
+    color: white;
+}
+
+.item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #F1F3F4;
+}
+
+.item-date {
+    font-size: 0.85rem;
+    color: #6C757D; /* Warm Grey */
+}
+
+.complete-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #6C757D; /* Warm Grey */
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.checkbox.checked {
+    background-color: #87CEEB; /* Sage Green */
+    border-color: #87CEEB;
+    color: white;
+}
+
+/* Category-specific styles */
+.category-adventure {
+    border-left-color: #FF6B6B; /* Warm Coral */
+}
+
+.category-travel {
+    border-left-color: #FFB84D; /* Golden Honey */
+}
+
+.category-romantic {
+    border-left-color: #D63384; /* Deep Rose */
+}
+
+.category-food {
+    border-left-color: #87CEEB; /* Sage Green */
+}
+
+.category-learning {
+    border-left-color: #E6E6FA; /* Lavender */
+}
+
+.category-home {
+    border-left-color: #6C757D; /* Warm Grey */
+}
+
+.category-other {
+    border-left-color: #343A40; /* Charcoal Grey */
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    display: none;
+}
+
+.empty-state.show {
+    display: block;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: #D63384; /* Deep Rose */
+    margin-bottom: 1rem;
+}
+
+.empty-state h2 {
+    margin-bottom: 1rem;
+    color: #343A40; /* Charcoal Grey */
+}
+
+.empty-state p {
+    color: #6C757D; /* Warm Grey */
+    margin-bottom: 2rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.share-modal {
+    max-width: 600px;
+}
+
+.close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6C757D; /* Warm Grey */
+}
+
+.close:hover {
+    color: #343A40; /* Charcoal Grey */
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #343A40; /* Charcoal Grey */
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #E6E6FA; /* Lavender */
+    border-radius: 6px;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #D63384; /* Deep Rose */
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Share Options */
+.share-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.share-option {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    border: 1px solid #E6E6FA; /* Lavender */
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.share-option:hover {
+    background-color: #FFE5E5; /* Soft Blush */
+}
+
+.share-icon {
+    font-size: 1.5rem;
+    color: #D63384; /* Deep Rose */
+    margin-right: 1rem;
+    width: 50px;
+    text-align: center;
+}
+
+.share-details {
+    flex: 1;
+}
+
+.share-details h3 {
+    margin-bottom: 0.25rem;
+    color: #343A40; /* Charcoal Grey */
+}
+
+.share-details p {
+    color: #6C757D; /* Warm Grey */
+    font-size: 0.9rem;
+}
+
+/* Notification */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #87CEEB; /* Sage Green */
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transform: translateX(150%);
+    transition: transform 0.3s ease;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.error {
+    background-color: #FF6B6B; /* Warm Coral */
+}
+
+.notification.success {
+    background-color: #87CEEB; /* Sage Green */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .controls-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filters {
+        justify-content: center;
+    }
+    
+    .items-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .progress-stats {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    .share-option {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .share-icon {
+        margin-right: 0;
+    }
 }
