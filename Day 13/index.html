@@ -3,11 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 13</title>
+    <title>365 Days of Love Challenges | Daily Romance</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <h1>Welcome to Day 13</h1>
+    <header class="header">
+        <h1>365 Days of Love Challenges</h1>
+        <p>Daily inspiration to keep your connection strong</p>
+    </header>
+
+    <main class="challenges-container">
+        <!-- Progress & Stats Section -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="currentStreak">0</span>
+                        <span class="stat-label">Current Streak</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="completedChallenges">0</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="completionRate">0%</span>
+                        <span class="stat-label">Completion Rate</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="daysRemaining">365</span>
+                        <span class="stat-label">Days Remaining</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Today's Challenge -->
+        <section class="daily-challenge-section">
+            <div class="section-header">
+                <h2>Today's Love Challenge</h2>
+                <div class="date-display" id="todayDate"></div>
+            </div>
+            <div class="daily-challenge-card" id="dailyChallengeCard">
+                <div class="challenge-content">
+                    <h3 class="challenge-title" id="dailyChallengeTitle">Loading today's challenge...</h3>
+                    <p class="challenge-description" id="dailyChallengeDesc"></p>
+                    <div class="challenge-meta">
+                        <span class="challenge-category" id="dailyChallengeCategory"></span>
+                        <span class="challenge-difficulty" id="dailyChallengeDifficulty"></span>
+                    </div>
+                </div>
+                <div class="challenge-actions">
+                    <button class="btn-secondary" id="skipChallengeBtn">
+                        <i class="fas fa-forward"></i> Skip
+                    </button>
+                    <button class="btn-primary" id="completeChallengeBtn">
+                        <i class="fas fa-check"></i> Mark Complete
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenge Browser -->
+        <section class="browse-section">
+            <div class="section-header">
+                <h2>Browse Challenges</h2>
+                <div class="browse-controls">
+                    <div class="filter-group">
+                        <label for="categoryFilter">Category:</label>
+                        <select id="categoryFilter">
+                            <option value="all">All Categories</option>
+                            <option value="communication">Communication</option>
+                            <option value="romance">Romance</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="intimacy">Intimacy</option>
+                            <option value="appreciation">Appreciation</option>
+                            <option value="fun">Fun & Games</option>
+                            <option value="growth">Personal Growth</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="difficultyFilter">Difficulty:</label>
+                        <select id="difficultyFilter">
+                            <option value="all">All Levels</option>
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                    <div class="search-group">
+                        <input type="text" id="searchChallenges" placeholder="Search challenges...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="challenges-grid" id="challengesGrid">
+                <!-- Challenges will be dynamically loaded here -->
+            </div>
+
+            <div class="load-more-container">
+                <button class="btn-secondary" id="loadMoreBtn">
+                    <i class="fas fa-redo"></i> Load More Challenges
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Challenge Detail Modal -->
+    <div id="challengeModal" class="modal">
+        <div class="modal-content challenge-modal">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalChallengeTitle">Challenge Title</h2>
+                <div class="modal-meta">
+                    <span class="challenge-category" id="modalChallengeCategory">Category</span>
+                    <span class="challenge-difficulty" id="modalChallengeDifficulty">Difficulty</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p id="modalChallengeDescription">Challenge description will appear here.</p>
+                <div class="tips-section">
+                    <h3><i class="fas fa-lightbulb"></i> Tips for Success</h3>
+                    <ul id="modalChallengeTips">
+                        <!-- Tips will be added dynamically -->
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="modalSkipBtn">
+                    <i class="fas fa-forward"></i> Skip This Challenge
+                </button>
+                <button class="btn-primary" id="modalCompleteBtn">
+                    <i class="fas fa-check"></i> Mark as Complete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completion Celebration Modal -->
+    <div id="celebrationModal" class="modal celebration">
+        <div class="modal-content celebration-content">
+            <div class="celebration-animation">
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-heart"></i>
+            </div>
+            <h2>Challenge Completed!</h2>
+            <p id="celebrationMessage">You're strengthening your relationship one day at a time!</p>
+            <button class="btn-primary" id="celebrationCloseBtn">Continue</button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

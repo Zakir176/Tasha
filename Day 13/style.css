@@ -1,10 +1,578 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f9f9f9;
-    padding: 20px;
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-h1 {
-    color: #e63946;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #F8F9FA; /* Light Pearl */
+    color: #343A40; /* Charcoal Grey */
+    line-height: 1.6;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #D63384, #FF6B6B); /* Deep Rose to Warm Coral */
+    color: #FFE5E5; /* Soft Blush */
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* Main Container */
+.challenges-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Stats Section */
+.stats-section {
+    margin-bottom: 2rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.stat-card:nth-child(1) .stat-icon {
+    background-color: #FF6B6B; /* Warm Coral */
+    color: white;
+}
+
+.stat-card:nth-child(2) .stat-icon {
+    background-color: #87CEEB; /* Sage Green */
+    color: white;
+}
+
+.stat-card:nth-child(3) .stat-icon {
+    background-color: #FFB84D; /* Golden Honey */
+    color: #343A40; /* Charcoal Grey */
+}
+
+.stat-card:nth-child(4) .stat-icon {
+    background-color: #D63384; /* Deep Rose */
+    color: white;
+}
+
+.stat-number {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #343A40; /* Charcoal Grey */
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #6C757D; /* Warm Grey */
+}
+
+/* Section Headers */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.section-header h2 {
+    color: #343A40; /* Charcoal Grey */
+    font-size: 1.5rem;
+}
+
+.date-display {
+    background-color: #FFE5E5; /* Soft Blush */
+    color: #D63384; /* Deep Rose */
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Daily Challenge Section */
+.daily-challenge-section {
+    margin-bottom: 3rem;
+}
+
+.daily-challenge-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-left: 6px solid #D63384; /* Deep Rose */
+}
+
+.challenge-content {
+    margin-bottom: 1.5rem;
+}
+
+.challenge-title {
+    font-size: 1.5rem;
+    color: #343A40; /* Charcoal Grey */
+    margin-bottom: 1rem;
+}
+
+.challenge-description {
+    color: #6C757D; /* Warm Grey */
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.challenge-meta {
+    display: flex;
+    gap: 1rem;
+}
+
+.challenge-category, .challenge-difficulty {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.challenge-category {
+    background-color: #E6E6FA; /* Lavender */
+    color: #343A40; /* Charcoal Grey */
+}
+
+.challenge-difficulty {
+    background-color: #FFE5E5; /* Soft Blush */
+    color: #D63384; /* Deep Rose */
+}
+
+.challenge-difficulty.easy {
+    background-color: #87CEEB; /* Sage Green */
+    color: white;
+}
+
+.challenge-difficulty.medium {
+    background-color: #FFB84D; /* Golden Honey */
+    color: #343A40; /* Charcoal Grey */
+}
+
+.challenge-difficulty.hard {
+    background-color: #FF6B6B; /* Warm Coral */
+    color: white;
+}
+
+.challenge-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+/* Browse Section */
+.browse-controls {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-group label {
+    font-weight: 600;
+    color: #6C757D; /* Warm Grey */
+    white-space: nowrap;
+}
+
+.filter-group select {
+    padding: 0.5rem;
+    border: 1px solid #E6E6FA; /* Lavender */
+    border-radius: 4px;
+    background-color: white;
+}
+
+.search-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-group input {
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    border: 1px solid #E6E6FA; /* Lavender */
+    border-radius: 20px;
+    width: 250px;
+}
+
+.search-group i {
+    position: absolute;
+    right: 1rem;
+    color: #6C757D; /* Warm Grey */
+}
+
+/* Challenges Grid */
+.challenges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.challenge-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    border-top: 4px solid #D63384; /* Deep Rose */
+}
+
+.challenge-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.challenge-card.completed {
+    opacity: 0.7;
+    border-top-color: #87CEEB; /* Sage Green */
+}
+
+.challenge-card.completed .challenge-title {
+    text-decoration: line-through;
+}
+
+.challenge-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.challenge-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #343A40; /* Charcoal Grey */
+    margin-right: 1rem;
+}
+
+.challenge-status {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.challenge-status.completed {
+    background-color: #87CEEB; /* Sage Green */
+    color: white;
+}
+
+.challenge-status.pending {
+    background-color: #FFE5E5; /* Soft Blush */
+    color: #D63384; /* Deep Rose */
+}
+
+.challenge-card-description {
+    color: #6C757D; /* Warm Grey */
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.challenge-card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Load More Button */
+.load-more-container {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #D63384; /* Deep Rose */
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary:hover {
+    background-color: #c22575;
+}
+
+.btn-secondary {
+    background-color: #FFB84D; /* Golden Honey */
+    color: #343A40; /* Charcoal Grey */
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background-color: #ffa726;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.challenge-modal {
+    max-width: 700px;
+}
+
+.close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6C757D; /* Warm Grey */
+}
+
+.close:hover {
+    color: #343A40; /* Charcoal Grey */
+}
+
+.modal-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #E6E6FA; /* Lavender */
+}
+
+.modal-header h2 {
+    color: #343A40; /* Charcoal Grey */
+    margin-bottom: 0.5rem;
+}
+
+.modal-meta {
+    display: flex;
+    gap: 1rem;
+}
+
+.modal-body {
+    margin-bottom: 2rem;
+}
+
+.modal-body p {
+    color: #6C757D; /* Warm Grey */
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.tips-section h3 {
+    color: #343A40; /* Charcoal Grey */
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tips-section ul {
+    padding-left: 1.5rem;
+    color: #6C757D; /* Warm Grey */
+}
+
+.tips-section li {
+    margin-bottom: 0.5rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+/* Celebration Modal */
+.celebration .modal-content {
+    text-align: center;
+    max-width: 500px;
+}
+
+.celebration-content h2 {
+    color: #D63384; /* Deep Rose */
+    margin-bottom: 1rem;
+}
+
+.celebration-content p {
+    color: #6C757D; /* Warm Grey */
+    margin-bottom: 2rem;
+}
+
+.celebration-animation {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    color: #D63384; /* Deep Rose */
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.celebration-animation i {
+    animation: bounce 1s infinite alternate;
+}
+
+.celebration-animation i:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.celebration-animation i:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-20px);
+    }
+}
+
+/* Notification */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #87CEEB; /* Sage Green */
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transform: translateX(150%);
+    transition: transform 0.3s ease;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.error {
+    background-color: #FF6B6B; /* Warm Coral */
+}
+
+.notification.success {
+    background-color: #87CEEB; /* Sage Green */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .browse-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+    
+    .filter-group, .search-group {
+        width: 100%;
+    }
+    
+    .search-group input {
+        width: 100%;
+    }
+    
+    .challenges-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .challenge-actions, .modal-actions {
+        flex-direction: column;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
 }
