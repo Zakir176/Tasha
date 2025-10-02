@@ -19,7 +19,7 @@ The repository hosts the **14 Days of Love** challenge (a 2-week series of mini 
 - GitHub Pages-ready structure for easy publishing.
 
 ---
-
+git checkou
 ## 📅 14 Days of Love — The Projects
 Each project below is purposely scoped to be achievable in a single day.
 
