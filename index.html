@@ -1,0 +1,33 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Love Portal Shell</title>
+  <style>
+    #app {
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to the Love Portal 💖</h1>
+  <div id="app">Loading...</div>
+
+  <script>
+    async function loadComponent() {
+      const res = await fetch('Day 14/index.html');
+      const html = await res.text();
+      
+      // Strip the <html>, <head>, and <body> tags if needed
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const bodyContent = doc.body.innerHTML;
+
+      document.getElementById('app').innerHTML = bodyContent;
+    }
+
+    loadComponent();
+  </script>
+</body>
+</html>
