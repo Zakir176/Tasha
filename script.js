@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 1,
             lastUsed: "2023-10-20",
             memories: 0,
-            folder: "Day 14",
+            // folder: "",
             link: "index.html"
         }
     ];
@@ -389,7 +389,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Open project in new tab
     function openProject(link) {
-        window.open(link, '_blank');
+        // Normalize path for root-based index: remove leading ../ segments
+        const normalized = link.replace(/^(?:\.\.\/)+/, '');
+        window.open(normalized, '_blank');
     }
 
     // Toggle project favorite status
