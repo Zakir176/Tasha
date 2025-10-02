@@ -1,4 +1,4 @@
-// Love Portal Application
+// Love Portal Application - Updated for folder structure
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
     const projectsGrid = document.getElementById('projectsGrid');
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const secondsCountEl = document.getElementById('secondsCount');
     const countdownMessageEl = document.getElementById('countdownMessage');
     
-    // Project Data
+    // Project Data with correct folder paths
     const projects = [
         {
             id: 1,
@@ -36,7 +36,8 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 12,
             lastUsed: "2023-10-15",
             memories: 8,
-            link: "#"
+            folder: "Day 1",
+            link: "../Day 1/index.html"
         },
         {
             id: 2,
@@ -50,7 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 1,
             lastUsed: "2023-09-20",
             memories: 1,
-            link: "#"
+            folder: "Day 2", 
+            link: "../Day 2/index.html"
         },
         {
             id: 3,
@@ -64,7 +66,8 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 5,
             lastUsed: "2023-10-10",
             memories: 3,
-            link: "#"
+            folder: "Day 3",
+            link: "../Day 3/index.html"
         },
         {
             id: 4,
@@ -78,7 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 23,
             lastUsed: "2023-10-18",
             memories: 15,
-            link: "#"
+            folder: "Day 4",
+            link: "../Day 4/index.html"
         },
         {
             id: 5,
@@ -92,7 +96,8 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 18,
             lastUsed: "2023-10-16",
             memories: 12,
-            link: "#"
+            folder: "Day 5",
+            link: "../Day 5/index.html"
         },
         {
             id: 6,
@@ -106,7 +111,8 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 45,
             lastUsed: "2023-10-19",
             memories: 30,
-            link: "#"
+            folder: "Day 6",
+            link: "../Day 6/index.html"
         },
         {
             id: 7,
@@ -120,7 +126,8 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 32,
             lastUsed: "2023-10-19",
             memories: 20,
-            link: "#"
+            folder: "Day 7",
+            link: "../Day 7/index.html"
         },
         {
             id: 8,
@@ -134,7 +141,8 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 15,
             lastUsed: "2023-10-12",
             memories: 10,
-            link: "#"
+            folder: "Day 8",
+            link: "../Day 8/index.html"
         },
         {
             id: 9,
@@ -148,7 +156,8 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 8,
             lastUsed: "2023-09-28",
             memories: 6,
-            link: "#"
+            folder: "Day 9",
+            link: "../Day 9/index.html"
         },
         {
             id: 10,
@@ -162,7 +171,8 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 25,
             lastUsed: "2023-10-17",
             memories: 18,
-            link: "#"
+            folder: "Day 10",
+            link: "../Day 10/index.html"
         },
         {
             id: 11,
@@ -176,7 +186,8 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 14,
             lastUsed: "2023-10-14",
             memories: 9,
-            link: "#"
+            folder: "Day 11",
+            link: "../Day 11/index.html"
         },
         {
             id: 12,
@@ -190,7 +201,8 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 22,
             lastUsed: "2023-10-19",
             memories: 15,
-            link: "#"
+            folder: "Day 12",
+            link: "../Day 12/index.html"
         },
         {
             id: 13,
@@ -204,7 +216,8 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 19,
             lastUsed: "2023-10-19",
             memories: 12,
-            link: "#"
+            folder: "Day 13",
+            link: "../Day 13/index.html"
         },
         {
             id: 14,
@@ -218,13 +231,14 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 1,
             lastUsed: "2023-10-20",
             memories: 0,
-            link: "#"
+            folder: "Day 14",
+            link: "index.html"
         }
     ];
 
     // User Data
     let userData = {
-        anniversaryDate: "2020-02-14", // Default anniversary date
+        anniversaryDate: "2020-02-14",
         favoriteProjects: [1, 2, 4, 6, 8, 10, 12, 14],
         totalMemories: 0,
         daysTogether: 0
@@ -246,7 +260,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (savedData) {
             userData = JSON.parse(savedData);
         } else {
-            // Calculate initial stats
             calculateStats();
             saveUserData();
         }
@@ -259,10 +272,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Calculate stats based on project data
     function calculateStats() {
-        // Calculate total memories
         userData.totalMemories = projects.reduce((total, project) => total + project.memories, 0);
         
-        // Calculate days together
         const anniversary = new Date(userData.anniversaryDate);
         const today = new Date();
         const timeDiff = today.getTime() - anniversary.getTime();
@@ -288,9 +299,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const projectElement = createProjectCard(project);
             projectsGrid.appendChild(projectElement);
         });
-        
-        // Update project count
-        totalProjectsEl.textContent = filteredProjects.length;
     }
 
     // Create project card element
@@ -332,13 +340,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set featured project
     function setFeaturedProject() {
-        const featured = projects.find(project => project.featured) || projects[9]; // Default to Love Story Timeline
+        const featured = projects.find(project => project.featured) || projects[9];
         
         featuredProject.innerHTML = `
             <div class="featured-project-content">
                 <h3>${featured.title}</h3>
                 <p>${featured.description}</p>
-                <button class="btn-primary" onclick="showProjectDetails(${JSON.stringify(featured).replace(/"/g, '&quot;')})">
+                <button class="btn-primary" onclick="openProject('${featured.link}')">
                     <i class="fas fa-external-link-alt"></i> Explore Now
                 </button>
             </div>
@@ -372,12 +380,16 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         document.getElementById('detailOpenBtn').onclick = () => {
-            // In a real app, this would navigate to the project
-            showNotification(`Opening ${project.title}...`, 'success');
+            openProject(project.link);
             modal.style.display = 'none';
         };
         
         modal.style.display = 'block';
+    }
+
+    // Open project in new tab
+    function openProject(link) {
+        window.open(link, '_blank');
     }
 
     // Toggle project favorite status
@@ -481,17 +493,19 @@ document.addEventListener('DOMContentLoaded', function() {
         
         let actionTitle = '';
         let actionBody = '';
+        let projectLink = '';
         
         switch(action) {
             case 'memory':
                 actionTitle = 'Add New Memory';
+                projectLink = '../Day 5/index.html'; // Memory Jar
                 actionBody = `
                     <div class="quick-action-content">
                         <div class="quick-action-icon">
                             <i class="fas fa-camera"></i>
                         </div>
-                        <p class="quick-action-text">Capture this special moment to cherish forever.</p>
-                        <button class="btn-primary" onclick="handleQuickAction('memory')">
+                        <p class="quick-action-text">Capture this special moment to cherish forever in your Memory Jar.</p>
+                        <button class="btn-primary" onclick="openProject('${projectLink}')">
                             <i class="fas fa-plus"></i> Create Memory
                         </button>
                     </div>
@@ -499,13 +513,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             case 'note':
                 actionTitle = 'Write Love Note';
+                projectLink = '../Day 4/index.html'; // Love Notes Sticky Wall
                 actionBody = `
                     <div class="quick-action-content">
                         <div class="quick-action-icon">
                             <i class="fas fa-pen-fancy"></i>
                         </div>
-                        <p class="quick-action-text">Express your feelings with a heartfelt note.</p>
-                        <button class="btn-primary" onclick="handleQuickAction('note')">
+                        <p class="quick-action-text">Express your feelings with a heartfelt note on your digital wall.</p>
+                        <button class="btn-primary" onclick="openProject('${projectLink}')">
                             <i class="fas fa-pen"></i> Start Writing
                         </button>
                     </div>
@@ -513,13 +528,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             case 'challenge':
                 actionTitle = 'Daily Love Challenge';
+                projectLink = '../Day 7/index.html'; // Daily Love Challenge
                 actionBody = `
                     <div class="quick-action-content">
                         <div class="quick-action-icon">
                             <i class="fas fa-tasks"></i>
                         </div>
-                        <p class="quick-action-text">Take on today's challenge to strengthen your bond.</p>
-                        <button class="btn-primary" onclick="handleQuickAction('challenge')">
+                        <p class="quick-action-text">Take on today's challenge to strengthen your bond and grow together.</p>
+                        <button class="btn-primary" onclick="openProject('${projectLink}')">
                             <i class="fas fa-play"></i> Start Challenge
                         </button>
                     </div>
@@ -527,13 +543,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             case 'bucket':
                 actionTitle = 'Bucket List Item';
+                projectLink = '../Day 12/index.html'; // Couple's Bucket List
                 actionBody = `
                     <div class="quick-action-content">
                         <div class="quick-action-icon">
                             <i class="fas fa-list-check"></i>
                         </div>
-                        <p class="quick-action-text">Add a new adventure to your couple's bucket list.</p>
-                        <button class="btn-primary" onclick="handleQuickAction('bucket')">
+                        <p class="quick-action-text">Add a new adventure to your couple's bucket list and dream together.</p>
+                        <button class="btn-primary" onclick="openProject('${projectLink}')">
                             <i class="fas fa-plus"></i> Add Item
                         </button>
                     </div>
@@ -544,30 +561,6 @@ document.addEventListener('DOMContentLoaded', function() {
         title.textContent = actionTitle;
         body.innerHTML = actionBody;
         modal.style.display = 'block';
-    }
-
-    // Handle quick action
-    function handleQuickAction(action) {
-        // In a real app, this would navigate to the appropriate project
-        let message = '';
-        
-        switch(action) {
-            case 'memory':
-                message = 'Opening Memory Creator...';
-                break;
-            case 'note':
-                message = 'Opening Love Note Editor...';
-                break;
-            case 'challenge':
-                message = 'Loading Daily Challenge...';
-                break;
-            case 'bucket':
-                message = 'Opening Bucket List...';
-                break;
-        }
-        
-        showNotification(message, 'success');
-        closeModals();
     }
 
     // Close all modals
@@ -656,8 +649,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Make functions available globally for inline event handlers
-    window.showProjectDetails = showProjectDetails;
-    window.handleQuickAction = handleQuickAction;
+    window.openProject = openProject;
 
     // Initialize the application
     init();
