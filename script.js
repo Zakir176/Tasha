@@ -222,11 +222,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize the application
     function init() {
         loadUserData();
+        
+        // Check if setup is complete
+        if (!userData.setupComplete) {
+            showSetupModal();
+        } else {
+            initializePortal();
+        }
+    }
+
+    // Initialize portal after setup
+    function initializePortal() {
         calculateStats();
         renderProjectsGrid();
         setFeaturedProject();
         setupEventListeners();
         updateStats();
+        updateHeaderTitle();
         startCountdown();
         updateLastVisit();
     }
@@ -274,6 +286,104 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateLastVisit() {
         userData.lastVisit = new Date().toISOString();
         saveUserData();
+    }
+
+    // Show setup modal for first-time users
+    function showSetupModal() {
+        const setupModal = document.createElement('div');
+        setupModal.id = 'setupModal';
+        setupModal.className = 'modal';
+        setupModal.style.display = 'block';
+        
+        setupModal.innerHTML = `
+            <div class="modal-content setup-modal">
+                <div class="setup-header">
+                    <i class="fas fa-heart" style="font-size: 3rem; color: #D63384; margin-bottom: 1rem;"></i>
+                    <h2>Welcome to Your Love Portal!</h2>
+                    <p>Let's personalize your experience</p>
+                </div>
+                <form id="setupForm" class="setup-form">
+                    <div class="form-group">
+                        <label for="coupleNames">
+                            <i class="fas fa-users"></i> Your Names
+                        </label>
+                        <input 
+                            type="text" 
+                            id="coupleNames" 
+                            name="coupleNames" 
+                            placeholder="e.g., John & Jane"
+                            required
+                        >
+                        <small>How should we address you both?</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="relationshipStartDate">
+                            <i class="fas fa-calendar-heart"></i> Relationship Start Date
+                        </label>
+                        <input 
+                            type="date" 
+                            id="relationshipStartDate" 
+                            name="relationshipStartDate" 
+                            required
+                        >
+                        <small>When did your journey together begin?</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="anniversaryDate">
+                            <i class="fas fa-ring"></i> Anniversary Date
+                        </label>
+                        <input 
+                            type="date" 
+                            id="anniversaryDate" 
+                            name="anniversaryDate" 
+                            required
+                        >
+                        <small>The special day you celebrate each year</small>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary setup-submit">
+                        <i class="fas fa-heart"></i> Create My Love Portal
+                    </button>
+                </form>
+            </div>
+        `;
+        
+        document.body.appendChild(setupModal);
+        
+        // Handle form submission
+        const form = document.getElementById('setupForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            userData.coupleNames = formData.get('coupleNames');
+            userData.relationshipStartDate = formData.get('relationshipStartDate');
+            userData.anniversaryDate = formData.get('anniversaryDate');
+            userData.setupComplete = true;
+            
+            saveUserData();
+            
+            // Remove setup modal with animation
+            setupModal.style.opacity = '0';
+            setTimeout(() => {
+                setupModal.remove();
+                initializePortal();
+                showNotification(`Welcome, ${userData.coupleNames}! 💕`, 'success');
+            }, 300);
+        });
+    }
+
+    // Update header title with couple names
+    function updateHeaderTitle() {
+        const headerTitle = document.querySelector('.header-content h1');
+        const headerSubtitle = document.querySelector('.header-content p');
+        
+        if (userData.coupleNames && userData.coupleNames !== 'Us') {
+            headerTitle.textContent = `${userData.coupleNames}'s Love Portal`;
+            headerSubtitle.textContent = `A collection of your digital memories and shared moments`;
+        }
     }
 
     // Render projects grid
@@ -619,7 +729,8 @@ document.addEventListener('DOMContentLoaded', function() {
     window.lovePortal = {
         openProject: openProject,
         toggleFavorite: toggleFavorite,
-        showProjectDetails: showProjectDetails
+        showProjectDetails: showProjectDetails,
+        showSettings: showSettings
     };
 
     // Initialize

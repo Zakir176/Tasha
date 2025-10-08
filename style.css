@@ -645,3 +645,263 @@ body {
         justify-content: center;
     }
 }
+
+/* Setup Modal Styles - Add this to the end of your style.css */
+
+.setup-modal {
+    max-width: 600px;
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.setup-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #FFE5E5;
+}
+
+.setup-header h2 {
+    color: #343A40;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+}
+
+.setup-header p {
+    color: #6C757D;
+    font-size: 1rem;
+}
+
+.setup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #343A40;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+}
+
+.form-group label i {
+    color: #D63384;
+    font-size: 1.1rem;
+}
+
+.form-group input {
+    padding: 0.875rem 1rem;
+    border: 2px solid #E6E6FA;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    font-family: inherit;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #D63384;
+    box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.1);
+}
+
+.form-group small {
+    color: #6C757D;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.setup-submit {
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.setup-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(214, 51, 132, 0.3);
+}
+
+/* Modal transition */
+#setupModal {
+    transition: opacity 0.3s ease;
+}
+
+/* Responsive adjustments for setup modal */
+@media (max-width: 768px) {
+    .setup-modal {
+        margin: 2rem auto;
+        width: 95%;
+    }
+    
+    .setup-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .form-group input {
+        padding: 0.75rem;
+    }
+}
+
+/* Setup Modal Styles - Add this to the end of your style.css */
+
+/* Settings Button */
+.settings-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1.2rem;
+    z-index: 10;
+}
+
+.settings-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.setup-modal {
+    max-width: 600px;
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.setup-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #FFE5E5;
+}
+
+.setup-header h2 {
+    color: #343A40;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+}
+
+.setup-header p {
+    color: #6C757D;
+    font-size: 1rem;
+}
+
+.setup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #343A40;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+}
+
+.form-group label i {
+    color: #D63384;
+    font-size: 1.1rem;
+}
+
+.form-group input {
+    padding: 0.875rem 1rem;
+    border: 2px solid #E6E6FA;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    font-family: inherit;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #D63384;
+    box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.1);
+}
+
+.form-group small {
+    color: #6C757D;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.setup-submit {
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.setup-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(214, 51, 132, 0.3);
+}
+
+/* Modal transition */
+#setupModal {
+    transition: opacity 0.3s ease;
+}
+
+/* Responsive adjustments for setup modal */
+@media (max-width: 768px) {
+    .setup-modal {
+        margin: 2rem auto;
+        width: 95%;
+    }
+    
+    .setup-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .form-group input {
+        padding: 0.75rem;
+    }
+}

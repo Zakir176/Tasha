@@ -10,31 +10,34 @@
 <body>
     <div class="portal-container">
         <!-- Header Section -->
-        <header class="portal-header">
-            <div class="header-content">
-                <h1>Our Love Portal</h1>
-                <p>A collection of our digital memories and shared moments</p>
-                <div class="header-stats">
-                    <div class="stat">
-                        <span class="stat-number" id="totalProjects">14</span>
-                        <span class="stat-label">Love Projects</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number" id="daysTogether">0</span>
-                        <span class="stat-label">Days Together</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number" id="memoriesCount">0</span>
-                        <span class="stat-label">Memories Saved</span>
-                    </div>
-                </div>
+<header class="portal-header">
+    <button class="settings-btn" onclick="window.lovePortal.showSettings()" title="Portal Settings">
+        <i class="fas fa-cog"></i>
+    </button>
+    <div class="header-content">
+        <h1>Our Love Portal</h1>
+        <p>A collection of our digital memories and shared moments</p>
+        <div class="header-stats">
+            <div class="stat">
+                <span class="stat-number" id="totalProjects">14</span>
+                <span class="stat-label">Love Projects</span>
             </div>
-            <div class="header-decoration">
-                <div class="floating-heart"><i class="fas fa-heart"></i></div>
-                <div class="floating-heart"><i class="fas fa-heart"></i></div>
-                <div class="floating-heart"><i class="fas fa-heart"></i></div>
+            <div class="stat">
+                <span class="stat-number" id="daysTogether">0</span>
+                <span class="stat-label">Days Together</span>
             </div>
-        </header>
+            <div class="stat">
+                <span class="stat-number" id="memoriesCount">0</span>
+                <span class="stat-label">Memories Saved</span>
+            </div>
+        </div>
+    </div>
+    <div class="header-decoration">
+        <div class="floating-heart"><i class="fas fa-heart"></i></div>
+        <div class="floating-heart"><i class="fas fa-heart"></i></div>
+        <div class="floating-heart"><i class="fas fa-heart"></i></div>
+    </div>
+</header>
 
         <!-- Main Navigation -->
         <nav class="portal-nav">
