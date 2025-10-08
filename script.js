@@ -207,21 +207,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
 
-    // User Configuration - Change these values to personalize your portal
-    const CONFIG = {
-        anniversaryDate: "2020-02-14", // Format: YYYY-MM-DD
-        relationshipStartDate: "2020-02-14", // Format: YYYY-MM-DD
-        coupleNames: "Us", // e.g., "John & Jane"
-    };
-
     // User Data (stored in localStorage)
     let userData = {
-        anniversaryDate: CONFIG.anniversaryDate,
-        relationshipStartDate: CONFIG.relationshipStartDate,
+        anniversaryDate: null,
+        relationshipStartDate: null,
+        coupleNames: "Us",
         favoriteProjects: [1, 2, 4, 6, 8, 10, 12],
         totalMemories: 0,
         daysTogether: 0,
-        lastVisit: new Date().toISOString()
+        lastVisit: new Date().toISOString(),
+        setupComplete: false
     };
 
     // Initialize the application
