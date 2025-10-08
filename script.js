@@ -1,4 +1,8 @@
 // Love Portal Application - Enhanced Version
+
+// Global functions (defined outside DOMContentLoaded to be immediately available)
+window.lovePortal = window.lovePortal || {};
+
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
     const projectsGrid = document.getElementById('projectsGrid');
@@ -723,6 +727,108 @@ document.addEventListener('DOMContentLoaded', function() {
             notification.classList.remove('show');
             setTimeout(() => notification.remove(), 300);
         }, 3000);
+    }
+
+    // Show settings modal to update user information
+    function showSettings() {
+        const settingsModal = document.createElement('div');
+        settingsModal.id = 'settingsModal';
+        settingsModal.className = 'modal';
+        settingsModal.style.display = 'block';
+        
+        settingsModal.innerHTML = `
+            <div class="modal-content setup-modal">
+                <span class="close" onclick="document.getElementById('settingsModal').remove()">&times;</span>
+                <div class="setup-header">
+                    <i class="fas fa-cog" style="font-size: 3rem; color: #D63384; margin-bottom: 1rem;"></i>
+                    <h2>Portal Settings</h2>
+                    <p>Update your personal information</p>
+                </div>
+                <form id="settingsForm" class="setup-form">
+                    <div class="form-group">
+                        <label for="settingsCoupleNames">
+                            <i class="fas fa-users"></i> Your Names
+                        </label>
+                        <input 
+                            type="text" 
+                            id="settingsCoupleNames" 
+                            name="coupleNames" 
+                            value="${userData.coupleNames}"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="settingsRelationshipStartDate">
+                            <i class="fas fa-calendar-heart"></i> Relationship Start Date
+                        </label>
+                        <input 
+                            type="date" 
+                            id="settingsRelationshipStartDate" 
+                            name="relationshipStartDate" 
+                            value="${userData.relationshipStartDate}"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="settingsAnniversaryDate">
+                            <i class="fas fa-ring"></i> Anniversary Date
+                        </label>
+                        <input 
+                            type="date" 
+                            id="settingsAnniversaryDate" 
+                            name="anniversaryDate" 
+                            value="${userData.anniversaryDate}"
+                            required
+                        >
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem;">
+                        <button type="submit" class="btn-primary" style="flex: 1;">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <button type="button" class="btn-secondary" style="flex: 1;" onclick="document.getElementById('settingsModal').remove()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        `;
+        
+        document.body.appendChild(settingsModal);
+        
+        // Handle form submission
+        const form = document.getElementById('settingsForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            userData.coupleNames = formData.get('coupleNames');
+            userData.relationshipStartDate = formData.get('relationshipStartDate');
+            userData.anniversaryDate = formData.get('anniversaryDate');
+            
+            saveUserData();
+            
+            // Update display
+            updateHeaderTitle();
+            calculateStats();
+            updateStats();
+            
+            // Remove modal
+            settingsModal.style.opacity = '0';
+            setTimeout(() => {
+                settingsModal.remove();
+                showNotification('Settings updated successfully! 💕', 'success');
+            }, 300);
+        });
+        
+        // Close on outside click
+        settingsModal.addEventListener('click', function(e) {
+            if (e.target === settingsModal) {
+                settingsModal.remove();
+            }
+        });
     }
 
     // Export functions to window for inline handlers
