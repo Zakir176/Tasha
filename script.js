@@ -1,4 +1,4 @@
-// Love Portal Application - Updated for folder structure
+// Love Portal Application - Enhanced Version
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
     const projectsGrid = document.getElementById('projectsGrid');
@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const projectDetailModal = document.getElementById('projectDetailModal');
     const closeButtons = document.querySelectorAll('.close');
     const quickActionBtns = document.querySelectorAll('.action-btn');
-    const countdownTimer = document.getElementById('countdownTimer');
     
     // Stats Elements
     const totalProjectsEl = document.getElementById('totalProjects');
@@ -22,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const secondsCountEl = document.getElementById('secondsCount');
     const countdownMessageEl = document.getElementById('countdownMessage');
     
-    // Project Data with correct folder paths
+    // Project Data - Complete list with correct paths
     const projects = [
         {
             id: 1,
@@ -36,8 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 12,
             lastUsed: "2023-10-15",
             memories: 8,
-            folder: "Day 1",
-            link: "../Day 1/index.html"
+            link: "Day 1/index.html"
         },
         {
             id: 2,
@@ -51,8 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 1,
             lastUsed: "2023-09-20",
             memories: 1,
-            folder: "Day 2", 
-            link: "../Day 2/index.html"
+            link: "Day 2/index.html"
         },
         {
             id: 3,
@@ -66,8 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 5,
             lastUsed: "2023-10-10",
             memories: 3,
-            folder: "Day 3",
-            link: "../Day 3/index.html"
+            link: "Day 3/index.html"
         },
         {
             id: 4,
@@ -81,8 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 23,
             lastUsed: "2023-10-18",
             memories: 15,
-            folder: "Day 4",
-            link: "../Day 4/index.html"
+            link: "Day 4/index.html"
         },
         {
             id: 5,
@@ -96,8 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 18,
             lastUsed: "2023-10-16",
             memories: 12,
-            folder: "Day 5",
-            link: "../Day 5/index.html"
+            link: "Day 5/index.html"
         },
         {
             id: 6,
@@ -111,8 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 45,
             lastUsed: "2023-10-19",
             memories: 30,
-            folder: "Day 6",
-            link: "../Day 6/index.html"
+            link: "Day 6/index.html"
         },
         {
             id: 7,
@@ -126,8 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 32,
             lastUsed: "2023-10-19",
             memories: 20,
-            folder: "Day 7",
-            link: "../Day 7/index.html"
+            link: "Day 7/index.html"
         },
         {
             id: 8,
@@ -141,8 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 15,
             lastUsed: "2023-10-12",
             memories: 10,
-            folder: "Day 8",
-            link: "../Day 8/index.html"
+            link: "Day 8/index.html"
         },
         {
             id: 9,
@@ -156,8 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 8,
             lastUsed: "2023-09-28",
             memories: 6,
-            folder: "Day 9",
-            link: "../Day 9/index.html"
+            link: "Day 9/index.html"
         },
         {
             id: 10,
@@ -171,8 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 25,
             lastUsed: "2023-10-17",
             memories: 18,
-            folder: "Day 10",
-            link: "../Day 10/index.html"
+            link: "Day 10/index.html"
         },
         {
             id: 11,
@@ -186,8 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 14,
             lastUsed: "2023-10-14",
             memories: 9,
-            folder: "Day 11",
-            link: "../Day 11/index.html"
+            link: "Day 11/index.html"
         },
         {
             id: 12,
@@ -201,8 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 22,
             lastUsed: "2023-10-19",
             memories: 15,
-            folder: "Day 12",
-            link: "../Day 12/index.html"
+            link: "Day 12/index.html"
         },
         {
             id: 13,
@@ -216,75 +203,187 @@ document.addEventListener('DOMContentLoaded', function() {
             usageCount: 19,
             lastUsed: "2023-10-19",
             memories: 12,
-            folder: "Day 13",
-            link: "../Day 13/index.html"
-        },
-        {
-            id: 14,
-            title: "Love Portal",
-            description: "Central hub linking all projects",
-            category: "interactive",
-            icon: "fas fa-compass",
-            status: "Active",
-            featured: false,
-            favorite: true,
-            usageCount: 1,
-            lastUsed: "2023-10-20",
-            memories: 0,
-            folder: "Day 14",
-            link: "index.html"
+            link: "Day 13/index.html"
         }
     ];
 
-    // User Data
+    // User Data (stored in localStorage)
     let userData = {
-        anniversaryDate: "2020-02-14",
-        favoriteProjects: [1, 2, 4, 6, 8, 10, 12, 14],
+        anniversaryDate: null,
+        relationshipStartDate: null,
+        coupleNames: "Us",
+        favoriteProjects: [1, 2, 4, 6, 8, 10, 12],
         totalMemories: 0,
-        daysTogether: 0
+        daysTogether: 0,
+        lastVisit: new Date().toISOString(),
+        setupComplete: false
     };
 
     // Initialize the application
     function init() {
         loadUserData();
+        
+        // Check if setup is complete
+        if (!userData.setupComplete) {
+            showSetupModal();
+        } else {
+            initializePortal();
+        }
+    }
+
+    // Initialize portal after setup
+    function initializePortal() {
+        calculateStats();
         renderProjectsGrid();
         setFeaturedProject();
         setupEventListeners();
         updateStats();
+        updateHeaderTitle();
         startCountdown();
+        updateLastVisit();
     }
 
     // Load user data from localStorage
     function loadUserData() {
-        const savedData = localStorage.getItem('lovePortalData');
-        if (savedData) {
-            userData = JSON.parse(savedData);
-        } else {
-            calculateStats();
-            saveUserData();
+        try {
+            const savedData = localStorage.getItem('lovePortalData');
+            if (savedData) {
+                const parsed = JSON.parse(savedData);
+                userData = { ...userData, ...parsed };
+            }
+        } catch (error) {
+            console.log('No saved data found, using defaults');
         }
     }
 
     // Save user data to localStorage
     function saveUserData() {
-        localStorage.setItem('lovePortalData', JSON.stringify(userData));
+        try {
+            localStorage.setItem('lovePortalData', JSON.stringify(userData));
+        } catch (error) {
+            console.error('Could not save data:', error);
+        }
     }
 
-    // Calculate stats based on project data
+    // Calculate stats based on project data and dates
     function calculateStats() {
         userData.totalMemories = projects.reduce((total, project) => total + project.memories, 0);
         
-        const anniversary = new Date(userData.anniversaryDate);
+        const startDate = new Date(userData.relationshipStartDate);
         const today = new Date();
-        const timeDiff = today.getTime() - anniversary.getTime();
+        const timeDiff = today.getTime() - startDate.getTime();
         userData.daysTogether = Math.floor(timeDiff / (1000 * 3600 * 24));
     }
 
     // Update stats display
     function updateStats() {
         totalProjectsEl.textContent = projects.length;
-        daysTogetherEl.textContent = userData.daysTogether;
-        memoriesCountEl.textContent = userData.totalMemories;
+        daysTogetherEl.textContent = userData.daysTogether.toLocaleString();
+        memoriesCountEl.textContent = userData.totalMemories.toLocaleString();
+    }
+
+    // Update last visit timestamp
+    function updateLastVisit() {
+        userData.lastVisit = new Date().toISOString();
+        saveUserData();
+    }
+
+    // Show setup modal for first-time users
+    function showSetupModal() {
+        const setupModal = document.createElement('div');
+        setupModal.id = 'setupModal';
+        setupModal.className = 'modal';
+        setupModal.style.display = 'block';
+        
+        setupModal.innerHTML = `
+            <div class="modal-content setup-modal">
+                <div class="setup-header">
+                    <i class="fas fa-heart" style="font-size: 3rem; color: #D63384; margin-bottom: 1rem;"></i>
+                    <h2>Welcome to Your Love Portal!</h2>
+                    <p>Let's personalize your experience</p>
+                </div>
+                <form id="setupForm" class="setup-form">
+                    <div class="form-group">
+                        <label for="coupleNames">
+                            <i class="fas fa-users"></i> Your Names
+                        </label>
+                        <input 
+                            type="text" 
+                            id="coupleNames" 
+                            name="coupleNames" 
+                            placeholder="e.g., John & Jane"
+                            required
+                        >
+                        <small>How should we address you both?</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="relationshipStartDate">
+                            <i class="fas fa-calendar-heart"></i> Relationship Start Date
+                        </label>
+                        <input 
+                            type="date" 
+                            id="relationshipStartDate" 
+                            name="relationshipStartDate" 
+                            required
+                        >
+                        <small>When did your journey together begin?</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="anniversaryDate">
+                            <i class="fas fa-ring"></i> Anniversary Date
+                        </label>
+                        <input 
+                            type="date" 
+                            id="anniversaryDate" 
+                            name="anniversaryDate" 
+                            required
+                        >
+                        <small>The special day you celebrate each year</small>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary setup-submit">
+                        <i class="fas fa-heart"></i> Create My Love Portal
+                    </button>
+                </form>
+            </div>
+        `;
+        
+        document.body.appendChild(setupModal);
+        
+        // Handle form submission
+        const form = document.getElementById('setupForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            userData.coupleNames = formData.get('coupleNames');
+            userData.relationshipStartDate = formData.get('relationshipStartDate');
+            userData.anniversaryDate = formData.get('anniversaryDate');
+            userData.setupComplete = true;
+            
+            saveUserData();
+            
+            // Remove setup modal with animation
+            setupModal.style.opacity = '0';
+            setTimeout(() => {
+                setupModal.remove();
+                initializePortal();
+                showNotification(`Welcome, ${userData.coupleNames}! 💕`, 'success');
+            }, 300);
+        });
+    }
+
+    // Update header title with couple names
+    function updateHeaderTitle() {
+        const headerTitle = document.querySelector('.header-content h1');
+        const headerSubtitle = document.querySelector('.header-content p');
+        
+        if (userData.coupleNames && userData.coupleNames !== 'Us') {
+            headerTitle.textContent = `${userData.coupleNames}'s Love Portal`;
+            headerSubtitle.textContent = `A collection of your digital memories and shared moments`;
+        }
     }
 
     // Render projects grid
@@ -294,6 +393,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const filteredProjects = filter === 'all' 
             ? projects 
             : projects.filter(project => project.category === filter);
+        
+        if (filteredProjects.length === 0) {
+            projectsGrid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color: #6C757D;">No projects in this category yet.</p>';
+            return;
+        }
         
         filteredProjects.forEach(project => {
             const projectElement = createProjectCard(project);
@@ -314,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="project-icon ${project.category}">
                     <i class="${project.icon}"></i>
                 </div>
-                <div class="project-favorite ${isFavorite ? 'active' : ''}">
+                <div class="project-favorite ${isFavorite ? 'active' : ''}" data-project-id="${project.id}">
                     <i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i>
                 </div>
             </div>
@@ -327,12 +431,17 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         // Add event listeners
-        card.addEventListener('click', () => showProjectDetails(project));
+        card.addEventListener('click', (e) => {
+            // Don't open if clicking favorite button
+            if (!e.target.closest('.project-favorite')) {
+                showProjectDetails(project);
+            }
+        });
         
         const favoriteBtn = card.querySelector('.project-favorite');
         favoriteBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            toggleFavorite(project.id, favoriteBtn);
+            toggleFavorite(project.id);
         });
         
         return card;
@@ -340,13 +449,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set featured project
     function setFeaturedProject() {
-        const featured = projects.find(project => project.featured) || projects[9];
+        const featured = projects.find(project => project.featured);
+        
+        if (!featured) {
+            featuredProject.innerHTML = '<p style="text-align: center;">No featured project set yet.</p>';
+            return;
+        }
         
         featuredProject.innerHTML = `
             <div class="featured-project-content">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">
+                    <i class="${featured.icon}"></i>
+                </div>
                 <h3>${featured.title}</h3>
                 <p>${featured.description}</p>
-                <button class="btn-primary" onclick="openProject('${featured.link}')">
+                <button class="btn-primary" onclick="window.lovePortal.openProject('${featured.link}')">
                     <i class="fas fa-external-link-alt"></i> Explore Now
                 </button>
             </div>
@@ -355,7 +472,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Show project details in modal
     function showProjectDetails(project) {
-        const modal = document.getElementById('projectDetailModal');
+        const modal = projectDetailModal;
         const isFavorite = userData.favoriteProjects.includes(project.id);
         
         // Update modal content
@@ -373,7 +490,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const favoriteBtn = document.getElementById('detailFavoriteBtn');
         favoriteBtn.innerHTML = `<i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i> ${isFavorite ? 'Remove from' : 'Add to'} Favorites`;
         
-        // Add event listeners to modal buttons
+        // Update button event listeners
         favoriteBtn.onclick = () => {
             toggleFavorite(project.id);
             modal.style.display = 'none';
@@ -381,34 +498,29 @@ document.addEventListener('DOMContentLoaded', function() {
         
         document.getElementById('detailOpenBtn').onclick = () => {
             openProject(project.link);
-            modal.style.display = 'none';
         };
         
         modal.style.display = 'block';
     }
 
-    // Open project in new tab
+    // Open project
     function openProject(link) {
+        if (!link) {
+            showNotification('Project link not configured', 'error');
+            return;
+        }
         window.open(link, '_blank');
     }
 
     // Toggle project favorite status
-    function toggleFavorite(projectId, element = null) {
+    function toggleFavorite(projectId) {
         const index = userData.favoriteProjects.indexOf(projectId);
         
         if (index > -1) {
             userData.favoriteProjects.splice(index, 1);
-            if (element) {
-                element.classList.remove('active');
-                element.innerHTML = '<i class="far fa-heart"></i>';
-            }
             showNotification('Removed from favorites', 'success');
         } else {
             userData.favoriteProjects.push(projectId);
-            if (element) {
-                element.classList.add('active');
-                element.innerHTML = '<i class="fas fa-heart"></i>';
-            }
             showNotification('Added to favorites!', 'success');
         }
         
@@ -430,7 +542,6 @@ document.addEventListener('DOMContentLoaded', function() {
             planning: "Planning",
             romance: "Romance"
         };
-        
         return categoryMap[category] || category;
     }
 
@@ -443,6 +554,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const diffTime = Math.abs(today - date);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         
+        if (diffDays === 0) return "Today";
         if (diffDays === 1) return "Yesterday";
         if (diffDays < 7) return `${diffDays} days ago`;
         if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
@@ -476,10 +588,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Close modals when clicking outside
         window.addEventListener('click', function(event) {
-            if (event.target === quickActionModal) {
-                closeModals();
-            }
-            if (event.target === projectDetailModal) {
+            if (event.target === quickActionModal || event.target === projectDetailModal) {
                 closeModals();
             }
         });
@@ -487,79 +596,57 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Show quick action modal
     function showQuickActionModal(action) {
-        const modal = document.getElementById('quickActionModal');
+        const modal = quickActionModal;
         const title = document.getElementById('modalActionTitle');
         const body = document.getElementById('modalActionBody');
         
-        let actionTitle = '';
-        let actionBody = '';
-        let projectLink = '';
+        const actionMap = {
+            memory: {
+                title: 'Add New Memory',
+                link: 'Day 5/index.html',
+                icon: 'fas fa-camera',
+                text: 'Capture this special moment to cherish forever in your Memory Jar.',
+                buttonText: 'Create Memory'
+            },
+            note: {
+                title: 'Write Love Note',
+                link: 'Day 4/index.html',
+                icon: 'fas fa-pen-fancy',
+                text: 'Express your feelings with a heartfelt note on your digital wall.',
+                buttonText: 'Start Writing'
+            },
+            challenge: {
+                title: 'Daily Love Challenge',
+                link: 'Day 7/index.html',
+                icon: 'fas fa-tasks',
+                text: 'Take on today\'s challenge to strengthen your bond and grow together.',
+                buttonText: 'Start Challenge'
+            },
+            bucket: {
+                title: 'Bucket List Item',
+                link: 'Day 12/index.html',
+                icon: 'fas fa-list-check',
+                text: 'Add a new adventure to your couple\'s bucket list and dream together.',
+                buttonText: 'Add Item'
+            }
+        };
         
-        switch(action) {
-            case 'memory':
-                actionTitle = 'Add New Memory';
-                projectLink = '../Day 5/index.html'; // Memory Jar
-                actionBody = `
-                    <div class="quick-action-content">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-camera"></i>
-                        </div>
-                        <p class="quick-action-text">Capture this special moment to cherish forever in your Memory Jar.</p>
-                        <button class="btn-primary" onclick="openProject('${projectLink}')">
-                            <i class="fas fa-plus"></i> Create Memory
-                        </button>
-                    </div>
-                `;
-                break;
-            case 'note':
-                actionTitle = 'Write Love Note';
-                projectLink = '../Day 4/index.html'; // Love Notes Sticky Wall
-                actionBody = `
-                    <div class="quick-action-content">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-pen-fancy"></i>
-                        </div>
-                        <p class="quick-action-text">Express your feelings with a heartfelt note on your digital wall.</p>
-                        <button class="btn-primary" onclick="openProject('${projectLink}')">
-                            <i class="fas fa-pen"></i> Start Writing
-                        </button>
-                    </div>
-                `;
-                break;
-            case 'challenge':
-                actionTitle = 'Daily Love Challenge';
-                projectLink = '../Day 7/index.html'; // Daily Love Challenge
-                actionBody = `
-                    <div class="quick-action-content">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-tasks"></i>
-                        </div>
-                        <p class="quick-action-text">Take on today's challenge to strengthen your bond and grow together.</p>
-                        <button class="btn-primary" onclick="openProject('${projectLink}')">
-                            <i class="fas fa-play"></i> Start Challenge
-                        </button>
-                    </div>
-                `;
-                break;
-            case 'bucket':
-                actionTitle = 'Bucket List Item';
-                projectLink = '../Day 12/index.html'; // Couple's Bucket List
-                actionBody = `
-                    <div class="quick-action-content">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-list-check"></i>
-                        </div>
-                        <p class="quick-action-text">Add a new adventure to your couple's bucket list and dream together.</p>
-                        <button class="btn-primary" onclick="openProject('${projectLink}')">
-                            <i class="fas fa-plus"></i> Add Item
-                        </button>
-                    </div>
-                `;
-                break;
-        }
+        const actionData = actionMap[action];
+        if (!actionData) return;
         
-        title.textContent = actionTitle;
-        body.innerHTML = actionBody;
+        title.textContent = actionData.title;
+        body.innerHTML = `
+            <div class="quick-action-content">
+                <div class="quick-action-icon">
+                    <i class="${actionData.icon}"></i>
+                </div>
+                <p class="quick-action-text">${actionData.text}</p>
+                <button class="btn-primary" onclick="window.lovePortal.openProject('${actionData.link}')">
+                    <i class="fas fa-plus"></i> ${actionData.buttonText}
+                </button>
+            </div>
+        `;
+        
         modal.style.display = 'block';
     }
 
@@ -575,7 +662,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const now = new Date();
             const anniversary = new Date(userData.anniversaryDate);
             
-            // Set anniversary to next occurrence
+            // Set to next occurrence
             anniversary.setFullYear(now.getFullYear());
             if (anniversary < now) {
                 anniversary.setFullYear(now.getFullYear() + 1);
@@ -595,33 +682,32 @@ document.addEventListener('DOMContentLoaded', function() {
             secondsCountEl.textContent = seconds.toString().padStart(2, '0');
             
             // Update message
-            if (days === 0) {
-                countdownMessageEl.textContent = "It's your anniversary today! Celebrate your love!";
+            if (days === 0 && hours === 0) {
+                countdownMessageEl.textContent = "🎉 It's your anniversary today! Celebrate your love! 🎉";
+            } else if (days === 0) {
+                countdownMessageEl.textContent = "Your anniversary is TODAY! 💕";
             } else if (days === 1) {
-                countdownMessageEl.textContent = "Just one day until your anniversary!";
+                countdownMessageEl.textContent = "Just one day until your anniversary! 💖";
             } else if (days < 7) {
-                countdownMessageEl.textContent = "Your anniversary is just around the corner!";
+                countdownMessageEl.textContent = "Your anniversary is just around the corner! 💝";
             } else if (days < 30) {
-                countdownMessageEl.textContent = "Looking forward to celebrating your love!";
+                countdownMessageEl.textContent = "Looking forward to celebrating your love! ❤️";
             } else {
-                countdownMessageEl.textContent = "Counting down to your special day!";
+                countdownMessageEl.textContent = "Counting down to your special day! 💕";
             }
         }
         
-        // Update immediately and then every second
         updateCountdown();
         setInterval(updateCountdown, 1000);
     }
 
     // Show notification
     function showNotification(message, type = 'success') {
-        // Remove existing notifications
         const existingNotification = document.querySelector('.notification');
         if (existingNotification) {
             existingNotification.remove();
         }
         
-        // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.innerHTML = `
@@ -629,28 +715,24 @@ document.addEventListener('DOMContentLoaded', function() {
             <span>${message}</span>
         `;
         
-        // Add to body
         document.body.appendChild(notification);
         
-        // Trigger animation
-        setTimeout(() => {
-            notification.classList.add('show');
-        }, 10);
+        setTimeout(() => notification.classList.add('show'), 10);
         
-        // Remove after 3 seconds
         setTimeout(() => {
             notification.classList.remove('show');
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 300);
+            setTimeout(() => notification.remove(), 300);
         }, 3000);
     }
 
-    // Make functions available globally for inline event handlers
-    window.openProject = openProject;
+    // Export functions to window for inline handlers
+    window.lovePortal = {
+        openProject: openProject,
+        toggleFavorite: toggleFavorite,
+        showProjectDetails: showProjectDetails,
+        showSettings: showSettings
+    };
 
-    // Initialize the application
+    // Initialize
     init();
 });
