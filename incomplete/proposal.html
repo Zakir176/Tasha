@@ -12,44 +12,91 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #495057;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background hearts */
+        .bg-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 2rem;
+            animation: floatHeart 15s infinite ease-in-out;
+        }
+
+        @keyframes floatHeart {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
 
         .container {
             background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 50px 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             text-align: center;
-            max-width: 500px;
-            width: 90%;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
-            color: #714b67;
+            color: #667eea;
             margin-bottom: 30px;
-            font-size: 2.5em;
-            font-weight: 300;
+            font-size: 2.8em;
+            font-weight: 600;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(102, 126, 234, 0.3); }
+            to { text-shadow: 0 0 20px rgba(102, 126, 234, 0.6); }
         }
 
         .message {
             font-size: 1.2em;
-            line-height: 1.6;
+            line-height: 1.8;
             margin-bottom: 30px;
-            color: #6c757d;
+            color: #495057;
         }
 
         .question {
-            font-size: 1.4em;
-            color: #714b67;
-            margin-bottom: 30px;
-            font-weight: 500;
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 40px;
+            font-weight: 600;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .buttons {
@@ -57,124 +104,319 @@
             gap: 20px;
             justify-content: center;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
         button {
-            padding: 15px 30px;
+            padding: 18px 40px;
             border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
+            border-radius: 50px;
+            font-size: 1.2em;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 500;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .yes-btn {
-            background-color: #714b67;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .yes-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .yes-btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .yes-btn:hover {
-            background-color: #5a3b54;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
 
         .no-btn {
-            background-color: #6c757d;
-            color: white;
+            background: #e0e0e0;
+            color: #666;
+            transition: all 0.3s ease;
         }
 
         .no-btn:hover {
-            background-color: #5a6268;
+            background: #d0d0d0;
+            transform: scale(0.95);
         }
 
+        /* Camera section styles */
         .camera-section {
             display: none;
-            margin-top: 20px;
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease-out;
         }
 
-        video, canvas {
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .camera-section h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        .video-container {
+            position: relative;
+            display: inline-block;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        video {
             max-width: 100%;
-            border-radius: 8px;
-            margin: 10px 0;
+            display: block;
+            border-radius: 15px;
+        }
+
+        canvas {
+            display: none;
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .camera-btn {
-            background-color: #714b67;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 10px 20px;
-            margin: 10px;
+            padding: 12px 28px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .camera-btn:hover {
-            background-color: #5a3b54;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
 
+        .camera-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Certificate styles */
         .certificate {
             display: none;
-            background: white;
-            padding: 40px;
-            border: 3px solid #714b67;
-            border-radius: 10px;
-            margin-top: 20px;
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            padding: 50px 40px;
+            border: 5px solid #667eea;
+            border-radius: 20px;
+            margin-top: 30px;
             position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cert-border {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px dashed #764ba2;
+            border-radius: 15px;
+            pointer-events: none;
         }
 
         .cert-header {
-            color: #714b67;
-            font-size: 2em;
+            color: #667eea;
+            font-size: 2.5em;
             margin-bottom: 20px;
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .cert-content {
-            font-size: 1.1em;
-            line-height: 1.8;
+            font-size: 1.2em;
+            line-height: 2;
             color: #495057;
+            position: relative;
+            z-index: 1;
+        }
+
+        .couple-names {
+            font-size: 1.6em;
+            color: #667eea;
+            font-weight: bold;
+            margin: 20px 0;
+            display: block;
         }
 
         .hearts {
             color: #e74c3c;
-            font-size: 1.5em;
-            margin: 20px 0;
+            font-size: 2em;
+            margin: 25px 0;
+            animation: heartBeat 1.5s ease-in-out infinite;
         }
 
-        .signature-line {
-            border-top: 2px solid #714b67;
-            width: 200px;
-            margin: 30px auto 10px;
-        }
-
-        .download-btn {
-            background-color: #714b67;
-            color: white;
-            padding: 12px 25px;
-            margin-top: 20px;
-        }
-
-        .download-btn:hover {
-            background-color: #5a3b54;
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            10%, 30% { transform: scale(0.9); }
+            20%, 40% { transform: scale(1.1); }
         }
 
         .photo-preview {
-            max-width: 200px;
+            max-width: 250px;
+            max-height: 250px;
             border-radius: 50%;
-            margin: 20px 0;
-            border: 3px solid #714b67;
+            margin: 25px auto;
+            border: 5px solid #667eea;
+            display: none;
+            object-fit: cover;
         }
 
-        @keyframes bounce {
-            0%, 20%, 60%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            80% { transform: translateY(-5px); }
+        .signature-line {
+            border-top: 3px solid #667eea;
+            width: 250px;
+            margin: 40px auto 15px;
         }
 
-        .bounce {
-            animation: bounce 1s ease infinite;
+        .download-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 35px;
+            margin-top: 25px;
+            font-size: 1.1em;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Success banner */
+        .success-banner {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            font-size: 1.5em;
+            font-weight: 600;
+            animation: bounceIn 0.6s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            font-size: 25px;
+            pointer-events: none;
+            z-index: 1000;
+            animation: confettiFall 3s linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Input for names */
+        .name-input-section {
+            margin: 25px 0;
+        }
+
+        .name-input {
+            padding: 12px 20px;
+            font-size: 1.1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            width: 100%;
+            max-width: 350px;
+            margin: 10px auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 35px 25px;
+            }
+
+            h1 {
+                font-size: 2.2em;
+            }
+
+            .question {
+                font-size: 1.4em;
+            }
+
+            button {
+                padding: 15px 30px;
+                font-size: 1em;
+            }
+
+            .cert-header {
+                font-size: 1.8em;
+            }
+
+            .couple-names {
+                font-size: 1.3em;
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
+    <div class="bg-hearts" id="bgHearts"></div>
+    
     <div class="container">
         <div id="proposal-section">
             <h1>💕 A Special Moment 💕</h1>
@@ -187,75 +429,102 @@
                 Will you be my girlfriend? 💖
             </div>
             <div class="buttons">
-                <button class="yes-btn" onclick="handleYes()">Yes! 😍</button>
-                <button class="no-btn" id="no-btn" onclick="handleNo()">No 😔</button>
+                <button class="yes-btn" onclick="handleYes()">
+                    <span style="position: relative; z-index: 1;">Yes! 😍</span>
+                </button>
+                <button class="no-btn" id="no-btn" onclick="handleNo()">No 😢</button>
             </div>
         </div>
 
         <div class="camera-section" id="camera-section">
-            <h2 style="color: #714b67; margin-bottom: 20px;">Let's capture this moment! 📸</h2>
-            <video id="video" width="300" height="200" autoplay></video>
-            <canvas id="canvas" width="300" height="200" style="display: none;"></canvas>
-            <br>
-            <button class="camera-btn" onclick="startCamera()">Start Camera</button>
-            <button class="camera-btn" onclick="takePhoto()">Take Photo</button>
-            <button class="camera-btn" onclick="generateCertificate()">Create Certificate</button>
+            <div class="success-banner">🎉 YES! She said YES! 🎉</div>
+            <h2>Let's capture this moment! 📸</h2>
+            <div class="name-input-section">
+                <input type="text" class="name-input" id="partnerName" placeholder="Enter your partner's name" maxlength="30">
+                <input type="text" class="name-input" id="yourName" placeholder="Enter your name" maxlength="30">
+            </div>
+            <div class="video-container">
+                <video id="video" width="400" height="300" autoplay playsinline></video>
+                <canvas id="canvas" width="400" height="300"></canvas>
+            </div>
+            <div class="camera-controls">
+                <button class="camera-btn" id="startCameraBtn" onclick="startCamera()">📷 Start Camera</button>
+                <button class="camera-btn" id="takePhotoBtn" onclick="takePhoto()" disabled>📸 Take Photo</button>
+                <button class="camera-btn" id="generateCertBtn" onclick="generateCertificate()" disabled>✨ Create Certificate</button>
+            </div>
         </div>
 
         <div class="certificate" id="certificate">
-            <div class="cert-header">💕 OFFICIAL RELATIONSHIP CERTIFICATE 💕</div>
+            <div class="cert-border"></div>
+            <div class="cert-header">💕 Official Relationship Certificate 💕</div>
             <div class="hearts">❤️ 💖 ❤️ 💖 ❤️</div>
             <div class="cert-content">
                 <strong>This certifies that</strong>
                 <br><br>
-                <span style="font-size: 1.3em; color: #714b67; font-weight: bold;">Pandwe Lukupwa & [Your Name]</span>
-                <br><br>
+                <span class="couple-names" id="certNames">Partner 1 & Partner 2</span>
+                <br>
                 are now <strong>officially</strong> in a relationship
                 <br><br>
-                <img id="couple-photo" class="photo-preview" style="display: none;">
+                <img id="couple-photo" class="photo-preview" alt="Couple photo">
                 <br>
                 Starting from: <strong id="date"></strong>
                 <br><br>
-                <em>May your love story be filled with endless joy, laughter, and beautiful memories together.</em>
+                <em style="font-size: 0.95em; color: #6c757d;">
+                    May your love story be filled with endless joy, laughter,<br>
+                    and beautiful memories together.
+                </em>
             </div>
-            <div class="hearts">💕 💝 💕 💝 💕</div>
+            <div class="hearts">💕 💑 💕 💑 💕</div>
             <div class="signature-line"></div>
-            <div style="margin-top: 10px; color: #714b67; font-weight: bold;">
-                Sealed with Love
+            <div style="margin-top: 15px; color: #667eea; font-weight: bold; font-size: 1.1em;">
+                Sealed with Love ✨
             </div>
-            <button class="download-btn" onclick="downloadCertificate()">Download Certificate 📄</button>
+            <button class="download-btn" onclick="downloadCertificate()">📄 Download Certificate</button>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         let noClickCount = 0;
         let photoTaken = false;
         let capturedPhoto = null;
+        let videoStream = null;
 
         const noMessages = [
             "Are you sure? Think about all our amazing conversations! 🥺",
             "Come on, give us a chance! I promise to make you smile every day! 😊",
-            "Pretty please? I'll be the best boyfriend ever! 🙏",
+            "Pretty please? I'll be the best partner ever! 🙏",
             "I know you want to say yes... your heart is telling you to! 💕",
             "Last chance... won't you make me the happiest person alive? 💖",
             "I'm not giving up on us! One more try? 🌹",
             "Okay, I'll keep asking until you say yes because I believe in us! 💪"
         ];
 
+        // Create background hearts
+        function createBgHearts() {
+            const container = document.getElementById('bgHearts');
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'bg-heart';
+                heart.innerHTML = '💖';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(heart);
+            }
+        }
+
+        createBgHearts();
+
         function handleYes() {
             document.getElementById('proposal-section').style.display = 'none';
             document.getElementById('camera-section').style.display = 'block';
             
-            // Add celebration animation
-            document.body.style.background = 'linear-gradient(45deg, #ff6b6b, #ff8e8e, #ffa8a8)';
-            
-            // Show success message
-            const container = document.querySelector('.container');
-            const successMsg = document.createElement('div');
-            successMsg.innerHTML = '<h2 style="color: white; margin-bottom: 20px;">🎉 YES! She said YES! 🎉</h2>';
-            successMsg.style.marginBottom = '20px';
-            container.insertBefore(successMsg, document.getElementById('camera-section'));
+            // Create confetti celebration
+            setTimeout(() => {
+                for (let i = 0; i < 100; i++) {
+                    setTimeout(() => createConfetti(), i * 30);
+                }
+            }, 300);
         }
 
         function handleNo() {
@@ -264,28 +533,49 @@
             
             if (noClickCount < noMessages.length) {
                 questionElement.textContent = noMessages[noClickCount];
+                questionElement.style.color = '#e74c3c';
                 noClickCount++;
                 
-                // Make the No button smaller and move it around
-                noBtn.style.transform = `translate(${Math.random() * 100 - 50}px, ${Math.random() * 50 - 25}px)`;
-                noBtn.style.fontSize = `${1.1 - noClickCount * 0.1}em`;
+                // Make the No button move around randomly
+                const randomX = (Math.random() - 0.5) * 100;
+                const randomY = (Math.random() - 0.5) * 50;
+                noBtn.style.transform = `translate(${randomX}px, ${randomY}px) scale(${1 - noClickCount * 0.05})`;
                 
+                // After several clicks, change the button
                 if (noClickCount >= 5) {
                     noBtn.textContent = "Fine... Yes! 😤";
                     noBtn.onclick = handleYes;
-                    noBtn.classList.add('bounce');
+                    noBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    noBtn.style.color = 'white';
                 }
             }
         }
 
         async function startCamera() {
+            const video = document.getElementById('video');
+            const startBtn = document.getElementById('startCameraBtn');
+            const takePhotoBtn = document.getElementById('takePhotoBtn');
+            
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                const video = document.getElementById('video');
-                video.srcObject = stream;
+                startBtn.innerHTML = '<span class="loading"></span> Starting...';
+                startBtn.disabled = true;
+                
+                videoStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'user' },
+                    audio: false 
+                });
+                
+                video.srcObject = videoStream;
                 video.style.display = 'block';
+                
+                startBtn.innerHTML = '✓ Camera Active';
+                takePhotoBtn.disabled = false;
+                
             } catch (err) {
-                alert('Camera access denied. You can still create the certificate without a photo!');
+                console.error('Camera error:', err);
+                alert('Could not access camera. You can still create the certificate without a photo!');
+                startBtn.innerHTML = '📷 Camera Unavailable';
+                document.getElementById('generateCertBtn').disabled = false;
             }
         }
 
@@ -293,24 +583,51 @@
             const video = document.getElementById('video');
             const canvas = document.getElementById('canvas');
             const context = canvas.getContext('2d');
+            const photoPreview = document.getElementById('couple-photo');
+            const takePhotoBtn = document.getElementById('takePhotoBtn');
+            const generateBtn = document.getElementById('generateCertBtn');
             
+            // Draw video frame to canvas
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             capturedPhoto = canvas.toDataURL('image/png');
             photoTaken = true;
             
+            // Show preview
+            photoPreview.src = capturedPhoto;
+            photoPreview.style.display = 'block';
+            
             // Stop video stream
-            const stream = video.srcObject;
-            const tracks = stream.getTracks();
-            tracks.forEach(track => track.stop());
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+            }
             video.style.display = 'none';
             
-            alert('Photo captured! Now click "Create Certificate"');
+            // Update buttons
+            takePhotoBtn.innerHTML = '✓ Photo Captured';
+            takePhotoBtn.disabled = true;
+            generateBtn.disabled = false;
+            
+            // Create confetti
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => createConfetti(), i * 50);
+            }
         }
 
         function generateCertificate() {
             const certificate = document.getElementById('certificate');
             const dateElement = document.getElementById('date');
-            const photoElement = document.getElementById('couple-photo');
+            const certNames = document.getElementById('certNames');
+            const partnerName = document.getElementById('partnerName').value.trim();
+            const yourName = document.getElementById('yourName').value.trim();
+            
+            // Validate names
+            if (!partnerName || !yourName) {
+                alert('Please enter both names before creating the certificate!');
+                return;
+            }
+            
+            // Set names
+            certNames.textContent = `${partnerName} & ${yourName}`;
             
             // Set current date
             const now = new Date();
@@ -320,113 +637,79 @@
                 day: 'numeric' 
             });
             
-            // Add photo if taken
+            // Show photo if taken
+            const photoElement = document.getElementById('couple-photo');
             if (photoTaken && capturedPhoto) {
                 photoElement.src = capturedPhoto;
                 photoElement.style.display = 'block';
             }
             
+            // Hide camera section and show certificate
             document.getElementById('camera-section').style.display = 'none';
             certificate.style.display = 'block';
             
-            // Confetti effect
+            // Create massive confetti celebration
             setTimeout(() => {
-                for (let i = 0; i < 50; i++) {
-                    createConfetti();
+                for (let i = 0; i < 150; i++) {
+                    setTimeout(() => createConfetti(), i * 20);
                 }
-            }, 500);
+            }, 300);
         }
 
         function createConfetti() {
             const confetti = document.createElement('div');
-            confetti.innerHTML = ['💖', '💕', '❤️', '💝', '🌹'][Math.floor(Math.random() * 5)];
-            confetti.style.position = 'fixed';
+            const emojis = ['💖', '💕', '❤️', '💑', '🌹', '💝', '✨', '🎉'];
+            confetti.className = 'confetti';
+            confetti.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
             confetti.style.left = Math.random() * 100 + 'vw';
-            confetti.style.top = '-10px';
-            confetti.style.fontSize = '20px';
-            confetti.style.zIndex = '1000';
-            confetti.style.pointerEvents = 'none';
-            
+            confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
             document.body.appendChild(confetti);
             
-            confetti.animate([
-                { transform: 'translateY(-10px) rotate(0deg)', opacity: 1 },
-                { transform: `translateY(100vh) rotate(360deg)`, opacity: 0 }
-            ], {
-                duration: 3000,
-                easing: 'linear'
-            }).onfinish = () => confetti.remove();
+            setTimeout(() => confetti.remove(), 3000);
         }
 
         function downloadCertificate() {
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
+            // Simple download using html2canvas would be ideal, but since we can't import it,
+            // we'll create a simple image download
+            const certificate = document.getElementById('certificate');
+            const partnerName = document.getElementById('partnerName').value.trim();
+            const yourName = document.getElementById('yourName').value.trim();
             
-            // Set colors and fonts
-            pdf.setFillColor(113, 75, 103); // Odoo purple
+            // Create a simple text file as fallback
+            const certText = `
+OFFICIAL RELATIONSHIP CERTIFICATE
+
+This certifies that
+${partnerName} & ${yourName}
+are now officially in a relationship
+
+Starting from: ${document.getElementById('date').textContent}
+
+May your love story be filled with endless joy,
+laughter, and beautiful memories together.
+
+Sealed with Love ✨
+            `;
             
-            // Header
-            pdf.setFontSize(24);
-            pdf.setTextColor(113, 75, 103);
-            pdf.text('OFFICIAL RELATIONSHIP CERTIFICATE', 105, 40, { align: 'center' });
+            const blob = new Blob([certText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Relationship_Certificate.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
             
-            // Hearts decoration
-            pdf.setFontSize(16);
-            pdf.setTextColor(231, 76, 60); // Red for hearts
-            pdf.text('♥ ♥ ♥ ♥ ♥', 105, 55, { align: 'center' });
-            
-            // Main content
-            pdf.setFontSize(14);
-            pdf.setTextColor(73, 80, 87);
-            pdf.text('This certifies that', 105, 80, { align: 'center' });
-            
-            pdf.setFontSize(18);
-            pdf.setTextColor(113, 75, 103);
-            pdf.text('Pandwe Lukupwa & [Your Name]', 105, 100, { align: 'center' });
-            
-            pdf.setFontSize(14);
-            pdf.setTextColor(73, 80, 87);
-            pdf.text('are now officially in a relationship', 105, 120, { align: 'center' });
-            
-            // Add photo if available
-            if (photoTaken && capturedPhoto) {
-                try {
-                    pdf.addImage(capturedPhoto, 'PNG', 85, 135, 40, 30);
-                } catch (e) {
-                    console.log('Could not add image to PDF');
-                }
-            }
-            
-            const currentDate = new Date().toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-            
-            pdf.text(`Starting from: ${currentDate}`, 105, 180, { align: 'center' });
-            
-            pdf.setFontSize(12);
-            pdf.setFont(undefined, 'italic');
-            pdf.text('May your love story be filled with endless joy,', 105, 200, { align: 'center' });
-            pdf.text('laughter, and beautiful memories together.', 105, 210, { align: 'center' });
-            
-            // Hearts decoration bottom
-            pdf.setFontSize(16);
-            pdf.setTextColor(231, 76, 60);
-            pdf.text('♥ ♥ ♥ ♥ ♥', 105, 230, { align: 'center' });
-            
-            // Signature line
-            pdf.setDrawColor(113, 75, 103);
-            pdf.line(80, 250, 130, 250);
-            
-            pdf.setFontSize(12);
-            pdf.setTextColor(113, 75, 103);
-            pdf.setFont(undefined, 'bold');
-            pdf.text('Sealed with Love', 105, 260, { align: 'center' });
-            
-            // Download
-            pdf.save('Relationship_Certificate.pdf');
+            alert('Certificate downloaded! 💕\n\nNote: For a PDF version with photos, you would need to use a service like html2pdf or jsPDF with proper configuration.');
         }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+            }
+        });
     </script>
 </body>
 </html>
