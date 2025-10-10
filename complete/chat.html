@@ -1063,4 +1063,291 @@
             ];
             
             const question = questions[Math.floor(Math.random() * questions.length)];
-            document.getElementById('message
+            document.getElementById('messageInput').value = question;
+            sendMessage();
+        }
+
+        function sendDateIdea() {
+            const dateIdeas = [
+                "How about a cozy movie night with homemade popcorn? 🍿",
+                "Want to try that new restaurant we talked about? 🍽️",
+                "Beach picnic at sunset sounds perfect! 🏖️",
+                "Let's go stargazing tonight! 🌟",
+                "Coffee shop hopping adventure? ☕"
+            ];
+            
+            const idea = dateIdeas[Math.floor(Math.random() * dateIdeas.length)];
+            document.getElementById('messageInput').value = idea;
+            sendMessage();
+        }
+
+        // Media functions
+        function handlePhotoSend(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const message = {
+                    id: Date.now(),
+                    text: "📸 Sent a photo",
+                    photo: e.target.result,
+                    timestamp: new Date(),
+                    sender: 'user',
+                    status: 'sent'
+                };
+
+                messages.push(message);
+                localStorage.setItem('coupleMessages', JSON.stringify(messages));
+                addMessageToDOM(message, true);
+                autoScroll();
+
+                // Partner response to photo
+                setTimeout(() => {
+                    const photoResponses = [
+                        "Beautiful! 😍",
+                        "Love this! ❤️",
+                        "You look amazing! 🌟",
+                        "This made my day! 😊",
+                        "So cute! 🥰"
+                    ];
+                    
+                    const response = {
+                        id: Date.now(),
+                        text: photoResponses[Math.floor(Math.random() * photoResponses.length)],
+                        timestamp: new Date(),
+                        sender: 'partner',
+                        status: 'delivered'
+                    };
+
+                    messages.push(response);
+                    localStorage.setItem('coupleMessages', JSON.stringify(messages));
+                    addMessageToDOM(response, true);
+                    autoScroll();
+                }, 2000);
+            };
+            reader.readAsDataURL(file);
+            
+            // Reset file input
+            event.target.value = '';
+        }
+
+        function toggleVoiceRecord() {
+            const btn = document.getElementById('voiceBtn');
+            
+            if (!isRecording) {
+                startRecording();
+                btn.classList.add('recording');
+                btn.title = 'Stop recording';
+            } else {
+                stopRecording();
+                btn.classList.remove('recording');
+                btn.title = 'Voice Message';
+            }
+        }
+
+        function startRecording() {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                alert("Voice recording is not supported in this browser.");
+                return;
+            }
+            
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    isRecording = true;
+                    audioChunks = [];
+                    mediaRecorder = new MediaRecorder(stream);
+                    
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+                    
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        
+                        const message = {
+                            id: Date.now(),
+                            text: "🎤 Voice message",
+                            voice: audioUrl,
+                            voiceDuration: Math.floor(Math.random() * 30) + 5,
+                            timestamp: new Date(),
+                            sender: 'user',
+                            status: 'sent'
+                        };
+
+                        messages.push(message);
+                        localStorage.setItem('coupleMessages', JSON.stringify(messages));
+                        addMessageToDOM(message, true);
+                        autoScroll();
+                    };
+                    
+                    mediaRecorder.start();
+                })
+                .catch(err => {
+                    console.error('Error accessing microphone:', err);
+                    alert('Unable to access microphone. Please check your permissions.');
+                });
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                isRecording = false;
+                mediaRecorder.stop();
+                if (mediaRecorder.stream) {
+                    mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                }
+            }
+        }
+
+        function playVoiceMessage(audioUrl, button) {
+            const audio = new Audio(audioUrl);
+            button.textContent = '⏸️';
+            
+            audio.play();
+            audio.onended = () => {
+                button.textContent = '▶️';
+            };
+        }
+
+        function sendLocation() {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        const lat = position.coords.latitude.toFixed(4);
+                        const lng = position.coords.longitude.toFixed(4);
+                        
+                        const message = {
+                            id: Date.now(),
+                            text: `📍 My location: ${lat}, ${lng}`,
+                            timestamp: new Date(),
+                            sender: 'user',
+                            status: 'sent'
+                        };
+
+                        messages.push(message);
+                        localStorage.setItem('coupleMessages', JSON.stringify(messages));
+                        addMessageToDOM(message, true);
+                        autoScroll();
+                    },
+                    error => {
+                        console.error('Geolocation error:', error);
+                        alert('Unable to get your location. Please check your permissions.');
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        }
+
+        function openImageViewer(src) {
+            const viewer = window.open('', '_blank');
+            viewer.document.write(`
+                <html>
+                    <head><title>Image Viewer</title></head>
+                    <body style="margin:0;padding:20px;background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh;">
+                        <img src="${src}" style="max-width:100%;max-height:100%;object-fit:contain;">
+                    </body>
+                </html>
+            `);
+        }
+
+        // Settings functions
+        function setNicknames() {
+            document.getElementById('nicknameModal').classList.add('active');
+            document.getElementById('myNickname').value = localStorage.getItem('myNickname') || '';
+            document.getElementById('partnerNickname').value = localStorage.getItem('partnerNickname') || '';
+        }
+
+        function saveNicknames() {
+            const myNick = document.getElementById('myNickname').value.trim() || 'You';
+            const partnerNick = document.getElementById('partnerNickname').value.trim() || 'Love';
+            
+            localStorage.setItem('myNickname', myNick);
+            localStorage.setItem('partnerNickname', partnerNick);
+            
+            loadUserSettings();
+            closeModal('nicknameModal');
+            
+            // Show confirmation
+            const message = {
+                id: Date.now(),
+                text: `✨ Nicknames updated! You're "${myNick}" and your partner is "${partnerNick}" ✨`,
+                timestamp: new Date(),
+                sender: 'system',
+                status: 'delivered'
+            };
+            
+            messages.push(message);
+            localStorage.setItem('coupleMessages', JSON.stringify(messages));
+            addMessageToDOM(message, true);
+            autoScroll();
+        }
+
+        function customizeTheme() {
+            document.getElementById('themeModal').classList.add('active');
+        }
+
+        function setTheme(theme) {
+            const themes = {
+                pink: { primary: '#ff9a9e', secondary: '#fad0c4' },
+                purple: { primary: '#667eea', secondary: '#764ba2' },
+                coral: { primary: '#f093fb', secondary: '#f5576c' },
+                blue: { primary: '#4facfe', secondary: '#00f2fe' }
+            };
+            
+            const selectedTheme = themes[theme];
+            
+            // Update CSS variables
+            document.documentElement.style.setProperty('--primary-color', selectedTheme.primary);
+            document.documentElement.style.setProperty('--secondary-color', selectedTheme.secondary);
+            
+            // Update the send button gradient
+            const sendBtn = document.querySelector('.send-btn');
+            sendBtn.style.background = `linear-gradient(135deg, ${selectedTheme.primary}, ${selectedTheme.secondary}) !important`;
+            
+            localStorage.setItem('selectedTheme', theme);
+            closeModal('themeModal');
+            
+            createLoveReaction();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Action button functions
+        function toggleVideoCall() {
+            alert('📹 Video call feature coming soon! Can\'t wait to see your beautiful face! 😍');
+            createLoveReaction();
+        }
+
+        function toggleVoiceCall() {
+            alert('📞 Voice call feature coming soon! Looking forward to hearing your sweet voice! 🥰');
+            createLoveReaction();
+        }
+
+        function showChatInfo() {
+            const messageCount = messages.length;
+            const startDate = new Date('2024-01-01').toLocaleDateString();
+            
+            alert(`💕 Chat Info 💕\n\n📱 Messages sent: ${messageCount}\n📅 Chatting since: ${startDate}\n🔒 End-to-end encrypted\n❤️ Made with love`);
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+
+        // Load saved theme on startup
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('selectedTheme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            }
+        });
+    </script>
+</body>
+</html>
